@@ -14,7 +14,7 @@ TARGET="$1"
 
 if test -e "$TARGET"; then
 
-  echo "Initializing the Software Toolkit into the directory: '$TARGET'"
+  echo "Initializing the Software Toolkit into: '$TARGET'"
 
 else
 
@@ -22,8 +22,15 @@ else
   exit 1
 fi
 
-cd "$TARGET" && \
-  git status && \
+if cd "$TARGET" && ! git status; then
+
+  echo "Initializing the Git repository at: '$(pwd)'" && \
+    git init .
+fi
+
+git status &&
   git submodule add "$INSTALLABLE" ./Installable && \
   git submodule add "$DEPENDABLE" ./Dependable && \
-  git submodule add "$VERSIONABLE" ./Versionable
+  git submodule add "$VERSIONABLE" ./Versionable && \
+  echo "The Software Toolkit has been initialized into: '$TARGET'"
+
