@@ -2,10 +2,12 @@
 
 HERE="$(pwd)"
 ABOUT="ABOUT.txt"
+SCRIPT_VERSION="version.sh"
+
 DIR_VERSION="Version"
 DIR_RECIPES="Recipes"
 DIR_DEPENDENCIES="Dependencies"
-SCRIPT_VERSION="version.sh"
+
 DEPENDABLE="git@github.com:red-elf/Dependable.git"
 INSTALLABLE="git@github.com:red-elf/Installable.git"
 VERSIONABLE="git@github.com:red-elf/Versionable.git"
