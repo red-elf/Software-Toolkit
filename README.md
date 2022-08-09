@@ -21,3 +21,5 @@ Clone or download the release and execute the `initialize.sh` script:
 ```shell
 initialize.sh ~/Docuemtns/Project_Directory "My project name"
 ```
+
+The first parameter is the location of your project, and the second is the name to assign.
