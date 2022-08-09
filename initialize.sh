@@ -8,4 +8,4 @@ fi
 
 TARGET="$1"
 
-echo "Initializing the Software Toolkit into $TARGET"
+echo "Initializing the Software Toolkit target: $TARGET"
