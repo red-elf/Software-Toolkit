@@ -8,4 +8,12 @@ fi
 
 TARGET="$1"
 
-echo "Initializing the Software Toolkit target: $TARGET"
+if test -e "$TARGET"; then
+
+  echo "Initializing the Software Toolkit into the directory: '$TARGET'"
+
+else
+
+  echo "ERROR: The '$TARGET' directory does not exist"
+  exit 1
+fi
