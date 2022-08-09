@@ -1,6 +1,6 @@
 # Software Toolkit
 
-The software toolkit represents a set of utilities required to build and run your projects.
+The 'Software Toolkit' represents a set of utilities required to build and run your projects.
 
 Provides the following functionality to the projects:
 
