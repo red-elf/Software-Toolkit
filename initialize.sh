@@ -59,5 +59,6 @@ export VERSIONABLE_VERSION_PATCH=\"0\"" > "$SCRIPT_VERSION" && \
   cd .. && \
   mkdir "$DIR_RECIPES" && cp "$HERE/Templates/Recipes/"*.sh "./$DIR_RECIPES" && \
   mkdir "$DIR_DEPENDENCIES" && \
+  echo "_Dependencies" >> .gitignore && \
   echo "The Software Toolkit has been initialized into: '$TARGET'"
 
