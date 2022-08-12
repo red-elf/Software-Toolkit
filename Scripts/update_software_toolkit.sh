@@ -17,7 +17,7 @@ function UPDATE_MODULE {
 
   if test -e "$DIR"; then
 
-    if cd "$DIR" && git submodule update --remote && cd "$HERE"; then
+    if cd "$DIR" && git checkout main && git fetch && git pull && cd "$HERE"; then
 
       cd "$HERE" &&
         echo "The Software Toolkit module updated: '$DIR'"
