@@ -1,5 +1,6 @@
 #!/bin/bash
 
+HERE="$(pwd)"
 DIR_DEPENDABLE="Dependable"
 DIR_VERSIONABLE="Versionable"
 DIR_INSTALLABLE="Installable"
