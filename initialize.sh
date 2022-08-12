@@ -63,5 +63,6 @@ export VERSIONABLE_VERSION_PATCH=\"0\"" > "$SCRIPT_VERSION" && \
   echo "BuildConfig.*" >> .gitignore && \
   echo "Version.*" >> .gitignore && \
   echo "VersionInfo.*" >> .gitignore && \
+  cp "$HERE/Scripts/update_software_toolkit.sh" . && \
   echo "The Software Toolkit has been initialized into: '$TARGET'"
 
