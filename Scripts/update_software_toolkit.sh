@@ -7,7 +7,7 @@ DIR_INSTALLABLE="Installable"
 
 if test -e "$DIR_DEPENDABLE"; then
 
-  if ! cd "$DIR_DEPENDABLE" && git submodule update --remote && cd "$HERE"; then
+  if ! cd "$DIR_DEPENDABLE" && git submodule update --remote; then
 
     echo "ERROR: Could not update the Software Toolkit: '$DIR_DEPENDABLE'"
     exit 1
@@ -16,6 +16,8 @@ else
 
   echo "WARNING: Software Toolkit module '$DIR_DEPENDABLE' not found at '$(pwd)'"
 fi
+
+cd "$HERE" && \
 
 if test -e "$DIR_VERSIONABLE"; then
 
@@ -28,6 +30,8 @@ else
 
   echo "WARNING: Software Toolkit module '$DIR_VERSIONABLE' not found at '$(pwd)'"
 fi
+
+cd "$HERE" && \
 
 if test -e "$DIR_INSTALLABLE"; then
 
