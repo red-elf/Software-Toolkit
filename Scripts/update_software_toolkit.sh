@@ -6,7 +6,7 @@ DIR_INSTALLABLE="Installable"
 
 if test -e "$DIR_DEPENDABLE"; then
 
-  if ! cd "$DIR_DEPENDABLE" && git submodule update --remote && cd .. ; then
+  if ! cd "$DIR_DEPENDABLE" && git submodule update --remote && cd ..; then
 
     echo "ERROR: Could not update the Software Toolkit: '$DIR_DEPENDABLE'"
     exit 1
