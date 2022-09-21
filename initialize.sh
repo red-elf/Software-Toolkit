@@ -6,11 +6,13 @@ SCRIPT_VERSION="version.sh"
 
 DIR_VERSION="Version"
 DIR_RECIPES="Recipes"
+DIR_UPSTREAMS="Upstreams"
 DIR_DEPENDENCIES="Dependencies"
 
 DEPENDABLE="git@github.com:red-elf/Dependable.git"
 INSTALLABLE="git@github.com:red-elf/Installable.git"
 VERSIONABLE="git@github.com:red-elf/Versionable.git"
+UPSTREAMABLE="git@github.com:red-elf/Upstreamable.git"
 
 if [ -z "$1" ]; then
 
@@ -47,6 +49,7 @@ git status &&
   git submodule add "$INSTALLABLE" ./Installable && \
   git submodule add "$DEPENDABLE" ./Dependable && \
   git submodule add "$VERSIONABLE" ./Versionable && \
+  git submodule add "$UPSTREAMABLE" ./Upstreamable && \
   echo "$PROJECT_NAME" > "$ABOUT" && \
   mkdir "$DIR_VERSION" && cd "$DIR_VERSION" && \
   echo "#!/bin/bash
