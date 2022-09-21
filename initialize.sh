@@ -9,6 +9,7 @@ DIR_RECIPES="Recipes"
 DIR_UPSTREAMS="Upstreams"
 DIR_DEPENDENCIES="Dependencies"
 
+TOOLKIT="git@github.com:red-elf/Software-Toolkit.git"
 DEPENDABLE="git@github.com:red-elf/Dependable.git"
 INSTALLABLE="git@github.com:red-elf/Installable.git"
 VERSIONABLE="git@github.com:red-elf/Versionable.git"
@@ -46,6 +47,7 @@ if cd "$TARGET" && ! git status; then
 fi
 
 git status &&
+  git submodule add "$TOOLKIT" ./Toolkit && \
   git submodule add "$INSTALLABLE" ./Installable && \
   git submodule add "$DEPENDABLE" ./Dependable && \
   git submodule add "$VERSIONABLE" ./Versionable && \
@@ -67,6 +69,5 @@ export VERSIONABLE_VERSION_PATCH=\"0\"" > "$SCRIPT_VERSION" && \
   echo "BuildConfig.*" >> .gitignore && \
   echo "Version.*" >> .gitignore && \
   echo "VersionInfo.*" >> .gitignore && \
-  cp "$HERE/Scripts/update_software_toolkit.sh" . && \
   echo "The Software Toolkit has been initialized into: '$TARGET'"
 
