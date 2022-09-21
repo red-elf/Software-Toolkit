@@ -60,6 +60,7 @@ export VERSIONABLE_VERSION_SECONDARY=\"0\"
 export VERSIONABLE_VERSION_PATCH=\"0\"" > "$SCRIPT_VERSION" && \
   chmod +x "$SCRIPT_VERSION" && \
   cd .. && \
+  mkdir "$DIR_UPSTREAMS" && \
   mkdir "$DIR_RECIPES" && cp "$HERE/Templates/Recipes/"*.sh "./$DIR_RECIPES" && \
   mkdir "$DIR_DEPENDENCIES" && \
   echo "_Dependencies" >> .gitignore && \
