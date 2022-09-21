@@ -13,6 +13,7 @@ Provides the following functionality to the projects:
 - The [Versionable](https://github.com/red-elf/Versionable) module
 - The [Installable](https://github.com/red-elf/Installable) module
 - The [Dependable](https://github.com/red-elf/Dependable) module
+- The [Upstreamable](https://github.com/red-elf/Upstreamable) module
 
 ## How to use?
 
