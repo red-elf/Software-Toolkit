@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DB="database.db"
+DB="database.sqlite"
 
 if [ -n "$1" ]; then
 

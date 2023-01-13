@@ -1,6 +1,7 @@
 #!/bin/bash
 
-SCRIPT_GET_SQLITE="get_sqlite.sh"
+HERE="$(dirname -- "${BASH_SOURCE[0]}")"
+SCRIPT_GET_SQLITE="$HERE/get_sqlite.sh"
 
 if [ -n "$1" ]; then
 
@@ -22,15 +23,25 @@ else
   exit 1
 fi
 
-if sh "$SCRIPT_GET_SQLITE" "$DB"
+if sh "$SCRIPT_GET_SQLITE" "$DB"; then
 
-  if cat "$SQL_FILE" | sqlite3 "$DB"; then
+  if test -e "$SQL_FILE"; then
 
-    echo "'$SQL_FILE' imported into '$DB'"
+    if cat "$SQL_FILE" | sqlite3 "$DB"; then
+
+      echo "'$SQL_FILE' imported into '$DB'"
+
+    else
+
+      echo "ERROR: '$SQL_FILE' not imported into '$DB'"
+      exit 1
+    fi
 
   else
 
-    echo "ERROR: '$SQL_FILE' not imported into '$DB'"
+    echo "ERROR: File does not exist: $SQL_FILE"
     exit 1
   fi
 fi
+
+
