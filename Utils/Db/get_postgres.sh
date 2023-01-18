@@ -64,25 +64,7 @@ if sh "$SCRIPT_GET_DOCKER" true; then
     if docker run --name "$DOCKER_CONTAINER" -e POSTGRES_USER="$USER" -e POSTGRES_PASSWORD="$PASSWORD" \
       -e POSTGRES_DB="$DB" -e PGDATA="$DIRECTORY_DATA" -d "$DOCKER_IMAGE"; then
 
-      echo "Postgres Docker container started"
-
-      CMD="SELECT 'CREATE DATABASE $DB' WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = '$DB')\gexec"
-
-      # TODO:
-      # if docker exec -i "postgres.$DB" \
-      #   PGPASSWORD="$PASSWORD" && echo "$CMD" | psql -U "$USER"; then
-      if docker exec -i "postgres.$DB" psql --version; then
-
-        echo "ERROR: Implementatin not completed (1)"
-        exit 1
-
-        echo "Database is initialized: '$DB'"
-
-      else
-
-        echo "ERROR: database is not initialized: '$DB'"
-        exit 1
-      fi
+      echo "Postgres Docker container started with the database"
 
     else
 
