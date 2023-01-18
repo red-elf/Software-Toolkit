@@ -50,8 +50,6 @@ fi
 
 echo "Postgres data directory: $DIRECTORY_DATA"
 
-# TODO: Refactor the Docker code to be used with any image
-
 DOCKER_IMAGE="postgres"
 DOCKER_CONTAINER="postgres.$DB"
 
@@ -74,11 +72,7 @@ if sh "$SCRIPT_GET_DOCKER" true; then
       exit 1
     fi
   fi
-
-  # TODO:
-  echo "ERROR: Not implemented"
-  exit 1
-
+  
 else
 
   echo "ERROR: No Docker installation available"
