@@ -29,11 +29,11 @@ if sh "$SCRIPT_GET_SQLITE" "$DB"; then
 
     if cat "$SQL_FILE" | sqlite3 "$DB"; then
 
-      echo "'$SQL_FILE' imported into '$DB'"
+      echo "'$SQL_FILE' imported into '$DB' database"
 
     else
 
-      echo "ERROR: '$SQL_FILE' not imported into '$DB'"
+      echo "ERROR: '$SQL_FILE' not imported into '$DB' database"
       exit 1
     fi
 

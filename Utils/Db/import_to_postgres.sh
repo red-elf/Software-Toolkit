@@ -58,8 +58,22 @@ if sh "$SCRIPT_GET_POSTGRES" "$DB" "$USER" "$PASSWORD" "$DIRECTORY_DATA"; then
 
   if test -e "$SQL_FILE"; then
 
-    echo "ERROR: Implementation not completed"
-    exit 1
+    SQL=$( cat $SQL_FILE )
+
+    # TODO:
+    # if docker exec -i "postgres.$DB" PGPASSWORD="$PASSWORD" && echo "$SQL" | psql -U "$USER" -d "$DB"; then
+    if docker exec -i "postgres.$DB" psql --version; then
+
+      echo "ERROR: Implementatin not completed (1)"
+      exit 1
+
+      echo "'$SQL_FILE' imported into '$DB' database"
+
+    else
+
+      echo "ERROR: '$SQL_FILE' not imported into '$DB' database"
+      exit 1
+    fi
 
   else
 
