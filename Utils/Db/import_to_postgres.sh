@@ -23,7 +23,38 @@ else
   exit 1
 fi
 
-if sh "$SCRIPT_GET_POSTGRES" "$DB"; then
+if [ -n "$3" ]; then
+
+  USER="$3"
+
+else
+
+  echo "ERROR: Postgres user not provided"
+  exit 1
+fi
+
+if [ -n "$4" ]; then
+
+  PASSWORD="$4"
+
+else
+
+  echo "ERROR: Postgres password not provided"
+  exit 1
+fi
+
+if [ -n "$5" ]; then
+
+  DIRECTORY_DATA="$5"
+
+else
+
+  echo "ERROR: Postgres data directory path not provided"
+  exit 1
+fi
+
+
+if sh "$SCRIPT_GET_POSTGRES" "$DB" "$USER" "$PASSWORD" "$DIRECTORY_DATA"; then
 
   if test -e "$SQL_FILE"; then
 

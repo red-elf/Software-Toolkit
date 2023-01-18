@@ -29,26 +29,26 @@ DIRECTORY_DATA="/var/lib/postgresql/data/pgdata"
 if [ -n "$4" ]; then
 
   DIRECTORY_DATA="$4"
+fi
+
+if test -e "$DIRECTORY_DATA"; then
+
+  echo "Directory available $DIRECTORY_DATA"
 
 else
 
-  if test -e "$DIRECTORY_DATA"; then
+  if mkdir -p "$DIRECTORY_DATA"; then
 
-    echo "Directory available $DIRECTORY_DATA"
+    echo "Directory created $DIRECTORY_DATA"
 
   else
 
-    if mkdir -p "$DIRECTORY_DATA" then;
-
-      echo "Directory created $DIRECTORY_DATA"
-
-    else
-
-      echo "ERROR: directory not created $DIRECTORY_DATA"
-      exit 1
-    fi
+    echo "ERROR: directory not created $DIRECTORY_DATA"
+    exit 1
   fi
 fi
+
+echo "Postgres data directory: $DIRECTORY_DATA"
 
 # TODO: Refactor the Docker code to be used with any image
 
