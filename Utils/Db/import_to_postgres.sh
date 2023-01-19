@@ -63,6 +63,7 @@ if sh "$SCRIPT_GET_POSTGRES" "$DB" "$USER" "$PASSWORD" "$DIRECTORY_DATA"; then
     JUST_FILE="${SQL_FILE##*/}"
 
     if sh "$SCRIPT_PUSH_TO_CONTAINER" "$SQL_FILE" "$CONTAINER" && \
+      sleep 2 && \
       docker exec -i "$CONTAINER" bash -c "test -e $JUST_FILE && psql -U $USER -d $DB -f $JUST_FILE"; then
 
       echo "'$JUST_FILE' imported into '$DB' database"
