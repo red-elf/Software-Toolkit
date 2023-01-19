@@ -60,26 +60,16 @@ if sh "$SCRIPT_GET_POSTGRES" "$DB" "$USER" "$PASSWORD" "$DIRECTORY_DATA"; then
   if test -e "$SQL_FILE"; then
 
     CONTAINER="postgres.$DB"
+    JUST_FILE="${SQL_FILE##*/}"
 
-    if sh "$SCRIPT_PUSH_TO_CONTAINER" "$SQL_FILE" "$CONTAINER"; then
+    if sh "$SCRIPT_PUSH_TO_CONTAINER" "$SQL_FILE" "$CONTAINER" && \
+      docker exec -i "$CONTAINER" bash -c "test -e $JUST_FILE && psql -U $USER -d $DB -f $JUST_FILE"; then
 
-      JUST_FILE="${SQL_FILE##*/}"
-      
-      echo "'$SQL_FILE' ($JUST_FILE) pushed into '"$CONTAINER"' container"
-
-      if docker exec -i "$CONTAINER" bash -c "psql -U $USER -d $DB -f $JUST_FILE"; then
-
-        echo "'$JUST_FILE' imported into '$DB' database"
-
-      else
-
-        echo "ERROR: '$SQL_FILE' not imported into '$DB' database"
-        exit 1
-      fi
+      echo "'$JUST_FILE' imported into '$DB' database"
 
     else
 
-      echo "ERROR: '$SQL_FILE' not pushed into '"$CONTAINER"' container"
+      echo "ERROR: '$SQL_FILE' not imported into '$DB' database"
       exit 1
     fi
     
