@@ -6,7 +6,7 @@ if [ -n "$1" ]; then
 
     if [ -n "$3" ]; then
   
-      docker cp "$2":/"$1" "$3"
+      docker cp --follow-link "$2":/"$1" "$3"
 
     else
 
