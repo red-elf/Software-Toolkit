@@ -63,8 +63,8 @@ if sh "$SCRIPT_GET_POSTGRES" "$DB" "$USER" "$PASSWORD" "$DIRECTORY_DATA"; then
 
     if sh "$SCRIPT_PUSH_TO_CONTAINER" "$SQL_FILE" "$CONTAINER"; then
 
-      JUST_FILE="${SQL_FILE##/*/}"
-
+      JUST_FILE="${SQL_FILE##*/}"
+      
       echo "'$SQL_FILE' ($JUST_FILE) pushed into '"$CONTAINER"' container"
 
       if docker exec -i "$CONTAINER" psql -U "$USER" -d "$DB" < "$JUST_FILE"; then
