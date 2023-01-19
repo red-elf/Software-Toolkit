@@ -67,11 +67,7 @@ if sh "$SCRIPT_GET_POSTGRES" "$DB" "$USER" "$PASSWORD" "$DIRECTORY_DATA"; then
       
       echo "'$SQL_FILE' ($JUST_FILE) pushed into '"$CONTAINER"' container"
 
-      CMD="'psql -U $USER -d $DB -f $JUST_FILE'"
-
-      echo "Executing: $CMD"
-
-      if docker exec -i "$CONTAINER" bash -c "$CMD"; then
+      if docker exec -i "$CONTAINER" bash -c "psql -U $USER -d $DB -f $JUST_FILE"; then
 
         echo "'$JUST_FILE' imported into '$DB' database"
 
