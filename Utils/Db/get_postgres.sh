@@ -53,6 +53,9 @@ echo "Postgres data directory: $DIRECTORY_DATA"
 DOCKER_IMAGE="postgres"
 DOCKER_CONTAINER="postgres.$DB"
 
+echo "Docker image: $DOCKER_IMAGE"
+echo "Docker container: $DOCKER_CONTAINER"
+
 if sh "$SCRIPT_GET_DOCKER" true; then
 
   if [ "$( docker container inspect -f '{{.State.Status}}' $DOCKER_CONTAINER )" == "running" ]; then
