@@ -58,21 +58,39 @@ echo "Docker container: $DOCKER_CONTAINER"
 
 if sh "$SCRIPT_GET_DOCKER" true; then
 
-  if [ "$( docker container inspect -f '{{.State.Status}}' $DOCKER_CONTAINER )" == "running" ]; then
+  CONTAINER_STATUS="$( docker container inspect -f '{{.State.Status}}' $DOCKER_CONTAINER )"
+
+  if [ "$CONTAINER_STATUS" == "running" ]; then
 
     echo "Postgres Docker container is running"
 
   else
 
-    if docker run --name "$DOCKER_CONTAINER" -e POSTGRES_USER="$USER" -e POSTGRES_PASSWORD="$PASSWORD" \
-      -e POSTGRES_DB="$DB" -e PGDATA="$DIRECTORY_DATA" -d "$DOCKER_IMAGE"; then
+    if [ "$CONTAINER_STATUS" == "exited" ]; then
 
-      echo "Postgres Docker container started with the database"
+      if docker container start "$DOCKER_CONTAINER"; then
+
+        echo "Postgres Docker container re-started"
+
+      else
+
+        echo "ERROR: Postgres Docker container failed to re-start"
+        exit 1
+      fi
 
     else
 
-      echo "ERROR: Postgres Docker container failed to start"
-      exit 1
+      if docker run --name "$DOCKER_CONTAINER" -e POSTGRES_USER="$USER" -e POSTGRES_PASSWORD="$PASSWORD" \
+        -e POSTGRES_DB="$DB" -e PGDATA="$DIRECTORY_DATA" -d "$DOCKER_IMAGE"; then
+
+        echo "Postgres Docker container started with the database"
+
+      else
+
+        echo "ERROR: Postgres Docker container failed to start"
+        exit 1
+      fi
+
     fi
   fi
   
