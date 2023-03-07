@@ -1,6 +1,6 @@
 #!/bin/bash
 
-HERE="$(pwd)"
+HERE="$(dirname -- "${BASH_SOURCE[0]}")"
 ABOUT="ABOUT.txt"
 SCRIPT_VERSION="version.sh"
 
