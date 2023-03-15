@@ -10,4 +10,9 @@ fi
 echo "Updating the Software Toolkit recursively from: $WHERE"
 
 cd "$WHERE"
-find . -maxdepth 100 -mindepth 1 -type d -printf '%P\n'
+PATHS=$(find . -maxdepth 100 -mindepth 1 -type d)
+
+for PATH in $PATHS
+do
+    echo ">>> $PATH"
+done
