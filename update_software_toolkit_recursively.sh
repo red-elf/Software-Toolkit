@@ -9,8 +9,5 @@ fi
 
 echo "Updating the Software Toolkit recursively from: $WHERE"
 
-for dir in "$WHERE"
-do
-    dir=${dir%*/}
-    echo "${dir##*/}"
-done
+cd "$WHERE"
+find . -maxdepth 100 -mindepth 1 -type d -printf '%P\n'
