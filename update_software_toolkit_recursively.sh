@@ -19,6 +19,6 @@ do
     if test -e "$PATH/$SCRIPT_UPDATE"; then
 
       echo "Updatining by: $PATH/$SCRIPT_UPDATE" &&
-        cd "$PATH" && "$SCRIPT_UPDATE" && cd "$WHERE"
+        cd "$PATH" && ./"$SCRIPT_UPDATE" && cd "$WHERE"
     fi
 done
