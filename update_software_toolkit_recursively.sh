@@ -16,9 +16,9 @@ PATHS=$(find . -maxdepth 100 -mindepth 1 -type d)
 for PATH in $PATHS
 do
     
-    if test -e "$PATH/$SCRIPT_UPDATE"; then
+    if test -e "$PATH/Toolkit/$SCRIPT_UPDATE"; then
 
       echo "Updatining by: $PATH/$SCRIPT_UPDATE" &&
-        cd "$PATH" && ./"$SCRIPT_UPDATE" && cd "$WHERE"
+        cd "$PATH" && ./Toolkit/"$SCRIPT_UPDATE" && cd "$WHERE"
     fi
 done
