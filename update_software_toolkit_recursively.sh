@@ -18,9 +18,14 @@ do
     
     if test -e "$PATH/Toolkit/$SCRIPT_UPDATE"; then
 
-      # TODO: Ignore _Dependencies
-      
-      echo "Updatining by: $PATH/$SCRIPT_UPDATE" &&
-        cd "$PATH" && ./Toolkit/"$SCRIPT_UPDATE" && cd "$WHERE"
+      if [[ $PATH == *"_Dependencies"* ]]; then
+        
+        echo "SKIPPING: $PATH"
+
+      else 
+
+        echo "Updatining by: $PATH/$SCRIPT_UPDATE" &&
+          cd "$PATH" && ./Toolkit/"$SCRIPT_UPDATE" && cd "$WHERE"
+      fi
     fi
 done
