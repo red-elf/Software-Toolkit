@@ -14,6 +14,7 @@ DEPENDABLE="git@github.com:red-elf/Dependable.git"
 INSTALLABLE="git@github.com:red-elf/Installable.git"
 VERSIONABLE="git@github.com:red-elf/Versionable.git"
 UPSTREAMABLE="git@github.com:red-elf/Upstreamable.git"
+TESTABLE="git@github.com:red-elf/Testable.git"
 
 if [ -z "$1" ]; then
 
@@ -52,6 +53,7 @@ git status &&
   git submodule add "$DEPENDABLE" ./Dependable && \
   git submodule add "$VERSIONABLE" ./Versionable && \
   git submodule add "$UPSTREAMABLE" ./Upstreamable && \
+  git submodule add "$TESTABLE" ./Testable && \
   echo "$PROJECT_NAME" > "$ABOUT" && \
   mkdir "$DIR_VERSION" && cd "$DIR_VERSION" && \
   echo "#!/bin/bash
