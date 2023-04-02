@@ -35,7 +35,7 @@ if sh "$SCRIPT_GET_DOCKER" true; then
 
     else
 
-      if docker run --name "$DOCKER_CONTAINER:$DOCKER_TAG" -d "$DOCKER_IMAGE"; then
+      if docker run -t "$DOCKER_CONTAINER:$DOCKER_TAG"; then
 
         echo "Postgres Docker container started with the database"
 
