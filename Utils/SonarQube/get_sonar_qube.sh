@@ -8,6 +8,7 @@ DOCKER_TAG="9.9.0-community"
 DOCKER_CONTAINER="sonarqube"
 
 echo "Docker image: $DOCKER_IMAGE"
+echo "Docker tag: $DOCKER_TAG"
 echo "Docker container: $DOCKER_CONTAINER"
 
 if sh "$SCRIPT_GET_DOCKER" true; then
@@ -34,7 +35,7 @@ if sh "$SCRIPT_GET_DOCKER" true; then
 
     else
 
-      if docker run -t "$DOCKER_CONTAINER:$DOCKER_TAG" -d "$DOCKER_IMAGE"; then
+      if docker run --name "$DOCKER_CONTAINER:$DOCKER_TAG" -d "$DOCKER_IMAGE"; then
 
         echo "Postgres Docker container started with the database"
 
