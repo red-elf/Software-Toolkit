@@ -35,7 +35,7 @@ if sh "$SCRIPT_GET_DOCKER" true; then
 
     else
 
-      if docker run -t "$DOCKER_CONTAINER:$DOCKER_TAG"; then
+      if docker run -d --name "$DOCKER_CONTAINER" -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true -p 9000:9000 "$DOCKER_CONTAINER:$DOCKER_TAG"; then
 
         echo "Postgres Docker container started with the database"
 
