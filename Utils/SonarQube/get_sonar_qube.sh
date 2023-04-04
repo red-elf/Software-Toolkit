@@ -4,7 +4,7 @@ HERE="$(dirname -- "${BASH_SOURCE[0]}")"
 SCRIPT_GET_DOCKER="$HERE/../Sys/Programs/get_docker.sh"
 
 DOCKER_IMAGE="sonarqube"
-DOCKER_TAG="9.9.0-community"
+DOCKER_TAG="10.0.0-community"
 DOCKER_CONTAINER="sonarqube"
 
 echo "Docker image: $DOCKER_IMAGE"
@@ -37,7 +37,7 @@ if sh "$SCRIPT_GET_DOCKER" true; then
 
       if docker run -d --name "$DOCKER_CONTAINER" -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true -p 9000:9000 "$DOCKER_CONTAINER:$DOCKER_TAG"; then
 
-        echo "Postgres Docker container started with the database"
+        echo "SonarQube Docker container started"
 
       else
 
