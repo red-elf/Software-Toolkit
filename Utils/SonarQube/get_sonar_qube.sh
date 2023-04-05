@@ -35,6 +35,41 @@ if sh "$SCRIPT_GET_DOCKER" true; then
 
     else
 
+      if docker volume create --name sonarqube_data &&
+        docker volume create --name sonarqube_logs &&
+        docker volume create --name sonarqube_extensions; then
+
+        echo "SonarQube volumes have been created"
+
+      else
+
+        echo "ERROR: Creating SonarQube vloumes failed"
+        exit 1
+      fi
+
+      # TODO:
+      #
+      # Start the SonarQube container with the embedded H2 database:
+      #
+      # docker run --rm \
+      # -p 9000:9000 \
+      # -v sonarqube_extensions:/opt/sonarqube/extensions \
+      # <image_name>
+      #
+      # Exit once SonarQube has started properly.
+      # Copy the Oracle JDBC driver into sonarqube_extensions/jdbc-driver/oracle
+      # Run the image with your database properties defined using the -e environment variable flag:
+      # 
+      # docker run -d --name sonarqube \
+      # -p 9000:9000 \
+      # -e SONAR_JDBC_URL=... \
+      # -e SONAR_JDBC_USERNAME=... \
+      # -e SONAR_JDBC_PASSWORD=... \
+      # -v sonarqube_data:/opt/sonarqube/data \
+      # -v sonarqube_extensions:/opt/sonarqube/extensions \
+      # -v sonarqube_logs:/opt/sonarqube/logs \
+      # <image_name>
+
       if docker run -d --name "$DOCKER_CONTAINER" -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true -p 9000:9000 "$DOCKER_CONTAINER:$DOCKER_TAG"; then
 
         echo "SonarQube Docker container started"
