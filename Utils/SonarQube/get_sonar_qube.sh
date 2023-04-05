@@ -41,48 +41,47 @@ if sh "$SCRIPT_GET_DOCKER" true; then
 
         echo "SonarQube volumes have been created"
 
+        # TODO:
+        #
+        # Start the SonarQube container with the embedded H2 database:
+        #
+        # docker run --rm \
+        # -p 9000:9000 \
+        # -v sonarqube_extensions:/opt/sonarqube/extensions \
+        # <image_name>
+        #
+        # Exit once SonarQube has started properly.
+        # Copy the Oracle JDBC driver into sonarqube_extensions/jdbc-driver/oracle
+        # Run the image with your database properties defined using the -e environment variable flag:
+        # 
+        # docker run -d --name sonarqube \
+        # -p 9000:9000 \
+        # -e SONAR_JDBC_URL=... \
+        # -e SONAR_JDBC_USERNAME=... \
+        # -e SONAR_JDBC_PASSWORD=... \
+        # -v sonarqube_data:/opt/sonarqube/data \
+        # -v sonarqube_extensions:/opt/sonarqube/extensions \
+        # -v sonarqube_logs:/opt/sonarqube/logs \
+        # <image_name>
+
+        if docker run --rm \
+          -p 9000:9000 \
+          -v sonarqube_extensions:/opt/sonarqube/extensions \
+          "$DOCKER_CONTAINER:$DOCKER_TAG"; then
+
+          echo "SonarQube Docker container started"
+
+        else
+
+          echo "ERROR: SonarQube Docker container failed to start"
+          exit 1
+        fi
+
       else
 
         echo "ERROR: Creating SonarQube vloumes failed"
         exit 1
       fi
-
-      # TODO:
-      #
-      # Start the SonarQube container with the embedded H2 database:
-      #
-      # docker run --rm \
-      # -p 9000:9000 \
-      # -v sonarqube_extensions:/opt/sonarqube/extensions \
-      # <image_name>
-      #
-      # Exit once SonarQube has started properly.
-      # Copy the Oracle JDBC driver into sonarqube_extensions/jdbc-driver/oracle
-      # Run the image with your database properties defined using the -e environment variable flag:
-      # 
-      # docker run -d --name sonarqube \
-      # -p 9000:9000 \
-      # -e SONAR_JDBC_URL=... \
-      # -e SONAR_JDBC_USERNAME=... \
-      # -e SONAR_JDBC_PASSWORD=... \
-      # -v sonarqube_data:/opt/sonarqube/data \
-      # -v sonarqube_extensions:/opt/sonarqube/extensions \
-      # -v sonarqube_logs:/opt/sonarqube/logs \
-      # <image_name>
-
-      if docker run --rm \
-        -p 9000:9000 \
-        -v sonarqube_extensions:/opt/sonarqube/extensions \
-        "$DOCKER_CONTAINER:$DOCKER_TAG"; then
-
-        echo "SonarQube Docker container started"
-
-      else
-
-        echo "ERROR: SonarQube Docker container failed to start"
-        exit 1
-      fi
-
     fi
   fi
   
