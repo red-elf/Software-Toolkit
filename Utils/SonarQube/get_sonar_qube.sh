@@ -70,6 +70,21 @@ if sh "$SCRIPT_GET_DOCKER" true; then
           -v sonarqube_extensions:/opt/sonarqube/extensions \
           "$DOCKER_CONTAINER:$DOCKER_TAG"; then
 
+          ELAPSED=0
+
+          while ! docker logs "$DOCKER_CONTAINER" | grep "SonarQube is operational";
+          do
+              
+              sleep 1
+              ELAPSED=$((ELAPSED + 1))
+
+              if [ $ELAPSED == 60 ]; then
+
+                echo "ERROR: Timeout"
+                exit 1
+              fi
+          done  
+
           echo "SonarQube Docker container started"
 
         else
