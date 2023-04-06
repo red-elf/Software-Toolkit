@@ -41,29 +41,8 @@ if sh "$SCRIPT_GET_DOCKER" true; then
 
         echo "SonarQube volumes have been created"
 
-        # TODO:
-        #
-        # Start the SonarQube container with the embedded H2 database:
-        #
-        # docker run --rm \
-        # -p 9000:9000 \
-        # -v sonarqube_extensions:/opt/sonarqube/extensions \
-        # <image_name>
-        #
-        # Exit once SonarQube has started properly.
-        # Copy the Oracle JDBC driver into sonarqube_extensions/jdbc-driver/oracle
-        # Run the image with your database properties defined using the -e environment variable flag:
-        # 
-        # docker run -d --name sonarqube \
-        # -p 9000:9000 \
-        # -e SONAR_JDBC_URL=... \
-        # -e SONAR_JDBC_USERNAME=... \
-        # -e SONAR_JDBC_PASSWORD=... \
-        # -v sonarqube_data:/opt/sonarqube/data \
-        # -v sonarqube_extensions:/opt/sonarqube/extensions \
-        # -v sonarqube_logs:/opt/sonarqube/logs \
-        # <image_name>
-
+        # TODO: First time run
+        
         if docker run --rm \
           -d --name "$DOCKER_CONTAINER" \
           -p 9000:9000 \
@@ -83,9 +62,32 @@ if sh "$SCRIPT_GET_DOCKER" true; then
                 echo "ERROR: Timeout"
                 exit 1
               fi
-          done  
+          done
 
-          echo "SonarQube Docker container started"
+          if docker container stop "$DOCKER_CONTAINER"; then
+
+            # TODO:
+            #
+            # Copy the Oracle JDBC driver into sonarqube_extensions/jdbc-driver/oracle
+            # Run the image with your database properties defined using the -e environment variable flag:
+            # 
+            # docker run -d --name sonarqube \
+            # -p 9000:9000 \
+            # -e SONAR_JDBC_URL=... \
+            # -e SONAR_JDBC_USERNAME=... \
+            # -e SONAR_JDBC_PASSWORD=... \
+            # -v sonarqube_data:/opt/sonarqube/data \
+            # -v sonarqube_extensions:/opt/sonarqube/extensions \
+            # -v sonarqube_logs:/opt/sonarqube/logs \
+            # <image_name>
+
+            echo "SonarQube Docker container started"
+
+          else
+
+            echo "ERROR: Could not stop $DOCKER_CONTAINER container"
+            exit 1
+          fi
 
         else
 
