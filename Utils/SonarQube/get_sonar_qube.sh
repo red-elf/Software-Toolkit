@@ -65,6 +65,7 @@ if sh "$SCRIPT_GET_DOCKER" true; then
         # <image_name>
 
         if docker run --rm \
+          -d --name "$DOCKER_CONTAINER" \
           -p 9000:9000 \
           -v sonarqube_extensions:/opt/sonarqube/extensions \
           "$DOCKER_CONTAINER:$DOCKER_TAG"; then
