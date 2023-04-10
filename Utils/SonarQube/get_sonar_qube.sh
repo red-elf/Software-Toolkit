@@ -66,20 +66,20 @@ if sh "$SCRIPT_GET_DOCKER" true; then
 
           if docker container stop "$DOCKER_CONTAINER"; then
 
-            # TODO:
-            #
-            # Copy the Oracle JDBC driver into sonarqube_extensions/jdbc-driver/oracle
-            # Run the image with your database properties defined using the -e environment variable flag:
+            # TODO: 
+            # - Rnable elastic search
+            # - Generate .yml file for docker compose based on example.yml and use it
             # 
-            # docker run -d --name sonarqube \
-            # -p 9000:9000 \
-            # -e SONAR_JDBC_URL=... \
-            # -e SONAR_JDBC_USERNAME=... \
-            # -e SONAR_JDBC_PASSWORD=... \
-            # -v sonarqube_data:/opt/sonarqube/data \
-            # -v sonarqube_extensions:/opt/sonarqube/extensions \
-            # -v sonarqube_logs:/opt/sonarqube/logs \
-            # <image_name>
+            sleep 5 && \
+              docker run -d --name sonarqube \
+                -p 9000:9000 \
+                -e SONAR_JDBC_URL=jdbc:postgresql://db:5432/sonar \
+                -e SONAR_JDBC_USERNAME=sonar \
+                -e SONAR_JDBC_PASSWORD=sonar \
+                -v sonarqube_data:/opt/sonarqube/data \
+                -v sonarqube_extensions:/opt/sonarqube/extensions \
+                -v sonarqube_logs:/opt/sonarqube/logs \
+                "$DOCKER_CONTAINER"
 
             echo "SonarQube Docker container started"
 
