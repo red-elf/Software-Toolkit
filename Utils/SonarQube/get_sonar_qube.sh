@@ -67,11 +67,11 @@ if sh "$SCRIPT_GET_DOCKER" true; then
           if docker container stop "$DOCKER_CONTAINER"; then
 
             # TODO: 
-            # - Enable elastic search
-            # FIXME: bootstrap check failure [2] of [2]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
             # - Generate .yml file for docker compose based on example.yml and use it
             # 
             sleep 5 && \
+              sudo sysctl -w vm.max_map_count=524288 && \
+              sudo sysctl -w fs.file-max=131072 && \
               docker run -d --name sonarqube \
                 --ulimit nofile=65536:65536 \
                 -p 9000:9000 \
