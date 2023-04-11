@@ -67,7 +67,9 @@ if sh "$SCRIPT_GET_DOCKER" true; then
           if docker container stop "$DOCKER_CONTAINER"; then
 
             # TODO: 
-            # - Rnable elastic search
+            # - Enable elastic search
+            # FIXME: bootstrap check failure [1] of [2]: max file descriptors [64000] for elasticsearch process is too low, increase to at least [65535]
+            # FIXME: bootstrap check failure [2] of [2]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
             # - Generate .yml file for docker compose based on example.yml and use it
             # 
             sleep 5 && \
