@@ -74,6 +74,7 @@ if sh "$SCRIPT_GET_DOCKER" true; then
 
             # TODO: 
             # - Provide the database
+            # - Check and prevent Postgres DB ports clash
 
             if sh "$SCRIPT_GET_POSTGRES" "$DB" "$DB_USER" "$DB_PASSWORD" "$DB_DATA_DIRECTORY"; then
 
