@@ -67,6 +67,7 @@ if sh "$SCRIPT_GET_DOCKER" true; then
           if docker container stop "$DOCKER_CONTAINER"; then
 
             # TODO: 
+            # - Provide the database
             # - Generate .yml file for docker compose based on example.yml and use it
             # 
             sleep 5 && \
