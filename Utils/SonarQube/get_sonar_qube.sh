@@ -4,7 +4,7 @@ HERE="$(dirname -- "${BASH_SOURCE[0]}")"
 SCRIPT_GET_DOCKER="$HERE/../Sys/Programs/get_docker.sh"
 SCRIPT_GET_POSTGRES="$HERE/../Db/get_postgres.sh"
 
-DB="sonarqube"
+DB="Sonarqube"
 DB_USER="sonar"
 DB_PASSWORD="sonarqube"
 DB_DATA_DIRECTORY="$HERE/../../_Databases/Postgres"
@@ -86,8 +86,8 @@ if sh "$SCRIPT_GET_DOCKER" true; then
                 --ulimit nofile=65536:65536 \
                 -p 9000:9000 \
                 -e SONAR_JDBC_URL=jdbc:postgresql://db:5432/sonar \
-                -e SONAR_JDBC_USERNAME=sonar \
-                -e SONAR_JDBC_PASSWORD=sonar \
+                -e SONAR_JDBC_USERNAME=$DB_USER \
+                -e SONAR_JDBC_PASSWORD=$DB_PASSWORD \
                 -v sonarqube_data:/opt/sonarqube/data \
                 -v sonarqube_extensions:/opt/sonarqube/extensions \
                 -v sonarqube_logs:/opt/sonarqube/logs \
