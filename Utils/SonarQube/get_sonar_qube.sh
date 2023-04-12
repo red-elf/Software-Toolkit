@@ -74,8 +74,6 @@ if sh "$SCRIPT_GET_DOCKER" true; then
 
             # TODO: 
             # - Provide the database
-            # - Generate .yml file for docker compose based on example.yml and use it
-            # 
 
             if sh "$SCRIPT_GET_POSTGRES" "$DB" "$DB_USER" "$DB_PASSWORD" "$DB_DATA_DIRECTORY"; then
 
