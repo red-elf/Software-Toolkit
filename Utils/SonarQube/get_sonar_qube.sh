@@ -2,6 +2,12 @@
 
 HERE="$(dirname -- "${BASH_SOURCE[0]}")"
 SCRIPT_GET_DOCKER="$HERE/../Sys/Programs/get_docker.sh"
+SCRIPT_GET_POSTGRES="$HERE/../Db/get_postgres.sh"
+
+DB="sonarqube"
+DB_USER="sonar"
+DB_PASSWORD="sonarqube"
+DB_DATA_DIRECTORY="$HERE/../../_Databases/Postgres"
 
 DOCKER_IMAGE="sonarqube"
 DOCKER_TAG="10.0.0-community"
@@ -70,7 +76,10 @@ if sh "$SCRIPT_GET_DOCKER" true; then
             # - Provide the database
             # - Generate .yml file for docker compose based on example.yml and use it
             # 
-            sleep 5 && \
+
+            if sh "$SCRIPT_GET_POSTGRES" "$DB" "$DB_USER" "$DB_PASSWORD" "$DB_DATA_DIRECTORY"; then
+
+              sleep 5 && \
               sudo sysctl -w vm.max_map_count=524288 && \
               sudo sysctl -w fs.file-max=131072 && \
               docker run -d --name sonarqube \
@@ -85,6 +94,12 @@ if sh "$SCRIPT_GET_DOCKER" true; then
                 "$DOCKER_CONTAINER"
 
             echo "SonarQube Docker container started"
+
+            else
+
+              echo "ERROR: Postgress databse for SonarQube not obtained"
+              exit 1
+            fi
 
           else
 
