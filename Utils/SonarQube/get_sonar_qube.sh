@@ -73,8 +73,8 @@ if sh "$SCRIPT_GET_DOCKER" true; then
 
           if docker container stop "$DOCKER_CONTAINER"; then
 
-            # TODO: 
-            # - Provide the database
+            # TODO: Improve this, wait for instead of sleep
+            sleep 5
 
             if sh "$SCRIPT_GET_POSTGRES" "$DB" "$DB_USER" "$DB_PASSWORD" "$DB_DATA_DIRECTORY"; then
 
@@ -92,7 +92,6 @@ if sh "$SCRIPT_GET_DOCKER" true; then
 
                 echo "SonarQube database IP address: $DOCKER_CONTAINER_IP"
 
-                sleep 5 && \
                 sudo sysctl -w vm.max_map_count=524288 && \
                 sudo sysctl -w fs.file-max=131072 && \
                 docker run -d --name sonarqube \
