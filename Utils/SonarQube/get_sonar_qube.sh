@@ -3,6 +3,7 @@
 HERE="$(dirname -- "${BASH_SOURCE[0]}")"
 SCRIPT_GET_DOCKER="$HERE/../Sys/Programs/get_docker.sh"
 SCRIPT_GET_POSTGRES="$HERE/../Db/get_postgres.sh"
+SCRIPT_GET_DOCKER_CONTAINER_ADDRESS="$HERE/../Docker/get_container_address.sh"
 
 DB="Sonarqube"
 DB_USER="sonar"
@@ -77,21 +78,40 @@ if sh "$SCRIPT_GET_DOCKER" true; then
 
             if sh "$SCRIPT_GET_POSTGRES" "$DB" "$DB_USER" "$DB_PASSWORD" "$DB_DATA_DIRECTORY"; then
 
-              sleep 5 && \
-              sudo sysctl -w vm.max_map_count=524288 && \
-              sudo sysctl -w fs.file-max=131072 && \
-              docker run -d --name sonarqube \
-                --ulimit nofile=65536:65536 \
-                -p 9000:9000 \
-                -e SONAR_JDBC_URL=jdbc:postgresql://db:5432/sonar \
-                -e SONAR_JDBC_USERNAME=$DB_USER \
-                -e SONAR_JDBC_PASSWORD=$DB_PASSWORD \
-                -v sonarqube_data:/opt/sonarqube/data \
-                -v sonarqube_extensions:/opt/sonarqube/extensions \
-                -v sonarqube_logs:/opt/sonarqube/logs \
-                "$DOCKER_CONTAINER"
+              if ! test -e "$SCRIPT_GET_DOCKER_CONTAINER_ADDRESS"; then
 
-            echo "SonarQube Docker container started"
+                echo "ERROR: Script not found '$SCRIPT_GET_DOCKER_CONTAINER_ADDRESS'"
+                exit 1
+              fi
+
+              DOCKER_CONTAINER_IP=""
+
+              if sh "$SCRIPT_GET_DOCKER_CONTAINER_ADDRESS" "$DOCKER_CONTAINER"; then
+
+                DOCKER_CONTAINER_IP="$(bash $SCRIPT_GET_DOCKER_CONTAINER_ADDRESS $DOCKER_CONTAINER)"
+
+                echo "SonarQube database IP address: $DOCKER_CONTAINER_IP"
+
+                sleep 5 && \
+                sudo sysctl -w vm.max_map_count=524288 && \
+                sudo sysctl -w fs.file-max=131072 && \
+                docker run -d --name sonarqube \
+                  --ulimit nofile=65536:65536 \
+                  -p 9000:9000 \
+                  -e SONAR_JDBC_URL=jdbc:postgresql://$DOCKER_CONTAINER_IP:5432/$DB \
+                  -e SONAR_JDBC_USERNAME=$DB_USER \
+                  -e SONAR_JDBC_PASSWORD=$DB_PASSWORD \
+                  -v sonarqube_data:/opt/sonarqube/data \
+                  -v sonarqube_extensions:/opt/sonarqube/extensions \
+                  -v sonarqube_logs:/opt/sonarqube/logs \
+                  "$DOCKER_CONTAINER"
+
+                echo "SonarQube Docker container started"
+
+              else
+
+                echo "ERROR: Could not obtain the IP address for the SonarQube database"
+              fi
 
             else
 

@@ -1,5 +1,5 @@
 #!/bin/bash
 
-$CONTAINER="$1"
+CONTAINER="$1"
 
 docker inspect -f '{{ .NetworkSettings.IPAddress }}' "$CONTAINER"
