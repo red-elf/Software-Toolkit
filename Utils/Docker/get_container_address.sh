@@ -1,5 +1,8 @@
 #!/bin/bash
 
-CONTAINER="$1"
+function GET_CONTAINER_ADDRESS {
 
-docker inspect -f '{{ .NetworkSettings.IPAddress }}' "$CONTAINER"
+    CONTAINER="$1"  
+
+    docker inspect -f '{{ .NetworkSettings.IPAddress }}' "$CONTAINER"
+}

@@ -86,9 +86,11 @@ if sh "$SCRIPT_GET_DOCKER" true; then
 
               DOCKER_CONTAINER_IP=""
 
-              if sh "$SCRIPT_GET_DOCKER_CONTAINER_ADDRESS" "$DOCKER_CONTAINER"; then
+              . "$SCRIPT_GET_DOCKER_CONTAINER_ADDRESS"
 
-                DOCKER_CONTAINER_IP="$(bash $SCRIPT_GET_DOCKER_CONTAINER_ADDRESS $DOCKER_CONTAINER)"
+              if GET_CONTAINER_ADDRESS "$DOCKER_CONTAINER"; then
+
+                DOCKER_CONTAINER_IP="$(GET_CONTAINER_ADDRESS "$DOCKER_CONTAINER")"
 
                 echo "SonarQube database IP address: $DOCKER_CONTAINER_IP"
 
