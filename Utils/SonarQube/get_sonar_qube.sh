@@ -20,6 +20,27 @@ echo "Docker container: $DOCKER_CONTAINER"
 
 if sh "$SCRIPT_GET_DOCKER" true; then
 
+  if sh "$SCRIPT_GET_POSTGRES" "$DB" "$DB_USER" "$DB_PASSWORD" "$DB_DATA_DIRECTORY"; then
+
+    if ! test -e "$SCRIPT_GET_DOCKER_CONTAINER_ADDRESS"; then
+
+      echo "ERROR: Script not found '$SCRIPT_GET_DOCKER_CONTAINER_ADDRESS'"
+      exit 1
+    fi
+
+    DOCKER_CONTAINER_IP=""
+
+    . "$SCRIPT_GET_DOCKER_CONTAINER_ADDRESS"
+
+    DOCKER_CONTAINER_DB="postgres.$DB"
+    DOCKER_CONTAINER_IP="$(GET_CONTAINER_ADDRESS "$DOCKER_CONTAINER_DB")"
+
+  else
+
+    echo "ERROR: Postgress databse for SonarQube not obtained"
+    exit 1
+  fi
+
   CONTAINER_STATUS="$( docker container inspect -f '{{.State.Status}}' $DOCKER_CONTAINER )"
 
   if [ "$CONTAINER_STATUS" == "running" ]; then
@@ -76,51 +97,30 @@ if sh "$SCRIPT_GET_DOCKER" true; then
             # TODO: Improve this, wait for instead of sleep
             sleep 5
 
-            if sh "$SCRIPT_GET_POSTGRES" "$DB" "$DB_USER" "$DB_PASSWORD" "$DB_DATA_DIRECTORY"; then
+            if GET_CONTAINER_ADDRESS "$DOCKER_CONTAINER_DB"; then
 
-              if ! test -e "$SCRIPT_GET_DOCKER_CONTAINER_ADDRESS"; then
-
-                echo "ERROR: Script not found '$SCRIPT_GET_DOCKER_CONTAINER_ADDRESS'"
-                exit 1
-              fi
-
-              DOCKER_CONTAINER_IP=""
-
-              . "$SCRIPT_GET_DOCKER_CONTAINER_ADDRESS"
-
-              DOCKER_CONTAINER_DB="postgres.$DB"
               DOCKER_CONTAINER_IP="$(GET_CONTAINER_ADDRESS "$DOCKER_CONTAINER_DB")"
 
-              if GET_CONTAINER_ADDRESS "$DOCKER_CONTAINER_DB"; then
+              echo "SonarQube database IP address: $DOCKER_CONTAINER_IP"
 
-                DOCKER_CONTAINER_IP="$(GET_CONTAINER_ADDRESS "$DOCKER_CONTAINER_DB")"
+              sudo sysctl -w vm.max_map_count=524288 && \
+              sudo sysctl -w fs.file-max=131072 && \
+              docker run -d --name "$DOCKER_CONTAINER" \
+                --ulimit nofile=65536:65536 \
+                -p 9000:9000 \
+                -e SONAR_JDBC_URL=jdbc:postgresql://$DOCKER_CONTAINER_IP:5432/$DB \
+                -e SONAR_JDBC_USERNAME=$DB_USER \
+                -e SONAR_JDBC_PASSWORD=$DB_PASSWORD \
+                -v sonarqube_data:/opt/sonarqube/data \
+                -v sonarqube_extensions:/opt/sonarqube/extensions \
+                -v sonarqube_logs:/opt/sonarqube/logs \
+                "$DOCKER_CONTAINER"
 
-                echo "SonarQube database IP address: $DOCKER_CONTAINER_IP"
-
-                sudo sysctl -w vm.max_map_count=524288 && \
-                sudo sysctl -w fs.file-max=131072 && \
-                docker run -d --name sonarqube \
-                  --ulimit nofile=65536:65536 \
-                  -p 9000:9000 \
-                  -e SONAR_JDBC_URL=jdbc:postgresql://$DOCKER_CONTAINER_IP:5432/$DB \
-                  -e SONAR_JDBC_USERNAME=$DB_USER \
-                  -e SONAR_JDBC_PASSWORD=$DB_PASSWORD \
-                  -v sonarqube_data:/opt/sonarqube/data \
-                  -v sonarqube_extensions:/opt/sonarqube/extensions \
-                  -v sonarqube_logs:/opt/sonarqube/logs \
-                  "$DOCKER_CONTAINER"
-
-                echo "SonarQube Docker container started"
-
-              else
-
-                echo "ERROR: Could not obtain the IP address for the SonarQube database"
-              fi
+              echo "SonarQube Docker container started"
 
             else
 
-              echo "ERROR: Postgress databse for SonarQube not obtained"
-              exit 1
+              echo "ERROR: Could not obtain the IP address for the SonarQube database"
             fi
 
           else
