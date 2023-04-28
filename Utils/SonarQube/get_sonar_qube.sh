@@ -1,5 +1,15 @@
 #!/bin/bash
 
+if [ -n "$1" ]; then
+  
+  PARAM_SONARQUBE_NAME="$1"
+
+else
+  
+  echo "ERROR: SonarQube name parameter is not provided"
+  exit 1
+fi
+
 HERE="$(dirname -- "${BASH_SOURCE[0]}")"
 SCRIPT_GET_DOCKER="$HERE/../Sys/Programs/get_docker.sh"
 SCRIPT_GET_POSTGRES="$HERE/../Db/get_postgres.sh"
@@ -12,7 +22,8 @@ DB_DATA_DIRECTORY="$HERE/../../_Databases/Postgres"
 
 DOCKER_IMAGE="sonarqube"
 DOCKER_TAG="10.0.0-community"
-DOCKER_CONTAINER="sonarqube"
+DOCKER_CONTAINER_PREFIX="sonarqube"
+DOCKER_CONTAINER="$DOCKER_CONTAINER_PREFIX.$PARAM_SONARQUBE_NAME"
 
 echo "Docker image: $DOCKER_IMAGE"
 echo "Docker tag: $DOCKER_TAG"
@@ -84,7 +95,7 @@ if sh "$SCRIPT_GET_DOCKER" true; then
           -d --name "$DOCKER_CONTAINER" \
           -p 9000:9000 \
           -v sonarqube_extensions:/opt/sonarqube/extensions \
-          "$DOCKER_CONTAINER:$DOCKER_TAG"; then
+          "$DOCKER_CONTAINER_PREFIX:$DOCKER_TAG"; then
 
           ELAPSED=0
 
@@ -121,7 +132,7 @@ if sh "$SCRIPT_GET_DOCKER" true; then
                 -v sonarqube_data:/opt/sonarqube/data \
                 -v sonarqube_extensions:/opt/sonarqube/extensions \
                 -v sonarqube_logs:/opt/sonarqube/logs \
-                "$DOCKER_CONTAINER"
+                "$DOCKER_CONTAINER_PREFIX:$DOCKER_TAG"
 
               echo "SonarQube Docker container started"
 
