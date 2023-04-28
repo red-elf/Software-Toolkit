@@ -49,6 +49,17 @@ if sh "$SCRIPT_GET_DOCKER" true; then
 
   else
 
+    if sudo sysctl -w vm.max_map_count=524288 && \
+              sudo sysctl -w fs.file-max=131072; then
+
+      echo "SonarQube start prepared"
+
+    else
+
+      echo "ERROR: SonarQube start prepare failed"
+      exit 1
+    fi
+
     if [ "$CONTAINER_STATUS" == "exited" ]; then
 
       if docker container start "$DOCKER_CONTAINER"; then
@@ -101,8 +112,6 @@ if sh "$SCRIPT_GET_DOCKER" true; then
 
               echo "SonarQube database IP address: $DOCKER_CONTAINER_IP"
 
-              sudo sysctl -w vm.max_map_count=524288 && \
-              sudo sysctl -w fs.file-max=131072 && \
               docker run -d --name "$DOCKER_CONTAINER" \
                 --ulimit nofile=65536:65536 \
                 -p 9000:9000 \
