@@ -68,8 +68,6 @@ if sh "$SCRIPT_GET_DOCKER" true; then
         docker volume create --name sonarqube_extensions; then
 
         echo "SonarQube volumes have been created"
-
-        # TODO: First time run
         
         if docker run --rm \
           -d --name "$DOCKER_CONTAINER" \
