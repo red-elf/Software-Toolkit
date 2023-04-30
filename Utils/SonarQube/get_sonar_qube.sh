@@ -10,7 +10,19 @@ else
   exit 1
 fi
 
+if [ -n "$2" ]; then
+  
+  PARAM_SONARQUBE_VOLUMES_ROOT="$2"
+
+else
+  
+  echo "ERROR: SonarQube volume root parameter is not provided"
+  exit 1
+fi
+
 HERE="$(dirname -- "${BASH_SOURCE[0]}")"
+
+DIR_VOLUMES="_Volumes"
 SCRIPT_GET_DOCKER="$HERE/../Sys/Programs/get_docker.sh"
 SCRIPT_GET_POSTGRES="$HERE/../Db/get_postgres.sh"
 SCRIPT_GET_DOCKER_CONTAINER_ADDRESS="$HERE/../Docker/get_container_address.sh"
@@ -24,6 +36,8 @@ DOCKER_IMAGE="sonarqube"
 DOCKER_TAG="10.0.0-community"
 DOCKER_CONTAINER_PREFIX="sonarqube"
 DOCKER_CONTAINER="$DOCKER_CONTAINER_PREFIX.$PARAM_SONARQUBE_NAME"
+
+DIR_VOLUMES_FULL="$PARAM_SONARQUBE_VOLUMES_ROOT/$DOCKER_CONTAINER"
 
 echo "Docker image: $DOCKER_IMAGE"
 echo "Docker tag: $DOCKER_TAG"
@@ -85,16 +99,35 @@ if sh "$SCRIPT_GET_DOCKER" true; then
 
     else
 
-      if docker volume create --name sonarqube_data &&
-        docker volume create --name sonarqube_logs &&
-        docker volume create --name sonarqube_extensions; then
+      if test -e "$DIR_VOLUMES_FULL"; then
 
-        echo "SonarQube volumes have been created"
+        if ! rm -rf "$DIR_VOLUMES_FULL"; then
+
+          echo "ERROR: Could not remove '$DIR_VOLUMES_FULL'"
+          exit 1
+        fi
+      fi
+
+      if mkdir -p "$DIR_VOLUMES_FULL"; then
+
+        echo "SonarQube volumes directory has been created: '$DIR_VOLUMES_FULL'"
+
+      else
+
+        echo "ERROR: SonarQube volumes directory has not been created '$DIR_VOLUMES_FULL'"
+        exit 1
+      fi
+
+      if docker volume create --name sonarqube_data -o mountpoint="$DIR_VOLUMES_FULL/data" &&
+        docker volume create --name sonarqube_logs -o mountpoint="$DIR_VOLUMES_FULL/logs" &&
+        docker volume create --name sonarqube_extensions -o mountpoint="$DIR_VOLUMES_FULL/extensions"; then
+
+        echo "SonarQube volumes have been created at: $DIR_VOLUMES_FULL"
         
         if docker run --rm \
           -d --name "$DOCKER_CONTAINER" \
           -p 9000:9000 \
-          -v sonarqube_extensions:/opt/sonarqube/extensions \
+          -v sonarqube_extensions:$DIR_VOLUMES_FULL/extensions \
           "$DOCKER_CONTAINER_PREFIX:$DOCKER_TAG"; then
 
           ELAPSED=0
@@ -123,15 +156,18 @@ if sh "$SCRIPT_GET_DOCKER" true; then
 
               echo "SonarQube database IP address: $DOCKER_CONTAINER_IP"
 
+              # TODO: Ports
+              # 0.0.0.0:9000->9000/tcp, :::9000->9000/tcp 
+              # To be like: 9000/tcp
               docker run -d --name "$DOCKER_CONTAINER" \
                 --ulimit nofile=65536:65536 \
                 -p 9000:9000 \
                 -e SONAR_JDBC_URL=jdbc:postgresql://$DOCKER_CONTAINER_IP:5432/$DB \
                 -e SONAR_JDBC_USERNAME=$DB_USER \
                 -e SONAR_JDBC_PASSWORD=$DB_PASSWORD \
-                -v sonarqube_data:/opt/sonarqube/data \
-                -v sonarqube_extensions:/opt/sonarqube/extensions \
-                -v sonarqube_logs:/opt/sonarqube/logs \
+                -v sonarqube_data:$DIR_VOLUMES_FULL/data \
+                -v sonarqube_extensions:$DIR_VOLUMES_FULL/extensions \
+                -v sonarqube_logs:$DIR_VOLUMES_FULL/logs \
                 "$DOCKER_CONTAINER_PREFIX:$DOCKER_TAG"
 
               echo "SonarQube Docker container started"
