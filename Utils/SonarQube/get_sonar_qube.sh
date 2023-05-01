@@ -66,6 +66,7 @@ if sh "$SCRIPT_GET_DOCKER" true; then
     exit 1
   fi
 
+  echo "Checking the container status for: $DOCKER_CONTAINER"
   CONTAINER_STATUS="$( docker container inspect -f '{{.State.Status}}' $DOCKER_CONTAINER )"
 
   if [ "$CONTAINER_STATUS" == "running" ]; then
@@ -126,7 +127,7 @@ if sh "$SCRIPT_GET_DOCKER" true; then
         
         if docker run --rm \
           -d --name "$DOCKER_CONTAINER" \
-          -p 9000:9000 \
+          -p 127.0.0.1:9000:9000 \
           -v sonarqube_extensions:$DIR_VOLUMES_FULL/extensions \
           "$DOCKER_CONTAINER_PREFIX:$DOCKER_TAG"; then
 
@@ -156,12 +157,9 @@ if sh "$SCRIPT_GET_DOCKER" true; then
 
               echo "SonarQube database IP address: $DOCKER_CONTAINER_IP"
 
-              # TODO: Ports
-              # 0.0.0.0:9000->9000/tcp, :::9000->9000/tcp 
-              # To be like: 9000/tcp
               docker run -d --name "$DOCKER_CONTAINER" \
                 --ulimit nofile=65536:65536 \
-                -p 9000:9000 \
+                -p 127.0.0.1:9000:9000 \
                 -e SONAR_JDBC_URL=jdbc:postgresql://$DOCKER_CONTAINER_IP:5432/$DB \
                 -e SONAR_JDBC_USERNAME=$DB_USER \
                 -e SONAR_JDBC_PASSWORD=$DB_PASSWORD \
