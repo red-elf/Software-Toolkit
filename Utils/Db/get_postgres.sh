@@ -80,7 +80,7 @@ if sh "$SCRIPT_GET_DOCKER" true; then
 
     else
 
-      if docker run --name "$DOCKER_CONTAINER" -e POSTGRES_USER="$USER" -e POSTGRES_PASSWORD="$PASSWORD" \
+      if docker run --restart=always --name "$DOCKER_CONTAINER" -e POSTGRES_USER="$USER" -e POSTGRES_PASSWORD="$PASSWORD" \
         -e POSTGRES_DB="$DB" -e PGDATA="$DIRECTORY_DATA" -d "$DOCKER_IMAGE"; then
 
         echo "Postgres Docker container started with the database"
