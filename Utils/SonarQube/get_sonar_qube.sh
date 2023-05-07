@@ -76,7 +76,9 @@ if sh "$SCRIPT_GET_DOCKER" true; then
   else
 
     if sudo sysctl -w vm.max_map_count=524288 && \
-              sudo sysctl -w fs.file-max=131072; then
+              sudo sysctl -w fs.file-max=131072 && \ 
+              sudo sh -c "ulimit -n 131072 && echo OK" && \ 
+              sudo sh -c "ulimit -u 8192 && echo OK"; then
 
       echo "SonarQube start prepared"
 
