@@ -20,6 +20,16 @@ else
   exit 1
 fi
 
+if [ -n "$3" ]; then
+  
+  PARAM_SONARQUBE_PORT="$3"
+
+else
+  
+  echo "ERROR: SonarQube port parameter is not provided"
+  exit 1
+fi
+
 HERE="$(dirname -- "${BASH_SOURCE[0]}")"
 
 DIR_VOLUMES="_Volumes"
@@ -128,8 +138,8 @@ if sh "$SCRIPT_GET_DOCKER" true; then
         
         if docker run --rm \
           -d --name "$DOCKER_CONTAINER" \
-          -p 127.0.0.1:9000:9000 \
-          -v sonarqube_extensions:$DIR_VOLUMES_FULL/extensions \
+          -p "127.0.0.1:$PARAM_SONARQUBE_PORT:9000" \
+          -v "sonarqube_extensions:$DIR_VOLUMES_FULL/extensions" \
           "$DOCKER_CONTAINER_PREFIX:$DOCKER_TAG"; then
 
           ELAPSED=0
@@ -160,13 +170,13 @@ if sh "$SCRIPT_GET_DOCKER" true; then
 
               docker run -d --name "$DOCKER_CONTAINER" \
                 --ulimit nofile=65536:65536 \
-                -p 127.0.0.1:9000:9000 \
-                -e SONAR_JDBC_URL=jdbc:postgresql://$DOCKER_CONTAINER_IP:5432/$DB \
-                -e SONAR_JDBC_USERNAME=$DB_USER \
-                -e SONAR_JDBC_PASSWORD=$DB_PASSWORD \
-                -v sonarqube_data:$DIR_VOLUMES_FULL/data \
-                -v sonarqube_extensions:$DIR_VOLUMES_FULL/extensions \
-                -v sonarqube_logs:$DIR_VOLUMES_FULL/logs \
+                -p "127.0.0.1:$PARAM_SONARQUBE_PORT:9000" \
+                -e "SONAR_JDBC_URL=jdbc:postgresql://$DOCKER_CONTAINER_IP:5432/$DB" \
+                -e "SONAR_JDBC_USERNAME=$DB_USER" \
+                -e "SONAR_JDBC_PASSWORD=$DB_PASSWORD" \
+                -v "sonarqube_data:$DIR_VOLUMES_FULL/data" \
+                -v "sonarqube_extensions:$DIR_VOLUMES_FULL/extensions" \
+                -v "sonarqube_logs:$DIR_VOLUMES_FULL/logs" \
                 "$DOCKER_CONTAINER_PREFIX:$DOCKER_TAG"
 
               echo "SonarQube Docker container started"
