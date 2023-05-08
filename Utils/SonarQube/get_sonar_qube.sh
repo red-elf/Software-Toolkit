@@ -158,7 +158,7 @@ if sh "$SCRIPT_GET_DOCKER" true; then
 
               echo "SonarQube database IP address: $DOCKER_CONTAINER_IP"
 
-              docker run --restart=always -d --name "$DOCKER_CONTAINER" \
+              docker run -d --name "$DOCKER_CONTAINER" \
                 --ulimit nofile=65536:65536 \
                 -p 127.0.0.1:9000:9000 \
                 -e SONAR_JDBC_URL=jdbc:postgresql://$DOCKER_CONTAINER_IP:5432/$DB \
