@@ -87,7 +87,9 @@ if sh "$SCRIPT_GET_DOCKER" true; then
 
     echo "Please provide your root password if asked!"
 
-    if su -c "sysctl -w vm.max_map_count=524288 && sysctl -w fs.file-max=131072 && sh -c \"ulimit -n 131072 && echo OK\" && sh -c \"ulimit -u 8192 && echo OK\""; then
+    # FIXME:
+    # if su -c "sysctl -w vm.max_map_count=524288 && sysctl -w fs.file-max=131072 && sh -c \"ulimit -n 131072 && echo OK\" && sh -c \"ulimit -u 8192 && echo OK\""; then
+    if sudo sysctl -w vm.max_map_count=524288 && sudo sysctl -w fs.file-max=131072; then
 
       echo "SonarQube start prepared"
 
@@ -130,32 +132,29 @@ if sh "$SCRIPT_GET_DOCKER" true; then
         exit 1
       fi
 
-      if docker volume create --name sonarqube_data -o mountpoint="$DIR_VOLUMES_FULL/data" &&
-        docker volume create --name sonarqube_logs -o mountpoint="$DIR_VOLUMES_FULL/logs" &&
-        docker volume create --name sonarqube_extensions -o mountpoint="$DIR_VOLUMES_FULL/extensions"; then
+      if chmod -R 775 "$DIR_VOLUMES_FULL" && echo "Start"; then
 
-        echo "SonarQube volumes have been created at: $DIR_VOLUMES_FULL"
-        
         if docker run --rm \
           -d --name "$DOCKER_CONTAINER" \
           -p "127.0.0.1:$PARAM_SONARQUBE_PORT:9000" \
-          -v "sonarqube_extensions:$DIR_VOLUMES_FULL/extensions" \
+          -v "$DIR_VOLUMES_FULL/extensions:/opt/sonarqube/extensions" \
           "$DOCKER_CONTAINER_PREFIX:$DOCKER_TAG"; then
 
-          ELAPSED=0
+          # FIXME:
+          # ELAPSED=0
 
-          while ! docker logs "$DOCKER_CONTAINER" | grep "SonarQube is operational";
-          do
+          # while ! docker logs "$DOCKER_CONTAINER" | grep "SonarQube is operational";
+          # do
               
-              sleep 1
-              ELAPSED=$((ELAPSED + 1))
+          #     sleep 1
+          #     ELAPSED=$((ELAPSED + 1))
 
-              if [ $ELAPSED == 60 ]; then
+          #     if [ $ELAPSED == 60 ]; then
 
-                echo "ERROR: Timeout"
-                exit 1
-              fi
-          done
+          #       echo "ERROR: Timeout"s
+          #       exit 1
+          #     fi
+          # done
 
           if docker container stop "$DOCKER_CONTAINER"; then
 
@@ -174,9 +173,9 @@ if sh "$SCRIPT_GET_DOCKER" true; then
                 -e "SONAR_JDBC_URL=jdbc:postgresql://$DOCKER_CONTAINER_IP:5432/$DB" \
                 -e "SONAR_JDBC_USERNAME=$DB_USER" \
                 -e "SONAR_JDBC_PASSWORD=$DB_PASSWORD" \
-                -v "sonarqube_data:$DIR_VOLUMES_FULL/data" \
-                -v "sonarqube_extensions:$DIR_VOLUMES_FULL/extensions" \
-                -v "sonarqube_logs:$DIR_VOLUMES_FULL/logs" \
+                -v "$DIR_VOLUMES_FULL/data:/opt/sonarqube/data" \
+                -v "$DIR_VOLUMES_FULL/extensions:/opt/sonarqube/extensions" \
+                -v "$DIR_VOLUMES_FULL/logs:/opt/sonarqube/logs" \
                 "$DOCKER_CONTAINER_PREFIX:$DOCKER_TAG"
 
               echo "SonarQube Docker container started"
@@ -200,7 +199,7 @@ if sh "$SCRIPT_GET_DOCKER" true; then
 
       else
 
-        echo "ERROR: Creating SonarQube vloumes failed"
+        echo "ERROR: Creating SonarQube volumes failed"
         exit 1
       fi
     fi
