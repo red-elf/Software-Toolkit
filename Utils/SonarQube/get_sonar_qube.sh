@@ -199,7 +199,7 @@ if sh "$SCRIPT_GET_DOCKER" true; then
 
       else
 
-        echo "ERROR: Creating SonarQube volumes failed"
+        echo "ERROR: Setting SonarQube volumes permission failed"
         exit 1
       fi
     fi
