@@ -85,10 +85,6 @@ if sh "$SCRIPT_GET_DOCKER" true; then
 
   else
 
-    echo "Please provide your root password if asked!"
-
-    # FIXME:
-    # if su -c "sysctl -w vm.max_map_count=524288 && sysctl -w fs.file-max=131072 && sh -c \"ulimit -n 131072 && echo OK\" && sh -c \"ulimit -u 8192 && echo OK\""; then
     if sudo sysctl -w vm.max_map_count=524288 && sudo sysctl -w fs.file-max=131072; then
 
       echo "SonarQube start prepared"
@@ -132,74 +128,71 @@ if sh "$SCRIPT_GET_DOCKER" true; then
         exit 1
       fi
 
-      if chmod -R 775 "$DIR_VOLUMES_FULL" && echo "Start"; then
+      if docker run --stop-timeout 3600 --rm \
+        -d --name "$DOCKER_CONTAINER" \
+        -p "127.0.0.1:$PARAM_SONARQUBE_PORT:9000" \
+        "$DOCKER_CONTAINER_PREFIX:$DOCKER_TAG"; then
 
-        if docker run --rm \
-          -d --name "$DOCKER_CONTAINER" \
-          -p "127.0.0.1:$PARAM_SONARQUBE_PORT:9000" \
-          -v "$DIR_VOLUMES_FULL/extensions:/opt/sonarqube/extensions" \
-          "$DOCKER_CONTAINER_PREFIX:$DOCKER_TAG"; then
+        ELAPSED=0
 
-          # FIXME:
-          # ELAPSED=0
+        while ! docker logs "$DOCKER_CONTAINER" | grep "SonarQube is operational";
+        do
+            
+            sleep 1
+            ELAPSED=$((ELAPSED + 1))
 
-          # while ! docker logs "$DOCKER_CONTAINER" | grep "SonarQube is operational";
-          # do
-              
-          #     sleep 1
-          #     ELAPSED=$((ELAPSED + 1))
+            if [ $ELAPSED == 60 ]; then
 
-          #     if [ $ELAPSED == 60 ]; then
+              echo "ERROR: Timeout"s
+              exit 1
+            fi
+        done
 
-          #       echo "ERROR: Timeout"s
-          #       exit 1
-          #     fi
-          # done
+        if docker container stop "$DOCKER_CONTAINER"; then
 
-          if docker container stop "$DOCKER_CONTAINER"; then
+          # TODO: Improve this, wait for instead of sleep
+          sleep 5
 
-            # TODO: Improve this, wait for instead of sleep
-            sleep 5
+          if GET_CONTAINER_ADDRESS "$DOCKER_CONTAINER_DB"; then
 
-            if GET_CONTAINER_ADDRESS "$DOCKER_CONTAINER_DB"; then
+            DOCKER_CONTAINER_IP="$(GET_CONTAINER_ADDRESS "$DOCKER_CONTAINER_DB")"
 
-              DOCKER_CONTAINER_IP="$(GET_CONTAINER_ADDRESS "$DOCKER_CONTAINER_DB")"
+            echo "SonarQube database IP address: $DOCKER_CONTAINER_IP"
 
-              echo "SonarQube database IP address: $DOCKER_CONTAINER_IP"
+            # FIXME: Fix the volumes access
 
-              docker run -d --name "$DOCKER_CONTAINER" \
-                --ulimit nofile=65536:65536 \
-                -p "127.0.0.1:$PARAM_SONARQUBE_PORT:9000" \
-                -e "SONAR_JDBC_URL=jdbc:postgresql://$DOCKER_CONTAINER_IP:5432/$DB" \
-                -e "SONAR_JDBC_USERNAME=$DB_USER" \
-                -e "SONAR_JDBC_PASSWORD=$DB_PASSWORD" \
-                -v "$DIR_VOLUMES_FULL/data:/opt/sonarqube/data" \
-                -v "$DIR_VOLUMES_FULL/extensions:/opt/sonarqube/extensions" \
-                -v "$DIR_VOLUMES_FULL/logs:/opt/sonarqube/logs" \
-                "$DOCKER_CONTAINER_PREFIX:$DOCKER_TAG"
+            if docker run --stop-timeout 3600 -d --name "$DOCKER_CONTAINER" \
+              --ulimit nofile=65536:65536 \
+              -p "127.0.0.1:$PARAM_SONARQUBE_PORT:9000" \
+              -e "SONAR_JDBC_URL=jdbc:postgresql://$DOCKER_CONTAINER_IP:5432/$DB" \
+              -e "SONAR_JDBC_USERNAME=$DB_USER" \
+              -e "SONAR_JDBC_PASSWORD=$DB_PASSWORD" \
+              -v "$DIR_VOLUMES_FULL/data:/opt/sonarqube/data" \
+              -v "$DIR_VOLUMES_FULL/extensions:/opt/sonarqube/extensions" \
+              -v "$DIR_VOLUMES_FULL/logs:/opt/sonarqube/logs" \
+              "$DOCKER_CONTAINER_PREFIX:$DOCKER_TAG"; then
 
               echo "SonarQube Docker container started"
 
             else
 
-              echo "ERROR: Could not obtain the IP address for the SonarQube database"
+              echo "ERROR: SonarQube Docker container was not started"
             fi
 
           else
 
-            echo "ERROR: Could not stop $DOCKER_CONTAINER container"
-            exit 1
+            echo "ERROR: Could not obtain the IP address for the SonarQube database"
           fi
 
         else
 
-          echo "ERROR: SonarQube Docker container failed to start"
+          echo "ERROR: Could not stop $DOCKER_CONTAINER container"
           exit 1
         fi
 
       else
 
-        echo "ERROR: Setting SonarQube volumes permission failed"
+        echo "ERROR: SonarQube Docker container failed to start"
         exit 1
       fi
     fi
