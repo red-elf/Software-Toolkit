@@ -159,7 +159,17 @@ if sh "$SCRIPT_GET_DOCKER" true; then
 
             echo "SonarQube database IP address: $DOCKER_CONTAINER_IP"
 
-            # FIXME: Fix the volumes access
+            if mkdir -p "$DIR_VOLUMES_FULL/data" && chmod -R 777 "$DIR_VOLUMES_FULL/data" && \
+              mkdir -p "$DIR_VOLUMES_FULL/extensions" && chmod -R 777 "$DIR_VOLUMES_FULL/extensions" && \
+              mkdir -p "$DIR_VOLUMES_FULL/logs" && chmod -R 777 "$DIR_VOLUMES_FULL/logs"; then
+
+              echo "Volumes directories created and permissions set"
+
+            else
+
+              echo "ERROR: Could not create volumes directories and set permissions"
+              exit 1
+            fi
 
             if docker run --stop-timeout 3600 -d --name "$DOCKER_CONTAINER" \
               --ulimit nofile=65536:65536 \
