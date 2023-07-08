@@ -1,6 +1,6 @@
 #!/bin/bash
 
-HERE="$(dirname -- "${BASH_SOURCE[0]}")"
+HERE="$(dirname -- "$0")"
 SCRIPT_GET_SQLITE="$HERE/get_sqlite.sh"
 
 if [ -n "$1" ]; then

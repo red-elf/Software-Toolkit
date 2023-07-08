@@ -8,7 +8,7 @@ fi
 
 PROJECT="$1"
 PROGAM="code"
-HERE="$(dirname -- "${BASH_SOURCE[0]}")"
+HERE="$(dirname -- "$0")"
 SCRIPT_GET_PROGRAM="$HERE/../Sys/Programs/get_program.sh"
 
 if sh "$SCRIPT_GET_PROGRAM" "$PROGAM"; then
