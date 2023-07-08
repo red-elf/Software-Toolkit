@@ -1,6 +1,6 @@
 #!/bin/bash
 
-HERE="$(dirname -- "${BASH_SOURCE[0]}")"
+HERE="$(dirname -- "$0")"
 SCRIPT_GET_DOCKER="$HERE/../Sys/Programs/get_docker.sh"
 
 DB="database"

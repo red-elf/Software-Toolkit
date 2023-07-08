@@ -1,6 +1,6 @@
 #!/bin/bash
 
-HERE="$(dirname -- "${BASH_SOURCE[0]}")"
+HERE="$(dirname -- "$0")"
 SCRIPT_CHECK_ALT_LINUX="$HERE/../Recipes/altlinux.sh"
 
 if ! test -e "$SCRIPT_CHECK_ALT_LINUX"; then

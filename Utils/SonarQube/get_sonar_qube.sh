@@ -30,7 +30,7 @@ else
   exit 1
 fi
 
-HERE="$(dirname -- "${BASH_SOURCE[0]}")"
+HERE="$(dirname -- "$0")"
 
 DIR_VOLUMES="_Volumes"
 SCRIPT_GET_DOCKER="$HERE/../Sys/Programs/get_docker.sh"

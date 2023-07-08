@@ -1,6 +1,6 @@
 #!/bin/bash
 
-HERE="$(dirname -- "${BASH_SOURCE[0]}")"
+HERE="$(dirname -- "$0")"
 SCRIPT_GET_POSTGRES="$HERE/get_postgres.sh"
 SCRIPT_PUSH_TO_CONTAINER="$HERE/../Docker/push_file_to_container.sh"
 

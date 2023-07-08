@@ -1,6 +1,6 @@
 #!/bin/bash
 
-HERE="$(dirname -- "${BASH_SOURCE[0]}")"
+HERE="$(dirname -- "$0")"
 DIR_RECIPES="$HERE/Recipes"
 
 if test -e "$DIR_RECIPES"; then
