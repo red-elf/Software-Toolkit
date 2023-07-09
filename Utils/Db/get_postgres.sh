@@ -60,13 +60,13 @@ if sh "$SCRIPT_GET_DOCKER" true; then
 
   CONTAINER_STATUS="$( docker container inspect -f '{{.State.Status}}' $DOCKER_CONTAINER )"
 
-  if [ "$CONTAINER_STATUS" == "running" ]; then
+  if [ "$CONTAINER_STATUS" = "running" ]; then
 
     echo "Postgres Docker container is running"
 
   else
 
-    if [ "$CONTAINER_STATUS" == "exited" ]; then
+    if [ "$CONTAINER_STATUS" = "exited" ]; then
 
       if docker container start "$DOCKER_CONTAINER"; then
 
