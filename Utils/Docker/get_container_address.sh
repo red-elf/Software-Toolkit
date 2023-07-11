@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function GET_CONTAINER_ADDRESS {
+GET_CONTAINER_ADDRESS() {
 
     CONTAINER="$1"
 

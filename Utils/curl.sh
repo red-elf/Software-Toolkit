@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function RUN_CURL {
+RUN_CURL() {
 
   CURL_UTIL_PORT="80"
   CURL_UTIL_ENDPOINT=""
