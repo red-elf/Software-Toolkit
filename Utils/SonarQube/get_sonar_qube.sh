@@ -79,7 +79,7 @@ if sh "$SCRIPT_GET_DOCKER" true; then
   echo "Checking the container status for: $DOCKER_CONTAINER"
   CONTAINER_STATUS="$( docker container inspect -f '{{.State.Status}}' $DOCKER_CONTAINER )"
 
-  if [ "$CONTAINER_STATUS" == "running" ]; then
+  if [ "$CONTAINER_STATUS" = "running" ]; then
 
     echo "SonarQube Docker container is running"
 
@@ -95,7 +95,7 @@ if sh "$SCRIPT_GET_DOCKER" true; then
       exit 1
     fi
 
-    if [ "$CONTAINER_STATUS" == "exited" ]; then
+    if [ "$CONTAINER_STATUS" = "exited" ]; then
 
       if docker container start "$DOCKER_CONTAINER"; then
 
@@ -141,7 +141,7 @@ if sh "$SCRIPT_GET_DOCKER" true; then
             sleep 1
             ELAPSED=$((ELAPSED + 1))
 
-            if [ $ELAPSED == 60 ]; then
+            if [ $ELAPSED = 60 ]; then
 
               echo "ERROR: Timeout"s
               exit 1
