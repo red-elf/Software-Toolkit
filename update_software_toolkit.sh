@@ -8,7 +8,7 @@ DIR_VERSIONABLE="Versionable"
 DIR_INSTALLABLE="Installable"
 DIR_UPSTREAMABLE="Upstreamable"
 
-function UPDATE_MODULE {
+UPDATE_MODULE() {
 
   if [ -z "$1" ]; then
 

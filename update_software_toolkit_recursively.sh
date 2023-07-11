@@ -18,7 +18,7 @@ do
     
     if test -e "$PATH/Toolkit/$SCRIPT_UPDATE"; then
 
-      if [[ $PATH == *"_Dependencies"* ]]; then
+      if [ $PATH = *"_Dependencies"* ]; then
         
         echo "SKIPPING: $PATH"
 
