@@ -1,8 +1,9 @@
 version: "3.9"
 
 services:
+  
   {{SERVICE.SONAR_QUBE.NAME}}:
-    image: sonarqube:10.1.0-community
+    image: library/sonarqube:10.1.0-community
     container_name: {{SERVICE.SONAR_QUBE.NAME}}
     hostname: {{SERVICE.SONAR_QUBE.NAME}}
     restart: always
@@ -10,6 +11,38 @@ services:
       - 0.0.0.0:{{SERVICE.SONAR_QUBE.PORTS.PORT_EXPOSED}}:9000
     networks:
       - {{SERVICE.NETWORK.NAME}}
+    environment:
+      SONAR_JDBC_URL: jdbc:postgresql://{{SERVICE.DATABASE.NAME}}:{{SERVICE.DATABASE.PORTS.PORT_EXPOSED}}/{{SERVICE.DATABASE.NAME}}
+      SONAR_JDBC_USERNAME: {{SERVICE.DATABASE.USER}}
+      SONAR_JDBC_PASSWORD: {{SERVICE.DATABASE.PASSWORD}}
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_logs:/opt/sonarqube/logs
+  
+  {{SERVICE.DATABASE.NAME}}:
+    image: library/postgres:13.3
+    container_name: {{SERVICE.DATABASE.NAME}}
+    hostname: {{SERVICE.DATABASE.NAME}}
+    restart: always
+    ports:
+      - 127.0.0.1:{{SERVICE.DATABASE.PORTS.PORT_EXPOSED}}:5432
+    networks:
+      - {{SERVICE.NETWORK.NAME}}
+    environment:
+      POSTGRES_USER: {{SERVICE.DATABASE.USER}}
+      POSTGRES_PASSWORD: {{SERVICE.DATABASE.PASSWORD}}
+    volumes:
+      - postgresql:/var/lib/postgresql
+      - postgresql_data:/var/lib/postgresql/data
+
+volumes:
+  sonarqube_data: "{{DIR.VOLUMES}}/{{SERVICE.SONAR_QUBE.NAME}}/data"
+  sonarqube_extensions: "{{DIR.VOLUMES}}/{{SERVICE.SONAR_QUBE.NAME}}/extensions"
+  sonarqube_logs: "{{DIR.VOLUMES}}/{{SERVICE.SONAR_QUBE.NAME}}/logs"
+  postgresql: "{{DIR.VOLUMES}}/{{SERVICE.DATABASE.NAME}}/Database"
+  postgresql_data: "{{DIR.VOLUMES}}/{{SERVICE.DATABASE.NAME}}/Database/Data"
+
 
 networks:
   {{SERVICE.NETWORK.NAME}}:
