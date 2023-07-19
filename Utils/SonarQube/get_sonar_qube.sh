@@ -171,7 +171,7 @@ if sh "$SCRIPT_GET_DOCKER" true; then
               exit 1
             fi
 
-            if docker run --stop-timeout 3600 -d --name "$DOCKER_CONTAINER" --restart unless-stopped \
+            if docker run --stop-timeout 3600 -d --name "$DOCKER_CONTAINER" \
               --ulimit nofile=65536:65536 \
               -p "0.0.0.0:$PARAM_SONARQUBE_PORT:9000" \
               -e "SONAR_JDBC_URL=jdbc:postgresql://$DOCKER_CONTAINER_IP:5432/$DB" \
