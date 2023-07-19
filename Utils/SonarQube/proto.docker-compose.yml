@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  {{SERVICE.SONAR_QUBE.NAME}}:
+    image: sonarqube:10.1.0-community
+    container_name: {{SERVICE.SONAR_QUBE.NAME}}
+    hostname: {{SERVICE.SONAR_QUBE.NAME}}
+    restart: always
+    ports:
+      - 0.0.0.0:{{SERVICE.SONAR_QUBE.PORTS.PORT_EXPOSED}}:9000
+    networks:
+      - {{SERVICE.NETWORK.NAME}}
+
+networks:
+  {{SERVICE.NETWORK.NAME}}:
+    external: true
+
+
+
