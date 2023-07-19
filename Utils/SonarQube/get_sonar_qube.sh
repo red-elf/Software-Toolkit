@@ -32,6 +32,27 @@ fi
 
 HERE="$(dirname -- "$0")"
 
+FILE_DOCKER_COMPOSE="docker-compose.yml"
+FILE_DOCKER_COMPOSE_PROTO="proto.$FILE_DOCKER_COMPOSE"
+
+FILE_DOCKER_COMPOSE_PATH="$HERE/$FILE_DOCKER_COMPOSE"
+FILE_DOCKER_COMPOSE_PROTO_PATH="$HERE/$FILE_DOCKER_COMPOSE_PROTO"
+
+if ! test -e "$FILE_DOCKER_COMPOSE_PROTO_PATH"; then
+
+  echo "ERROR: Not found Docker compose proto file $FILE_DOCKER_COMPOSE_PROTO"
+  exit 1
+fi
+
+if test -e "$FILE_DOCKER_COMPOSE_PATH"; then
+
+  if ! rm -f "$FILE_DOCKER_COMPOSE_PATH"; then
+    
+    echo "ERROR: Docker compose proto file was not removed $FILE_DOCKER_COMPOSE_PATH"
+    exit 1
+  fi
+fi
+
 DIR_VOLUMES="_Volumes"
 SCRIPT_GET_DOCKER="$HERE/../Sys/Programs/get_docker.sh"
 
@@ -62,6 +83,7 @@ if sh "$SCRIPT_GET_DOCKER" true; then
 
   else
 
+    # TODO: Move to be part of the compose
     if sudo sysctl -w vm.max_map_count=524288 && sudo sysctl -w fs.file-max=131072; then
 
       echo "SonarQube start prepared"
@@ -88,7 +110,9 @@ if sh "$SCRIPT_GET_DOCKER" true; then
 
       if test -e "$DIR_VOLUMES_FULL"; then
 
-        if ! rm -rf "$DIR_VOLUMES_FULL"; then
+        echo "WARNING: We are about to remove existing volumes directory structure at '$DIR_VOLUMES_FULL'"
+
+        if ! sudo rm -rf "$DIR_VOLUMES_FULL"; then
 
           echo "ERROR: Could not remove '$DIR_VOLUMES_FULL'"
           exit 1
@@ -105,16 +129,16 @@ if sh "$SCRIPT_GET_DOCKER" true; then
         exit 1
       fi
 
-      if mkdir -p "$DIR_VOLUMES_FULL/database" && chmod -R 777 "$DIR_VOLUMES_FULL/database" && \ 
+      if mkdir -p "$DIR_VOLUMES_FULL/database" && chmod -R 777 "$DIR_VOLUMES_FULL/database" && \
         mkdir -p "$DIR_VOLUMES_FULL/data" && chmod -R 777 "$DIR_VOLUMES_FULL/data" && \
         mkdir -p "$DIR_VOLUMES_FULL/extensions" && chmod -R 777 "$DIR_VOLUMES_FULL/extensions" && \
         mkdir -p "$DIR_VOLUMES_FULL/logs" && chmod -R 777 "$DIR_VOLUMES_FULL/logs"; then
 
-        echo "Volumes directories created and permissions set"
+        echo "Volumes directories created and permissions set: '$DIR_VOLUMES_FULL'"
 
       else
 
-        echo "ERROR: Could not create volumes directories and set permissions"
+        echo "ERROR: Could not create volumes directories and set permissions at '$$DIR_VOLUMES_FULL'"
         exit 1
       fi
 
@@ -137,6 +161,9 @@ if sh "$SCRIPT_GET_DOCKER" true; then
 
       #   echo "ERROR: SonarQube Docker container was not started"
       # fi
+
+      echo "ERROR: Docker compose not integrated"
+      exit 1
     fi
   fi
   
