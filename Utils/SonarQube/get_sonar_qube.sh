@@ -37,10 +37,10 @@ SCRIPT_GET_DOCKER="$HERE/../Sys/Programs/get_docker.sh"
 SCRIPT_GET_POSTGRES="$HERE/../Db/get_postgres.sh"
 SCRIPT_GET_DOCKER_CONTAINER_ADDRESS="$HERE/../Docker/get_container_address.sh"
 
-DB="Sonarqube"
+DB="Sonarqube.$PARAM_SONARQUBE_NAME"
 DB_USER="sonar"
 DB_PASSWORD="sonarqube"
-DB_DATA_DIRECTORY="$HERE/../../_Databases/Postgres"
+DB_DATA_DIRECTORY="$HERE/../../_Databases/Postgres/$DB"
 
 DOCKER_IMAGE="sonarqube"
 DOCKER_TAG="10.1.0-community"
