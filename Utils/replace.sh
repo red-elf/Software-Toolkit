@@ -52,7 +52,4 @@ REPLACE() {
 
     echo "$PROCESSED"
   fi
-
-  echo "ERROR: Not implemented"
-  exit 1
 }
