@@ -151,6 +151,12 @@ if sh "$SCRIPT_GET_DOCKER" true; then
         exit 1
       fi
 
+      PROTO_CONTENT="$(cat $FILE_DOCKER_COMPOSE_PROTO_PATH)"
+
+      . "$SCRIPT_REPLACE_PATH"
+
+      REPLACE "$PROTO_CONTENT" "{{SERVICE.SONAR_QUBE.NAME}}" "$DOCKER_CONTAINER"
+
       # TODO: Docker compose
       #
       # if docker run --stop-timeout 3600 -d --name "$DOCKER_CONTAINER" \
