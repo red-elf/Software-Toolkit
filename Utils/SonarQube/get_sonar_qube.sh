@@ -57,9 +57,15 @@ if test -e "$FILE_DOCKER_COMPOSE_PATH"; then
 
   if ! rm -f "$FILE_DOCKER_COMPOSE_PATH"; then
     
-    echo "ERROR: Docker compose proto file was not removed '$FILE_DOCKER_COMPOSE_PATH'"
+    echo "ERROR: Docker compose file was not removed '$FILE_DOCKER_COMPOSE_PATH'"
     exit 1
   fi
+fi
+
+if ! touch "$FILE_DOCKER_COMPOSE_PATH"; then
+
+  echo "ERROR: Docker compose file was not created '$FILE_DOCKER_COMPOSE_PATH'"
+  exit 1
 fi
 
 DIR_VOLUMES="_Volumes"
@@ -155,7 +161,8 @@ if sh "$SCRIPT_GET_DOCKER" true; then
 
       . "$SCRIPT_REPLACE_PATH"
 
-      REPLACE "$PROTO_CONTENT" "{{SERVICE.SONAR_QUBE.NAME}}" "$DOCKER_CONTAINER"
+      echo "Processing the Docker composer proto file: $FILE_DOCKER_COMPOSE_PROTO -> $FILE_DOCKER_COMPOSE"
+      REPLACE "$PROTO_CONTENT" "{{SERVICE.SONAR_QUBE.NAME}}" "$DOCKER_CONTAINER" "$FILE_DOCKER_COMPOSE_PATH"
 
       # TODO: Docker compose
       #

@@ -32,8 +32,27 @@ REPLACE() {
     exit 1
   fi
 
-  echo "$WHAT -> $WITH"
-  
+  # TODO: Replace
+  PROCESSED="$FROM"
+
+  if [ -n "$4" ]; then
+
+    INTO="$4"
+
+    if ! test -e "$INTO"; then
+
+      echo "ERROR: Destination does not exist '$INTO'"
+      exit 1
+    fi
+
+    echo "$WHAT -> $WITH"
+    echo "$PROCESSED" > "$INTO"
+
+  else
+
+    echo "$PROCESSED"
+  fi
+
   echo "ERROR: Not implemented"
   exit 1
 }
