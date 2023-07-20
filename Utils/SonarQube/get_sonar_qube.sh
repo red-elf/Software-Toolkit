@@ -38,9 +38,18 @@ FILE_DOCKER_COMPOSE_PROTO="proto.$FILE_DOCKER_COMPOSE"
 FILE_DOCKER_COMPOSE_PATH="$HERE/$FILE_DOCKER_COMPOSE"
 FILE_DOCKER_COMPOSE_PROTO_PATH="$HERE/$FILE_DOCKER_COMPOSE_PROTO"
 
+SCRIPT_REPLACE="replace.sh"
+SCRIPT_REPLACE_PATH="$HERE/../$SCRIPT_REPLACE"
+
+if ! test -e "$SCRIPT_REPLACE_PATH"; then
+
+  echo "ERROR: Not found the replace script '$SCRIPT_REPLACE_PATH'"
+  exit 1
+fi
+
 if ! test -e "$FILE_DOCKER_COMPOSE_PROTO_PATH"; then
 
-  echo "ERROR: Not found Docker compose proto file $FILE_DOCKER_COMPOSE_PROTO"
+  echo "ERROR: Not found Docker compose proto file '$FILE_DOCKER_COMPOSE_PROTO'"
   exit 1
 fi
 
@@ -48,7 +57,7 @@ if test -e "$FILE_DOCKER_COMPOSE_PATH"; then
 
   if ! rm -f "$FILE_DOCKER_COMPOSE_PATH"; then
     
-    echo "ERROR: Docker compose proto file was not removed $FILE_DOCKER_COMPOSE_PATH"
+    echo "ERROR: Docker compose proto file was not removed '$FILE_DOCKER_COMPOSE_PATH'"
     exit 1
   fi
 fi
