@@ -129,10 +129,10 @@ if sh "$SCRIPT_GET_DOCKER" true; then
         exit 1
       fi
 
-      if mkdir -p "$DIR_VOLUMES_FULL/database" && chmod -R 777 "$DIR_VOLUMES_FULL/database" && \
-        mkdir -p "$DIR_VOLUMES_FULL/data" && chmod -R 777 "$DIR_VOLUMES_FULL/data" && \
-        mkdir -p "$DIR_VOLUMES_FULL/extensions" && chmod -R 777 "$DIR_VOLUMES_FULL/extensions" && \
-        mkdir -p "$DIR_VOLUMES_FULL/logs" && chmod -R 777 "$DIR_VOLUMES_FULL/logs"; then
+      if mkdir -p "$DIR_VOLUMES_FULL/database" && chmod -R 750 "$DIR_VOLUMES_FULL/database" && \
+        mkdir -p "$DIR_VOLUMES_FULL/data" && chmod -R 750 "$DIR_VOLUMES_FULL/data" && \
+        mkdir -p "$DIR_VOLUMES_FULL/extensions" && chmod -R 750 "$DIR_VOLUMES_FULL/extensions" && \
+        mkdir -p "$DIR_VOLUMES_FULL/logs" && chmod -R 750 "$DIR_VOLUMES_FULL/logs"; then
 
         echo "Volumes directories created and permissions set: '$DIR_VOLUMES_FULL'"
 
