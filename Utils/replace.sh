@@ -35,7 +35,7 @@ REPLACE() {
   # WHAT="{{SERVICE.SONAR_QUBE.NAME}}"
   # WITH="@@@@"
 
-  PROCESSED="${FROM//${WHAT}/${WITH}}}"
+  PROCESSED="${FROM//${WHAT}/${WITH}}"
 
   if [ -n "$4" ]; then
 
