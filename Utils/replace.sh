@@ -47,7 +47,6 @@ REPLACE() {
       exit 1
     fi
 
-    echo "$WHAT -> $WITH"
     echo "$PROCESSED" > "$INTO"
 
   else
