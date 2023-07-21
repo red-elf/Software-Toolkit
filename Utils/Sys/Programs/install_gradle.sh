@@ -3,6 +3,8 @@
 CURRENT="$(pwd)"
 HERE="$(dirname -- "$0")"
 GRADLE_VERSION="8.2.1"
+DIR_INSTALLATION="/opt/gradle"
+GRADLE_ZIP="gradle-$GRADLE_VERSION.zip"
 DIR_DOWNLOADS="$(eval echo ~$USER)/Downloads"
 SCRIPT_CHECK_ALT_LINUX="$HERE/../Recipes/altlinux.sh"
 URL_GRADLE_INSTALL="https://services.gradle.org/distributions/gradle-$GRADLE_VERSION-all.zip"
@@ -26,7 +28,24 @@ if sh "$SCRIPT_CHECK_ALT_LINUX"; then
     exit 1
   fi
 
-  if cd "$DIR_DOWNLOADS" && wget "$URL_GRADLE_INSTALL" && cd "$CURRENT"; then
+  if test -e "$DIR_INSTALLATION"; then
+
+    if ! sudo rm -rf "$DIR_INSTALLATION"; then
+
+      echo "ERROR: Could not remove '$DIR_INSTALLATION'"
+      exit 1
+    fi
+  fi
+
+  if ! sudo mkdir -p "$DIR_INSTALLATION"; then
+
+    echo "ERROR: Could not create '$DIR_INSTALLATION'"
+    exit 1
+  fi
+
+  if cd "$DIR_DOWNLOADS" && wget -O "$GRADLE_ZIP" "$URL_GRADLE_INSTALL"  && \
+    sudo unzip -d "$DIR_INSTALLATION" "$GRADLE_ZIP" && ls "$DIR_INSTALLATION" && \
+    cd "$CURRENT"; then
 
     exit 0
   fi
