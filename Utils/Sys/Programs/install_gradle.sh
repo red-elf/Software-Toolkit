@@ -43,7 +43,16 @@ if sh "$SCRIPT_CHECK_ALT_LINUX"; then
     exit 1
   fi
 
-  if cd "$DIR_DOWNLOADS" && wget -O "$GRADLE_ZIP" "$URL_GRADLE_INSTALL"  && \
+  if ! test -e "$DIR_DOWNLOADS/$GRADLE_ZIP"; then
+
+    if ! wget -O "$DIR_DOWNLOADS/$GRADLE_ZIP" "$URL_GRADLE_INSTALL"; then
+
+      echo "ERROR: The Gradle installation failed to download"
+      exit 1
+    fi
+  fi
+
+  if cd "$DIR_DOWNLOADS" && test -e "$GRADLE_ZIP"  && \
     sudo unzip -d "$DIR_INSTALLATION" "$GRADLE_ZIP" && ls "$DIR_INSTALLATION" && \
     cd "$CURRENT"; then
 
