@@ -30,6 +30,7 @@ else
   exit 1
 fi
 
+CURRENT="$(pwd)"
 HERE="$(dirname -- "$0")"
 
 FILE_DOCKER_COMPOSE="docker-compose.yml"
@@ -81,6 +82,7 @@ DOCKER_IMAGE="sonarqube"
 DOCKER_TAG="10.1.0-community"
 DOCKER_CONTAINER_PREFIX="sonarqube"
 DOCKER_CONTAINER="$DOCKER_CONTAINER_PREFIX.$PARAM_SONARQUBE_NAME"
+DOKCER_IMAGE=$(echo "$DOCKER_CONTAINER" | tr '[:upper:]' '[:lower:]')
 
 DIR_VOLUMES_FULL="$PARAM_SONARQUBE_VOLUMES_ROOT/$DOCKER_CONTAINER"
 
@@ -170,7 +172,29 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
       PROCESSED=$(REPLACE "$PROCESSED"     "{{SERVICE.DATABASE.PASSWORD}}"             "$DB_PASSWORD")
                   REPLACE "$PROCESSED"     "{{DIR.VOLUMES}}"                           "$DIR_VOLUMES_FULL"     "$FILE_DOCKER_COMPOSE_PATH"
 
+      FILE_DOCKER_COMPOSE_PATH_FULL="$CURRENT/$FILE_DOCKER_COMPOSE_PATH"
+
+      if ! test -e "$FILE_DOCKER_COMPOSE_PATH_FULL"; then
+
+        echo "ERROR: Docker compose file not found '$FILE_DOCKER_COMPOSE_PATH_FULL'"
+        exit 1
+      fi
+
       # TODO: Docker compose
+      #
+      # - Check if image is already made or not?
+      #
+      if docker build --tag "$DOKCER_IMAGE" "$FILE_DOCKER_COMPOSE_PATH_FULL"; then
+
+        echo "Docker image(s) have been created with success"
+
+      else
+
+        echo "ERROR: Could not compose the Docker image(s)"
+        exit 1
+      fi
+
+      # TODO: Remove the legacy code
       #
       # if docker run --stop-timeout 3600 -d --name "$DOCKER_CONTAINER" \
       #   --ulimit nofile=65536:65536 \
