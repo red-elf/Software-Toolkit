@@ -163,11 +163,11 @@ if sh "$SCRIPT_GET_DOCKER" true; then
 
       echo "Processing the Docker composer proto file: $FILE_DOCKER_COMPOSE_PROTO -> $FILE_DOCKER_COMPOSE"
       
-      REPLACE "$PROTO_CONTENT" "{{SERVICE.SONAR_QUBE.NAME}}"               "$DOCKER_CONTAINER"     | xargs \
-      REPLACE "$PROTO_CONTENT" "{{SERVICE.SONAR_QUBE.PORTS.PORT_EXPOSED}}" "$PARAM_SONARQUBE_PORT" | xargs \
-      REPLACE "$PROTO_CONTENT" "{{SERVICE.DATABASE.USER}}"                 "$DB_USER"              | xargs \
-      REPLACE "$PROTO_CONTENT" "{{SERVICE.DATABASE.PASSWORD}}"             "$DB_PASSWORD"          | xargs \
-      REPLACE "$PROTO_CONTENT" "{{DIR.VOLUMES}}"                           "$DIR_VOLUMES_FULL"     "$FILE_DOCKER_COMPOSE_PATH"
+      PROCESSED=$(REPLACE "$PROTO_CONTENT" "{{SERVICE.SONAR_QUBE.NAME}}"               "$DOCKER_CONTAINER")
+      PROCESSED=$(REPLACE "$PROCESSED"     "{{SERVICE.SONAR_QUBE.PORTS.PORT_EXPOSED}}" "$PARAM_SONARQUBE_PORT")
+      PROCESSED=$(REPLACE "$PROCESSED"     "{{SERVICE.DATABASE.USER}}"                 "$DB_USER")
+      PROCESSED=$(REPLACE "$PROCESSED"     "{{SERVICE.DATABASE.PASSWORD}}"             "$DB_PASSWORD")
+                  REPLACE "$PROCESSED"     "{{DIR.VOLUMES}}"                           "$DIR_VOLUMES_FULL"     "$FILE_DOCKER_COMPOSE_PATH"
 
       # TODO: Docker compose
       #
