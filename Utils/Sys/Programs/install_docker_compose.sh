@@ -17,5 +17,5 @@ if sh "$SCRIPT_CHECK_ALT_LINUX"; then
   fi
 fi
 
-echo "ERROR: Docker was not installed"
+echo "ERROR: Docker compose was not installed"
 exit 1

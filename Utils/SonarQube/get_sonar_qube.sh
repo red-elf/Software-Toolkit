@@ -71,6 +71,7 @@ fi
 DIR_VOLUMES="_Volumes"
 SCRIPT_GET_DOCKER="$HERE/../Sys/Programs/get_docker.sh"
 SCRIPT_GET_DOCKER_COMPOSE="$HERE/../Sys/Programs/get_docker_compose.sh"
+SCRIPT_GET_GRADLE="$HERE/../Sys/Programs/get_gradle.sh"
 
 DB="Sonarqube.$PARAM_SONARQUBE_NAME"
 DB_USER="sonar"
@@ -88,7 +89,7 @@ echo "Docker image: $DOCKER_IMAGE"
 echo "Docker tag: $DOCKER_TAG"
 echo "Docker container: $DOCKER_CONTAINER"
 
-if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
+if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true && sh "$SCRIPT_GET_GRADLE" true; then
 
   echo "Checking the container status for: $DOCKER_CONTAINER"
   CONTAINER_STATUS="$( docker container inspect -f '{{.State.Status}}' $DOCKER_CONTAINER )"
@@ -197,6 +198,6 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
   
 else
 
-  echo "ERROR: No Docker installation available"
+  echo "ERROR: No mandatory installations available on the system"
   exit 1
 fi
