@@ -90,6 +90,14 @@ if sh "$SCRIPT_CHECK_ALT_LINUX"; then
 
         echo "Gradle is added into the system path"
 
+        . "$FILE_RC"
+
+        if ! gradle -v; then
+
+          echo "ERROR: Cannot find the Gradle installation in your system path"
+          exit 1
+        fi
+
       else
 
         echo "ERROR: Gradle was not added into the system path with success"
