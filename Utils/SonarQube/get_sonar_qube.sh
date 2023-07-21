@@ -70,6 +70,7 @@ fi
 
 DIR_VOLUMES="_Volumes"
 SCRIPT_GET_DOCKER="$HERE/../Sys/Programs/get_docker.sh"
+SCRIPT_GET_DOCKER_COMPOSE="$HERE/../Sys/Programs/get_docker_compose.sh"
 
 DB="Sonarqube.$PARAM_SONARQUBE_NAME"
 DB_USER="sonar"
@@ -87,7 +88,7 @@ echo "Docker image: $DOCKER_IMAGE"
 echo "Docker tag: $DOCKER_TAG"
 echo "Docker container: $DOCKER_CONTAINER"
 
-if sh "$SCRIPT_GET_DOCKER" true; then
+if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
 
   echo "Checking the container status for: $DOCKER_CONTAINER"
   CONTAINER_STATUS="$( docker container inspect -f '{{.State.Status}}' $DOCKER_CONTAINER )"
