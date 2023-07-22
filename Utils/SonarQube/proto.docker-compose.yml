@@ -22,6 +22,8 @@ services:
       - {{DIR.VOLUMES}}/{{SERVICE.SONAR_QUBE.NAME}}/Data:/opt/sonarqube/data
       - {{DIR.VOLUMES}}/{{SERVICE.SONAR_QUBE.NAME}}/Extensions:/opt/sonarqube/extensions
       - {{DIR.VOLUMES}}/{{SERVICE.SONAR_QUBE.NAME}}/Logs:/opt/sonarqube/logs
+    depends_on:
+      - postgres.{{SERVICE.SONAR_QUBE.NAME}}
   postgres.{{SERVICE.SONAR_QUBE.NAME}}:
     image: library/postgres:13.3
     container_name: postgres.{{SERVICE.SONAR_QUBE.NAME}}

@@ -146,19 +146,6 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
         exit 1
       fi
 
-      if mkdir -p "$DIR_VOLUMES_FULL/database" && chmod -R 750 "$DIR_VOLUMES_FULL/database" && \
-        mkdir -p "$DIR_VOLUMES_FULL/data" && chmod -R 750 "$DIR_VOLUMES_FULL/data" && \
-        mkdir -p "$DIR_VOLUMES_FULL/extensions" && chmod -R 750 "$DIR_VOLUMES_FULL/extensions" && \
-        mkdir -p "$DIR_VOLUMES_FULL/logs" && chmod -R 750 "$DIR_VOLUMES_FULL/logs"; then
-
-        echo "Volumes directories created and permissions set: '$DIR_VOLUMES_FULL'"
-
-      else
-
-        echo "ERROR: Could not create volumes directories and set permissions at '$$DIR_VOLUMES_FULL'"
-        exit 1
-      fi
-
       PROTO_CONTENT="$(cat $FILE_DOCKER_COMPOSE_PROTO_PATH)"
 
       . "$SCRIPT_REPLACE_PATH"
