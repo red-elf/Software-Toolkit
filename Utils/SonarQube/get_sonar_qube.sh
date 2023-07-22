@@ -92,6 +92,7 @@ echo "Docker container: $DOCKER_CONTAINER"
 
 if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
 
+  # TODO: Check and restart all mandatory containers
   echo "Checking the container status for: $DOCKER_CONTAINER"
   CONTAINER_STATUS="$( docker container inspect -f '{{.State.Status}}' $DOCKER_CONTAINER )"
 
