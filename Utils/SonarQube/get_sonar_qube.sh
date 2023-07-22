@@ -101,7 +101,6 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
 
   else
 
-    # TODO: Move to be part of the compose
     if sudo sysctl -w vm.max_map_count=524288 && sudo sysctl -w fs.file-max=131072; then
 
       echo "SonarQube start prepared"
@@ -180,42 +179,15 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
         exit 1
       fi
 
-      # TODO: Docker compose
-      #
-      # - Check if image is already made or not?
-      #
       if docker network create "$DOCKER_CONTAINER" && docker-compose -f "$FILE_DOCKER_COMPOSE_PATH_FULL" up; then
 
-        echo "Docker image(s) have been created with success"
+        echo "Docker compose executed with success"
 
       else
 
         echo "ERROR: Could not compose the Docker image(s)"
         exit 1
       fi
-
-      # TODO: Remove the legacy code
-      #
-      # if docker run --stop-timeout 3600 -d --name "$DOCKER_CONTAINER" \
-      #   --ulimit nofile=65536:65536 \
-      #   -p "0.0.0.0:$PARAM_SONARQUBE_PORT:9000" \
-      #   -e "SONAR_JDBC_URL=jdbc:postgresql://$DOCKER_CONTAINER_IP:5432/$DB" \
-      #   -e "SONAR_JDBC_USERNAME=$DB_USER" \
-      #   -e "SONAR_JDBC_PASSWORD=$DB_PASSWORD" \
-      #   -v "$DIR_VOLUMES_FULL/data:/opt/sonarqube/data" \
-      #   -v "$DIR_VOLUMES_FULL/extensions:/opt/sonarqube/extensions" \
-      #   -v "$DIR_VOLUMES_FULL/logs:/opt/sonarqube/logs" \
-      #   "$DOCKER_CONTAINER_PREFIX:$DOCKER_TAG"; then
-
-      #   echo "SonarQube Docker container started"
-
-      # else
-
-      #   echo "ERROR: SonarQube Docker container was not started"
-      # fi
-
-      echo "ERROR: Docker compose not integrated"
-      exit 1
     fi
   fi
   

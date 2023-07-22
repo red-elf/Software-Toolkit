@@ -10,6 +10,10 @@ services:
       - 0.0.0.0:{{SERVICE.SONAR_QUBE.PORTS.PORT_EXPOSED}}:9000
     networks:
       - {{SERVICE.SONAR_QUBE.NAME}}
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
     environment:
       SONAR_JDBC_URL: jdbc:postgresql://postgres.{{SERVICE.SONAR_QUBE.NAME}}:5432/postgres.{{SERVICE.SONAR_QUBE.NAME}}
       SONAR_JDBC_USERNAME: {{SERVICE.DATABASE.USER}}
