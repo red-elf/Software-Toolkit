@@ -1,7 +1,6 @@
 version: "3.9"
 
 services:
-  
   {{SERVICE.SONAR_QUBE.NAME}}:
     image: library/sonarqube:10.1.0-community
     container_name: {{SERVICE.SONAR_QUBE.NAME}}
@@ -19,11 +18,10 @@ services:
       - sonarqube_data:/opt/sonarqube/data
       - sonarqube_extensions:/opt/sonarqube/extensions
       - sonarqube_logs:/opt/sonarqube/logs
-  
-  "postgres.{{SERVICE.SONAR_QUBE.NAME}}":
+  postgres.{{SERVICE.SONAR_QUBE.NAME}}:
     image: library/postgres:13.3
-    container_name: "postgres.{{SERVICE.SONAR_QUBE.NAME}}"
-    hostname: "postgres.{{SERVICE.SONAR_QUBE.NAME}}"
+    container_name: postgres.{{SERVICE.SONAR_QUBE.NAME}}
+    hostname: postgres.{{SERVICE.SONAR_QUBE.NAME}}
     restart: always
     ports:
       - 127.0.0.1:5432:5432
@@ -35,15 +33,12 @@ services:
     volumes:
       - postgresql:/var/lib/postgresql
       - postgresql_data:/var/lib/postgresql/data
-
 volumes:
   sonarqube_data: "{{DIR.VOLUMES}}/{{SERVICE.SONAR_QUBE.NAME}}/Data"
   sonarqube_extensions: "{{DIR.VOLUMES}}/{{SERVICE.SONAR_QUBE.NAME}}/Extensions"
   sonarqube_logs: "{{DIR.VOLUMES}}/{{SERVICE.SONAR_QUBE.NAME}}/Logs"
   postgresql: "{{DIR.VOLUMES}}/postgres.{{SERVICE.SONAR_QUBE.NAME}}"
   postgresql_data: "{{DIR.VOLUMES}}/postgres.{{SERVICE.SONAR_QUBE.NAME}}/Data"
-
-
 networks:
   {{SERVICE.SONAR_QUBE.NAME}}:
     external: true

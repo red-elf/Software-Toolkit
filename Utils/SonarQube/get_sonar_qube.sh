@@ -164,7 +164,7 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
 
       . "$SCRIPT_REPLACE_PATH"
 
-      echo "Processing the Docker composer proto file: $FILE_DOCKER_COMPOSE_PROTO -> $FILE_DOCKER_COMPOSE"
+      echo "Processing the Docker compose proto file: $FILE_DOCKER_COMPOSE_PROTO -> $FILE_DOCKER_COMPOSE"
       
       PROCESSED=$(REPLACE "$PROTO_CONTENT" "{{SERVICE.SONAR_QUBE.NAME}}"               "$DOCKER_CONTAINER")
       PROCESSED=$(REPLACE "$PROCESSED"     "{{SERVICE.SONAR_QUBE.PORTS.PORT_EXPOSED}}" "$PARAM_SONARQUBE_PORT")
