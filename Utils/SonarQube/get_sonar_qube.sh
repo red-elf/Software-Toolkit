@@ -179,13 +179,23 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
         exit 1
       fi
 
-      if docker network create "$DOCKER_CONTAINER" && docker-compose -f "$FILE_DOCKER_COMPOSE_PATH_FULL" up; then
+      if docker network inspect "$DOCKER_CONTAINER" >/dev/null 2>&1 || docker network create "$DOCKER_CONTAINER"; then
+
+        echo "Docker network '$DOCKER_CONTAINER' is already available"
+
+      else
+
+        exit "ERROR: Docker network '$DOCKER_CONTAINER' creation failed"
+        exit 1
+      fi
+
+      if docker-compose -f "$FILE_DOCKER_COMPOSE_PATH_FULL" up; then
 
         echo "Docker compose executed with success"
 
       else
 
-        echo "ERROR: Could not compose the Docker image(s)"
+        echo "ERROR: Docker compose failed"
         exit 1
       fi
     fi
