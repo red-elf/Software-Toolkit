@@ -180,14 +180,11 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
         exit 1
       fi
 
-      # TODO: Create network
-      # docker network create sonarqube.Core
-
       # TODO: Docker compose
       #
       # - Check if image is already made or not?
       #
-      if docker-compose -f "$FILE_DOCKER_COMPOSE_PATH_FULL" up; then
+      if docker network create "$DOCKER_CONTAINER" && docker-compose -f "$FILE_DOCKER_COMPOSE_PATH_FULL" up; then
 
         echo "Docker image(s) have been created with success"
 
