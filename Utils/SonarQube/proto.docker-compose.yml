@@ -19,9 +19,9 @@ services:
       SONAR_JDBC_USERNAME: {{SERVICE.DATABASE.USER}}
       SONAR_JDBC_PASSWORD: {{SERVICE.DATABASE.PASSWORD}}
     volumes:
-      - {{DIR.VOLUMES}}/{{SERVICE.SONAR_QUBE.NAME}}/Data:/opt/sonarqube/data
-      - {{DIR.VOLUMES}}/{{SERVICE.SONAR_QUBE.NAME}}/Extensions:/opt/sonarqube/extensions
-      - {{DIR.VOLUMES}}/{{SERVICE.SONAR_QUBE.NAME}}/Logs:/opt/sonarqube/logs
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_logs:/opt/sonarqube/logs
     depends_on:
       - postgres.{{SERVICE.SONAR_QUBE.NAME}}
   postgres.{{SERVICE.SONAR_QUBE.NAME}}:
@@ -38,11 +38,16 @@ services:
       POSTGRES_PASSWORD: {{SERVICE.DATABASE.PASSWORD}}
       POSTGRES_DB: postgres.{{SERVICE.SONAR_QUBE.NAME}}
     volumes:
-      - {{DIR.VOLUMES}}/postgres.{{SERVICE.SONAR_QUBE.NAME}}:/var/lib/postgresql
-      - {{DIR.VOLUMES}}/postgres.{{SERVICE.SONAR_QUBE.NAME}}/Data:/var/lib/postgresql/data
+      - postgresql:/var/lib/postgresql
+      - postgresql_data:/var/lib/postgresql/data
 networks:
   {{SERVICE.SONAR_QUBE.NAME}}:
     external: true
-
+volumes:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_logs:
+  postgresql:
+  postgresql_data:
 
 

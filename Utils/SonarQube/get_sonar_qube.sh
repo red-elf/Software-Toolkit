@@ -10,16 +10,6 @@ else
   exit 1
 fi
 
-if [ -n "$2" ]; then
-  
-  PARAM_SONARQUBE_VOLUMES_ROOT="$2"
-
-else
-  
-  echo "ERROR: SonarQube volume root parameter is not provided"
-  exit 1
-fi
-
 if [ -n "$3" ]; then
   
   PARAM_SONARQUBE_PORT="$3"
@@ -60,7 +50,6 @@ if ! touch "$FILE_DOCKER_COMPOSE_PATH"; then
   exit 1
 fi
 
-DIR_VOLUMES="_Volumes"
 SCRIPT_GET_DOCKER="$HERE/../Sys/Programs/get_docker.sh"
 SCRIPT_GET_DOCKER_COMPOSE="$HERE/../Sys/Programs/get_docker_compose.sh"
 
@@ -74,8 +63,6 @@ DOCKER_TAG="10.1.0-community"
 DOCKER_CONTAINER_PREFIX="sonarqube"
 DOCKER_CONTAINER="$DOCKER_CONTAINER_PREFIX.$PARAM_SONARQUBE_NAME"
 DOKCER_IMAGE=$(echo "$DOCKER_CONTAINER" | tr '[:upper:]' '[:lower:]')
-
-DIR_VOLUMES_FULL="$PARAM_SONARQUBE_VOLUMES_ROOT/$DOCKER_CONTAINER"
 
 echo "Docker image: $DOCKER_IMAGE"
 echo "Docker tag: $DOCKER_TAG"
@@ -117,27 +104,6 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
 
     else
 
-      if test -e "$DIR_VOLUMES_FULL"; then
-
-        echo "WARNING: We are about to remove existing volumes directory structure at '$DIR_VOLUMES_FULL'"
-
-        if ! sudo rm -rf "$DIR_VOLUMES_FULL"; then
-
-          echo "ERROR: Could not remove '$DIR_VOLUMES_FULL'"
-          exit 1
-        fi
-      fi
-
-      if mkdir -p "$DIR_VOLUMES_FULL"; then
-
-        echo "SonarQube volumes directory has been created: '$DIR_VOLUMES_FULL'"
-
-      else
-
-        echo "ERROR: SonarQube volumes directory has not been created '$DIR_VOLUMES_FULL'"
-        exit 1
-      fi
-
       echo "Processing the Docker compose proto file: '$FILE_DOCKER_COMPOSE_PROTO' -> '$FILE_DOCKER_COMPOSE'"
 
       if cp "$FILE_DOCKER_COMPOSE_PROTO_PATH" "$FILE_DOCKER_COMPOSE_PATH"; then
@@ -148,8 +114,7 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
            sed -i "s${d}postgres.{{SERVICE.SONAR_QUBE.NAME}}${d}postgres.$DOCKER_CONTAINER${d}" "$FILE_DOCKER_COMPOSE_PATH" && \
            sed -i "s${d}{{SERVICE.SONAR_QUBE.PORTS.PORT_EXPOSED}}${d}$PARAM_SONARQUBE_PORT${d}" "$FILE_DOCKER_COMPOSE_PATH" && \
            sed -i "s${d}{{SERVICE.DATABASE.USER}}${d}$DB_USER${d}" "$FILE_DOCKER_COMPOSE_PATH" && \
-           sed -i "s${d}{{SERVICE.DATABASE.PASSWORD}}${d}$DB_PASSWORD${d}" "$FILE_DOCKER_COMPOSE_PATH" && \
-           sed -i "s${d}{{DIR.VOLUMES}}${d}$DIR_VOLUMES_FULL${d}" "$FILE_DOCKER_COMPOSE_PATH"; then
+           sed -i "s${d}{{SERVICE.DATABASE.PASSWORD}}${d}$DB_PASSWORD${d}" "$FILE_DOCKER_COMPOSE_PATH"; then
           
           echo "Docker compose proto file '$FILE_DOCKER_COMPOSE_PROTO' has been processed into '$FILE_DOCKER_COMPOSE'"
 
@@ -183,19 +148,9 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
         exit 1
       fi
 
-      if docker-compose -f "$FILE_DOCKER_COMPOSE_PATH_FULL" up; then
+      if docker-compose -f "$FILE_DOCKER_COMPOSE_PATH_FULL" up --detach; then
 
         echo "Docker compose executed with success"
-
-        if sudo chmod 777 -R "$DIR_VOLUMES_FULL/$DOCKER_CONTAINER"; then
-
-          echo "Docker volumes permissions updated"
-
-        else
-
-          echo "ERROR: Docker volumes permissions failed to update"
-          exit 1
-        fi
 
       else
 
