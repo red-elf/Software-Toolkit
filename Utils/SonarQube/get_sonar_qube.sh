@@ -39,15 +39,6 @@ FILE_DOCKER_COMPOSE_PROTO="proto.$FILE_DOCKER_COMPOSE"
 FILE_DOCKER_COMPOSE_PATH="$HERE/$FILE_DOCKER_COMPOSE"
 FILE_DOCKER_COMPOSE_PROTO_PATH="$HERE/$FILE_DOCKER_COMPOSE_PROTO"
 
-SCRIPT_REPLACE="replace.sh"
-SCRIPT_REPLACE_PATH="$HERE/../$SCRIPT_REPLACE"
-
-if ! test -e "$SCRIPT_REPLACE_PATH"; then
-
-  echo "ERROR: Not found the replace script '$SCRIPT_REPLACE_PATH'"
-  exit 1
-fi
-
 if ! test -e "$FILE_DOCKER_COMPOSE_PROTO_PATH"; then
 
   echo "ERROR: Not found Docker compose proto file '$FILE_DOCKER_COMPOSE_PROTO'"
@@ -147,20 +138,18 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
         exit 1
       fi
 
-      # PROTO_CONTENT="$(cat $FILE_DOCKER_COMPOSE_PROTO_PATH)"
-
-      # . "$SCRIPT_REPLACE_PATH"
-
       echo "Processing the Docker compose proto file: '$FILE_DOCKER_COMPOSE_PROTO' -> '$FILE_DOCKER_COMPOSE'"
 
       if cp "$FILE_DOCKER_COMPOSE_PROTO_PATH" "$FILE_DOCKER_COMPOSE_PATH"; then
 
-        if sed -i "s/{{SERVICE.SONAR_QUBE.NAME}}/$DOCKER_CONTAINER/" "$FILE_DOCKER_COMPOSE_PATH" && \ 
-          sed -i "s/{{SERVICE.SONAR_QUBE.PORTS.PORT_EXPOSED}}/$PARAM_SONARQUBE_PORT/" "$FILE_DOCKER_COMPOSE_PATH" && \ 
-          sed -i "s/{{SERVICE.DATABASE.PASSWORD}}/$DB_USER/" "$FILE_DOCKER_COMPOSE_PATH" && \ 
-          sed -i "s/{{SERVICE.DATABASE.USER}}/$DB_PASSWORD/" "$FILE_DOCKER_COMPOSE_PATH" && \ 
-          sed -i "s/{{DIR.VOLUMES}}/$DIR_VOLUMES_FULL/" "$FILE_DOCKER_COMPOSE_PATH"; then
+        d='\'
 
+        if sed -i "s${d}{{SERVICE.SONAR_QUBE.NAME}}${d}$DOCKER_CONTAINER${d}" "$FILE_DOCKER_COMPOSE_PATH" && \
+           sed -i "s${d}{{SERVICE.SONAR_QUBE.PORTS.PORT_EXPOSED}}${d}$PARAM_SONARQUBE_PORT${d}" "$FILE_DOCKER_COMPOSE_PATH" && \
+           sed -i "s${d}{{SERVICE.DATABASE.PASSWORD}}${d}$DB_USER${d}" "$FILE_DOCKER_COMPOSE_PATH" && \
+           sed -i "s${d}{{SERVICE.DATABASE.USER}}${d}$DB_PASSWORD${d}" "$FILE_DOCKER_COMPOSE_PATH" && \ 
+           sed -i "s${d}{{DIR.VOLUMES}}${d}$DIR_VOLUMES_FULL${d}" "$FILE_DOCKER_COMPOSE_PATH"; then
+          
           echo "Docker compose proto file '$FILE_DOCKER_COMPOSE_PROTO' has been processed into '$FILE_DOCKER_COMPOSE'"
 
         else
