@@ -70,8 +70,18 @@ echo "Docker container: $DOCKER_CONTAINER"
 
 if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
 
-  # TODO: Check and restart all mandatory containers
+  if sudo sysctl -w vm.max_map_count=524288 && sudo sysctl -w fs.file-max=131072; then
+
+    echo "SonarQube start prepared"
+
+  else
+
+    echo "ERROR: SonarQube start prepare failed"
+    exit 1
+  fi
+
   echo "Checking the container status for: $DOCKER_CONTAINER"
+  
   CONTAINER_STATUS="$( docker container inspect -f '{{.State.Status}}' $DOCKER_CONTAINER )"
 
   if [ "$CONTAINER_STATUS" = "running" ]; then
@@ -79,16 +89,6 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
     echo "SonarQube Docker container is running"
 
   else
-
-    if sudo sysctl -w vm.max_map_count=524288 && sudo sysctl -w fs.file-max=131072; then
-
-      echo "SonarQube start prepared"
-
-    else
-
-      echo "ERROR: SonarQube start prepare failed"
-      exit 1
-    fi
 
     if [ "$CONTAINER_STATUS" = "exited" ]; then
 
