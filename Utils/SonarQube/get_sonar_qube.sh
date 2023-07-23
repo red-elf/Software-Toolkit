@@ -145,9 +145,10 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
         d='\'
 
         if sed -i "s${d}{{SERVICE.SONAR_QUBE.NAME}}${d}$DOCKER_CONTAINER${d}" "$FILE_DOCKER_COMPOSE_PATH" && \
+           sed -i "s${d}postgres.{{SERVICE.SONAR_QUBE.NAME}}${d}postgres.$DOCKER_CONTAINER${d}" "$FILE_DOCKER_COMPOSE_PATH" && \
            sed -i "s${d}{{SERVICE.SONAR_QUBE.PORTS.PORT_EXPOSED}}${d}$PARAM_SONARQUBE_PORT${d}" "$FILE_DOCKER_COMPOSE_PATH" && \
-           sed -i "s${d}{{SERVICE.DATABASE.PASSWORD}}${d}$DB_USER${d}" "$FILE_DOCKER_COMPOSE_PATH" && \
-           sed -i "s${d}{{SERVICE.DATABASE.USER}}${d}$DB_PASSWORD${d}" "$FILE_DOCKER_COMPOSE_PATH" && \ 
+           sed -i "s${d}{{SERVICE.DATABASE.USER}}${d}$DB_USER${d}" "$FILE_DOCKER_COMPOSE_PATH" && \
+           sed -i "s${d}{{SERVICE.DATABASE.PASSWORD}}${d}$DB_PASSWORD${d}" "$FILE_DOCKER_COMPOSE_PATH" && \
            sed -i "s${d}{{DIR.VOLUMES}}${d}$DIR_VOLUMES_FULL${d}" "$FILE_DOCKER_COMPOSE_PATH"; then
           
           echo "Docker compose proto file '$FILE_DOCKER_COMPOSE_PROTO' has been processed into '$FILE_DOCKER_COMPOSE'"
@@ -185,6 +186,16 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
       if docker-compose -f "$FILE_DOCKER_COMPOSE_PATH_FULL" up; then
 
         echo "Docker compose executed with success"
+
+        if sudo chmod 777 -R "$DIR_VOLUMES_FULL/$DOCKER_CONTAINER"; then
+
+          echo "Docker volumes permissions updated"
+
+        else
+
+          echo "ERROR: Docker volumes permissions failed to update"
+          exit 1
+        fi
 
       else
 
