@@ -147,17 +147,33 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
         exit 1
       fi
 
-      PROTO_CONTENT="$(cat $FILE_DOCKER_COMPOSE_PROTO_PATH)"
+      # PROTO_CONTENT="$(cat $FILE_DOCKER_COMPOSE_PROTO_PATH)"
 
-      . "$SCRIPT_REPLACE_PATH"
+      # . "$SCRIPT_REPLACE_PATH"
 
-      echo "Processing the Docker compose proto file: $FILE_DOCKER_COMPOSE_PROTO -> $FILE_DOCKER_COMPOSE"
-      
-      PROCESSED=$(REPLACE "$PROTO_CONTENT" "{{SERVICE.SONAR_QUBE.NAME}}"               "$DOCKER_CONTAINER")
-      PROCESSED=$(REPLACE "$PROCESSED"     "{{SERVICE.SONAR_QUBE.PORTS.PORT_EXPOSED}}" "$PARAM_SONARQUBE_PORT")
-      PROCESSED=$(REPLACE "$PROCESSED"     "{{SERVICE.DATABASE.USER}}"                 "$DB_USER")
-      PROCESSED=$(REPLACE "$PROCESSED"     "{{SERVICE.DATABASE.PASSWORD}}"             "$DB_PASSWORD")
-                  REPLACE "$PROCESSED"     "{{DIR.VOLUMES}}"                           "$DIR_VOLUMES_FULL"     "$FILE_DOCKER_COMPOSE_PATH"
+      echo "Processing the Docker compose proto file: '$FILE_DOCKER_COMPOSE_PROTO' -> '$FILE_DOCKER_COMPOSE'"
+
+      if cp "$FILE_DOCKER_COMPOSE_PROTO_PATH" "$FILE_DOCKER_COMPOSE_PATH"; then
+
+        if sed -i "s/{{SERVICE.SONAR_QUBE.NAME}}/$DOCKER_CONTAINER/" "$FILE_DOCKER_COMPOSE_PATH" && \ 
+          sed -i "s/{{SERVICE.SONAR_QUBE.PORTS.PORT_EXPOSED}}/$PARAM_SONARQUBE_PORT/" "$FILE_DOCKER_COMPOSE_PATH" && \ 
+          sed -i "s/{{SERVICE.DATABASE.PASSWORD}}/$DB_USER/" "$FILE_DOCKER_COMPOSE_PATH" && \ 
+          sed -i "s/{{SERVICE.DATABASE.USER}}/$DB_PASSWORD/" "$FILE_DOCKER_COMPOSE_PATH" && \ 
+          sed -i "s/{{DIR.VOLUMES}}/$DIR_VOLUMES_FULL/" "$FILE_DOCKER_COMPOSE_PATH"; then
+
+          echo "Docker compose proto file '$FILE_DOCKER_COMPOSE_PROTO' has been processed into '$FILE_DOCKER_COMPOSE'"
+
+        else
+
+          echo "ERROR: Failed to process Docker compose proto file '$FILE_DOCKER_COMPOSE_PROTO'"
+          exit 1
+        fi
+
+      else
+
+        echo "ERROR: Could not copy $FILE_DOCKER_COMPOSE_PROTO -> $FILE_DOCKER_COMPOSE"
+        exit 1
+      fi
 
       FILE_DOCKER_COMPOSE_PATH_FULL="$CURRENT/$FILE_DOCKER_COMPOSE_PATH"
 
