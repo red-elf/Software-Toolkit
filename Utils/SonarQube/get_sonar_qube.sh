@@ -23,6 +23,7 @@ fi
 CURRENT="$(pwd)"
 HERE="$(dirname -- "$0")"
 
+FILE_SYSCTL_CONF="/etc/sysctl.conf"
 FILE_DOCKER_COMPOSE="docker-compose.yml"
 FILE_DOCKER_COMPOSE_PROTO="proto.$FILE_DOCKER_COMPOSE"
 
@@ -70,9 +71,57 @@ echo "Docker container: $DOCKER_CONTAINER"
 
 if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
 
-  if sudo sysctl -w vm.max_map_count=524288 && sudo sysctl -w fs.file-max=131072; then
+  FILE_MAX="131072"
+  MAX_MAP_COUNT="524288"
+
+  if sudo sysctl -w "vm.max_map_count=$MAX_MAP_COUNT" && sudo sysctl -w "fs.file-max=$FILE_MAX"; then
 
     echo "SonarQube start prepared"
+
+    if test -e "$FILE_SYSCTL_CONF"; then
+
+      if cat "$FILE_SYSCTL_CONF" | grep "vm.max_map_count="; then
+
+        echo "WARNING: vm.max_map_count is already set on the system level"
+
+      else
+
+        echo "Please provide your super-user password to complete the SonarQube 'vm.max_map_count' system configuration"
+
+        if su -c "echo vm.max_map_count=$MAX_MAP_COUNT >> $FILE_SYSCTL_CONF"; then
+
+          echo "vm.max_map_count is set with the success"
+
+        else
+
+          echo "ERROR: vm.max_map_count was not set with the success"
+          exit 1
+        fi
+      fi
+
+      if cat "$FILE_SYSCTL_CONF" | grep "fs.file-max="; then
+
+        echo "WARNING: fs.file-max is already set on the system level"
+
+      else
+
+        echo "Please provide your super-user password to complete the SonarQube 'fs.file-max' system configuration"
+
+        if su -c "echo fs.file-max=$FILE_MAX >> $FILE_SYSCTL_CONF"; then
+
+          echo "fs.file-max is set with the success"
+
+        else
+
+          echo "ERROR: fs.file-max was not set with the success"
+          exit 1
+        fi
+      fi
+
+    else
+
+      echo "WARNING: System does not have the '$FILE_SYSCTL_CONF' configuration file"
+    fi
 
   else
 
