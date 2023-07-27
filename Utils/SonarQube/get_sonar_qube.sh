@@ -20,6 +20,42 @@ else
   exit 1
 fi
 
+DB_USER="sonar"
+DB_PASSWORD="sonarqube"
+
+ADMIN_USER="admin"
+ADMIN_PASSWORD="admin"
+
+if [ -n "$3" ]; then
+  
+  DB_USER="$3"
+
+  if [ -n "$4" ]; then
+  
+    DB_PASSWORD="$4"
+
+  else
+
+    echo "ERROR: Password parameter is mandatory when DB user is provided"
+    exit 1
+  fi
+
+  if [ -n "$5" ]; then
+  
+    ADMIN_USER="$5"
+
+    if [ -n "$6" ]; then
+  
+      ADMIN_PASSWORD="$6"
+
+    else
+
+      echo "ERROR: Password parameter is mandatory when ADMIN user is provided"
+      exit 1
+    fi
+  fi
+fi
+
 CURRENT="$(pwd)"
 HERE="$(dirname -- "$0")"
 
@@ -55,8 +91,6 @@ SCRIPT_GET_DOCKER="$HERE/../Sys/Programs/get_docker.sh"
 SCRIPT_GET_DOCKER_COMPOSE="$HERE/../Sys/Programs/get_docker_compose.sh"
 
 DB="Sonarqube.$PARAM_SONARQUBE_NAME"
-DB_USER="sonar"
-DB_PASSWORD="sonarqube"
 DB_DATA_DIRECTORY="$HERE/../../_Databases/Postgres/$DB"
 
 DOCKER_IMAGE="sonarqube"
@@ -159,9 +193,9 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
 
         d='\'
 
-        if sed -i "s${d}{{SERVICE.SONAR_QUBE.NAME}}${d}$DOCKER_CONTAINER${d}" "$FILE_DOCKER_COMPOSE_PATH" && \
-           sed -i "s${d}postgres.{{SERVICE.SONAR_QUBE.NAME}}${d}postgres.$DOCKER_CONTAINER${d}" "$FILE_DOCKER_COMPOSE_PATH" && \
-           sed -i "s${d}{{SERVICE.SONAR_QUBE.PORTS.PORT_EXPOSED}}${d}$PARAM_SONARQUBE_PORT${d}" "$FILE_DOCKER_COMPOSE_PATH" && \
+        if sed -i "s${d}{{SERVICE.SONARQUBE.NAME}}${d}$DOCKER_CONTAINER${d}" "$FILE_DOCKER_COMPOSE_PATH" && \
+           sed -i "s${d}postgres.{{SERVICE.SONARQUBE.NAME}}${d}postgres.$DOCKER_CONTAINER${d}" "$FILE_DOCKER_COMPOSE_PATH" && \
+           sed -i "s${d}{{SERVICE.SONARQUBE.PORTS.PORT_EXPOSED}}${d}$PARAM_SONARQUBE_PORT${d}" "$FILE_DOCKER_COMPOSE_PATH" && \
            sed -i "s${d}{{SERVICE.DATABASE.USER}}${d}$DB_USER${d}" "$FILE_DOCKER_COMPOSE_PATH" && \
            sed -i "s${d}{{SERVICE.DATABASE.PASSWORD}}${d}$DB_PASSWORD${d}" "$FILE_DOCKER_COMPOSE_PATH"; then
           

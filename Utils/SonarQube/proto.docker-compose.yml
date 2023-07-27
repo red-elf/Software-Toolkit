@@ -1,21 +1,21 @@
 version: "3.9"
 
 services:
-  {{SERVICE.SONAR_QUBE.NAME}}:
+  {{SERVICE.SONARQUBE.NAME}}:
     image: library/sonarqube:10.1.0-community
-    container_name: {{SERVICE.SONAR_QUBE.NAME}}
-    hostname: {{SERVICE.SONAR_QUBE.NAME}}
+    container_name: {{SERVICE.SONARQUBE.NAME}}
+    hostname: {{SERVICE.SONARQUBE.NAME}}
     restart: always
     ports:
-      - 0.0.0.0:{{SERVICE.SONAR_QUBE.PORTS.PORT_EXPOSED}}:9000
+      - 0.0.0.0:{{SERVICE.SONARQUBE.PORTS.PORT_EXPOSED}}:9000
     networks:
-      - {{SERVICE.SONAR_QUBE.NAME}}
+      - {{SERVICE.SONARQUBE.NAME}}
     ulimits:
       nofile:
         soft: 65536
         hard: 65536
     environment:
-      SONAR_JDBC_URL: jdbc:postgresql://postgres.{{SERVICE.SONAR_QUBE.NAME}}:5432/postgres.{{SERVICE.SONAR_QUBE.NAME}}
+      SONAR_JDBC_URL: jdbc:postgresql://postgres.{{SERVICE.SONARQUBE.NAME}}:5432/postgres.{{SERVICE.SONARQUBE.NAME}}
       SONAR_JDBC_USERNAME: {{SERVICE.DATABASE.USER}}
       SONAR_JDBC_PASSWORD: {{SERVICE.DATABASE.PASSWORD}}
     volumes:
@@ -23,25 +23,25 @@ services:
       - sonarqube_extensions:/opt/sonarqube/extensions
       - sonarqube_logs:/opt/sonarqube/logs
     depends_on:
-      - postgres.{{SERVICE.SONAR_QUBE.NAME}}
-  postgres.{{SERVICE.SONAR_QUBE.NAME}}:
+      - postgres.{{SERVICE.SONARQUBE.NAME}}
+  postgres.{{SERVICE.SONARQUBE.NAME}}:
     image: library/postgres:13.3
-    container_name: postgres.{{SERVICE.SONAR_QUBE.NAME}}
-    hostname: postgres.{{SERVICE.SONAR_QUBE.NAME}}
+    container_name: postgres.{{SERVICE.SONARQUBE.NAME}}
+    hostname: postgres.{{SERVICE.SONARQUBE.NAME}}
     restart: always
     ports:
       - 127.0.0.1:5432:5432
     networks:
-      - {{SERVICE.SONAR_QUBE.NAME}}
+      - {{SERVICE.SONARQUBE.NAME}}
     environment:
       POSTGRES_USER: {{SERVICE.DATABASE.USER}}
       POSTGRES_PASSWORD: {{SERVICE.DATABASE.PASSWORD}}
-      POSTGRES_DB: postgres.{{SERVICE.SONAR_QUBE.NAME}}
+      POSTGRES_DB: postgres.{{SERVICE.SONARQUBE.NAME}}
     volumes:
       - postgresql:/var/lib/postgresql
       - postgresql_data:/var/lib/postgresql/data
 networks:
-  {{SERVICE.SONAR_QUBE.NAME}}:
+  {{SERVICE.SONARQUBE.NAME}}:
     external: true
 volumes:
   sonarqube_data:
