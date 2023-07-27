@@ -2,7 +2,7 @@
 
 if [ -n "$1" ]; then
   
-  PARAM_SONARQUBE_NAME="$1"
+  SONARQUBE_NAME="$1"
 
 else
   
@@ -12,7 +12,7 @@ fi
 
 if [ -n "$2" ]; then
   
-  PARAM_SONARQUBE_PORT="$2"
+  SONARQUBE_PORT="$2"
 
 else
   
@@ -90,13 +90,13 @@ fi
 SCRIPT_GET_DOCKER="$HERE/../Sys/Programs/get_docker.sh"
 SCRIPT_GET_DOCKER_COMPOSE="$HERE/../Sys/Programs/get_docker_compose.sh"
 
-DB="Sonarqube.$PARAM_SONARQUBE_NAME"
+DB="Sonarqube.$SONARQUBE_NAME"
 DB_DATA_DIRECTORY="$HERE/../../_Databases/Postgres/$DB"
 
 DOCKER_IMAGE="sonarqube"
 DOCKER_TAG="10.1.0-community"
 DOCKER_CONTAINER_PREFIX="sonarqube"
-DOCKER_CONTAINER="$DOCKER_CONTAINER_PREFIX.$PARAM_SONARQUBE_NAME"
+DOCKER_CONTAINER="$DOCKER_CONTAINER_PREFIX.$SONARQUBE_NAME"
 DOKCER_IMAGE=$(echo "$DOCKER_CONTAINER" | tr '[:upper:]' '[:lower:]')
 
 echo "Docker image: $DOCKER_IMAGE"
@@ -195,7 +195,7 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
 
         if sed -i "s${d}{{SERVICE.SONARQUBE.NAME}}${d}$DOCKER_CONTAINER${d}" "$FILE_DOCKER_COMPOSE_PATH" && \
            sed -i "s${d}postgres.{{SERVICE.SONARQUBE.NAME}}${d}postgres.$DOCKER_CONTAINER${d}" "$FILE_DOCKER_COMPOSE_PATH" && \
-           sed -i "s${d}{{SERVICE.SONARQUBE.PORTS.PORT_EXPOSED}}${d}$PARAM_SONARQUBE_PORT${d}" "$FILE_DOCKER_COMPOSE_PATH" && \
+           sed -i "s${d}{{SERVICE.SONARQUBE.PORTS.PORT_EXPOSED}}${d}$SONARQUBE_PORT${d}" "$FILE_DOCKER_COMPOSE_PATH" && \
            sed -i "s${d}{{SERVICE.DATABASE.USER}}${d}$DB_USER${d}" "$FILE_DOCKER_COMPOSE_PATH" && \
            sed -i "s${d}{{SERVICE.DATABASE.PASSWORD}}${d}$DB_PASSWORD${d}" "$FILE_DOCKER_COMPOSE_PATH"; then
           
