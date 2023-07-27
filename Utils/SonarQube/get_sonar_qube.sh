@@ -10,9 +10,9 @@ else
   exit 1
 fi
 
-if [ -n "$3" ]; then
+if [ -n "$2" ]; then
   
-  PARAM_SONARQUBE_PORT="$3"
+  PARAM_SONARQUBE_PORT="$2"
 
 else
   
