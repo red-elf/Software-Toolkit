@@ -187,8 +187,12 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
 
     else
 
-      # TODO: Check for volumes and remove if they exist
-
+      docker volume rm "sonarqube_main.$DOCKER_CONTAINER.data" || true
+      docker volume rm "sonarqube_main.$DOCKER_CONTAINER.logs" || true
+      docker volume rm "sonarqube_main.$DOCKER_CONTAINER.extensions" || true
+      docker volume rm "sonarqube_postgres.$DOCKER_CONTAINER" || true
+      docker volume rm "sonarqube_postgres.$DOCKER_CONTAINER.data" || true
+      
       echo "Processing the Docker compose proto file: '$FILE_DOCKER_COMPOSE_PROTO' -> '$FILE_DOCKER_COMPOSE'"
 
       if cp "$FILE_DOCKER_COMPOSE_PROTO_PATH" "$FILE_DOCKER_COMPOSE_PATH"; then
