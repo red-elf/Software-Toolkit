@@ -240,7 +240,7 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
               sleep 1
               ELAPSED=$((ELAPSED + 1))
 
-              if [ $ELAPSED == 60 ]; then
+              if [ $ELAPSED = 60 ]; then
 
                 echo "ERROR: Timeout"s
                 exit 1
