@@ -232,6 +232,8 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
 
         if [ -n "$ADMIN_PASSWORD" ]; then
 
+          echo "Waiting for SonarQube to boot-up..."
+
           while ! docker logs "$DOCKER_CONTAINER" | grep "SonarQube is operational";
           do
               
@@ -245,7 +247,7 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
               fi
           done
   
-          if curl -u admin:admin "http://127.0.0.1:$PORT_EXPOSED/api/users/change_password?login=admin&previousPassword=admin&password=$ADMIN_PASSWORD"; then
+          if curl -u admin:admin "http://127.0.0.1:$SONARQUBE_PORT/api/users/change_password?login=admin&previousPassword=admin&password=$ADMIN_PASSWORD"; then
 
             echo "The default admin password has been updated"
 
