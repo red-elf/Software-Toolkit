@@ -241,6 +241,9 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
 
         echo "Docker compose executed with success"
 
+        # TODO:
+        # curl -u admin:Test12345 "http://milosvasic-standard-pc-q35-ich9-2009.local:9102/api/users/change_password?login=admin&previousPassword=Test12345&password=Test2467"
+
       else
 
         echo "ERROR: Docker compose failed"
