@@ -232,7 +232,18 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
 
         if [ -n "$ADMIN_PASSWORD" ]; then
 
-          # TODO: Wait until SonarQube is operational
+          while ! docker logs "$DOCKER_CONTAINER" | grep "SonarQube is operational";
+          do
+              
+              sleep 1
+              ELAPSED=$((ELAPSED + 1))
+
+              if [ $ELAPSED == 60 ]; then
+
+                echo "ERROR: Timeout"s
+                exit 1
+              fi
+          done
   
           if curl -u admin:admin "http://127.0.0.1:$PORT_EXPOSED/api/users/change_password?login=admin&previousPassword=admin&password=$ADMIN_PASSWORD"; then
 
