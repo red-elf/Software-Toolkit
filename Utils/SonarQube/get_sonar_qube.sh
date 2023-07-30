@@ -20,12 +20,6 @@ else
   exit 1
 fi
 
-DB_USER="sonar"
-DB_PASSWORD="sonarqube"
-
-ADMIN_USER="admin"
-ADMIN_PASSWORD="admin"
-
 if [ -n "$3" ]; then
   
   DB_USER="$3"
@@ -42,18 +36,13 @@ if [ -n "$3" ]; then
 
   if [ -n "$5" ]; then
   
-    ADMIN_USER="$5"
-
-    if [ -n "$6" ]; then
-  
-      ADMIN_PASSWORD="$6"
-
-    else
-
-      echo "ERROR: Password parameter is mandatory when ADMIN user is provided"
-      exit 1
-    fi
+    ADMIN_PASSWORD="$5"
   fi
+
+else
+
+  echo "ERROR: DB user parameter is mandatory"
+  exit 1
 fi
 
 CURRENT="$(pwd)"
@@ -241,8 +230,20 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
 
         echo "Docker compose executed with success"
 
-        # TODO:
-        # curl -u admin:Test12345 "http://milosvasic-standard-pc-q35-ich9-2009.local:9102/api/users/change_password?login=admin&previousPassword=Test12345&password=Test2467"
+        if [ -n "$ADMIN_PASSWORD" ]; then
+
+          # TODO: Wait until SonarQube is operational
+  
+          if curl -u admin:admin "http://127.0.0.1:$PORT_EXPOSED/api/users/change_password?login=admin&previousPassword=admin&password=$ADMIN_PASSWORD"; then
+
+            echo "The default admin password has been updated"
+
+          else
+
+            echo "ERROR: Could not set the admin password"
+            exit 1
+          fi
+        fi
 
       else
 
