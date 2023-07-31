@@ -53,11 +53,11 @@ FILE_DOCKER_COMPOSE="docker-compose.yml"
 FILE_DOCKER_COMPOSE_PROTO="proto.$FILE_DOCKER_COMPOSE"
 
 FILE_DOCKER_COMPOSE_PATH="$HERE/$FILE_DOCKER_COMPOSE"
-FILE_DOCKER_COMPOSE_PROTO_PATH="$CURRENT/../../Definitions/main/docker/$FILE_DOCKER_COMPOSE_PROTO"
+FILE_DOCKER_COMPOSE_PROTO_PATH="$CURRENT/Toolkit/Definitions/main/docker/sonarqube/$FILE_DOCKER_COMPOSE_PROTO"
 
 if ! test -e "$FILE_DOCKER_COMPOSE_PROTO_PATH"; then
 
-  echo "ERROR: Not found Docker compose proto file '$FILE_DOCKER_COMPOSE_PROTO'"
+  echo "ERROR: Not found Docker compose proto file '$FILE_DOCKER_COMPOSE_PROTO_PATH'"
   exit 1
 fi
 
