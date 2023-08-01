@@ -10,3 +10,6 @@
 [submodule "Definitions/main/software"]
 	path = Definitions/main/software
 	url = git@github.com:Server-Factory/Software-Definitions.git
+[submodule "Utils/VSCode/Installable"]
+	path = Utils/VSCode/Installable
+	url = git@github.com:red-elf/Installable.git
