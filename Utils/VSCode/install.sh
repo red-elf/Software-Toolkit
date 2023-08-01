@@ -4,7 +4,7 @@ HERE="$(pwd)"
 PARAMS="$HERE/params.sh"
 INSTALL_SCRIPT="Installable/install.sh"
 
-if ! test -e "$PARAMS"
+if ! test -e "$PARAMS"; then
 
     echo "ERROR: No parameters file available '$PARAMS'"
     exit 1
