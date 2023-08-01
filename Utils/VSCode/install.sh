@@ -1,6 +1,8 @@
 #!/bin/bash
 
 HERE="$(pwd)"
+
+# FIXME: Fix the path >> ERROR: No parameters file available '/home/milosvasic/Projects/HelixTrack/Core/params.sh'
 PARAMS="$HERE/params.sh"
 INSTALL_SCRIPT="Installable/install.sh"
 
