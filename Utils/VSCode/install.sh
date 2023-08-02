@@ -2,7 +2,7 @@
 
 HERE="$(dirname -- "$0")"
 PARAMS="$HERE/params.sh"
-INSTALL_SCRIPT="Installable/install.sh"
+INSTALL_SCRIPT="$HERE/Installable/install.sh"
 
 if ! test -e "$PARAMS"; then
 
