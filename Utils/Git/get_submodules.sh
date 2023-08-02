@@ -23,7 +23,8 @@ DO_FILE() {
     
     CONTENT=$(cat "$FILE")
 
-    echo "$CONTENT" | awk '{split($0, a, /=/); split(a[1], b, /\./); print b[1], b[2], b[3], a[2]}'
+    # TODO: Parsing
+    echo "$CONTENT" | awk '{split($0, a, /=/); split(a[1], b, /\./); print b[0], b[2], b[3], a[2]}'
 }
 
 # shellcheck disable=SC2044
