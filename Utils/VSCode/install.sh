@@ -1,9 +1,7 @@
 #!/bin/bash
 
-HERE="$(pwd)"
-
-# FIXME: Fix the path >> ERROR: No parameters file available '/home/milosvasic/Projects/HelixTrack/Core/params.sh'
-PARAMS="$HERE/params.sh"
+# HERE="$(dirname -- "$0")"
+PARAMS="params.sh"
 INSTALL_SCRIPT="Installable/install.sh"
 
 if ! test -e "$PARAMS"; then
@@ -12,7 +10,8 @@ if ! test -e "$PARAMS"; then
     exit 1
 fi
 
-, "$PARAMS"
+# shellcheck disable=SC1090
+. "$PARAMS"
 
 if [ -n "$1" ]; then
 
