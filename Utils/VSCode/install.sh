@@ -24,6 +24,7 @@ if [ -n "$1" ]; then
         exit 1
     fi
 
+    # shellcheck disable=SC1090
     . "$PARAMS_OVERRIDES"
 
     echo "Parameters overrides file loaded from: '$PARAMS_OVERRIDES'"
