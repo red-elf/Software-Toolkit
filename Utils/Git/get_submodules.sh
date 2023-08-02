@@ -18,11 +18,12 @@ DO_FILE() {
     fi
 
     FILE="$1"
-    echo "Processing Git modules file: $1"
+    
+    echo "Processing Git modules file: $FILE"
     
     CONTENT="$(cat $FILE)"
 
-    echo ">>> $CONTENT"
+    echo "$CONTENT" | awk '{split($0, a, /=/); split(a[1], b, /\./); print b[1], b[2], b[3], a[2]}'
 }
 
 # shellcheck disable=SC2044
