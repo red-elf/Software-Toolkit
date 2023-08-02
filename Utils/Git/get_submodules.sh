@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LOCATION="."
+LOCATION="$(pwd)"
 
 if [ -n "$1" ]; then
 
