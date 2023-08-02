@@ -11,7 +11,18 @@ echo "We are going to gather Git submodules information from: $LOCATION"
 
 DO_FILE() {
 
-    echo ">>> $1"
+    if [ -z "$1" ]; then
+
+        echo "ERROR: File path is mandatory parameter for the function"
+        exit 1
+    fi
+
+    FILE="$1"
+    echo "Processing Git modules file: $1"
+    
+    CONTENT="$(cat $FILE)"
+
+    echo ">>> $CONTENT"
 }
 
 # shellcheck disable=SC2044
@@ -20,6 +31,3 @@ do
     
     DO_FILE "$FILE"
 done;
-
-echo "ERROR: Not yet implemented"
-exit 1
