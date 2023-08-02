@@ -21,7 +21,7 @@ DO_FILE() {
     
     echo "Processing Git modules file: $FILE"
     
-    CONTENT="$(cat $FILE)"
+    CONTENT=$(cat "$FILE")
 
     echo "$CONTENT" | awk '{split($0, a, /=/); split(a[1], b, /\./); print b[1], b[2], b[3], a[2]}'
 }
