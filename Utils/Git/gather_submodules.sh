@@ -75,6 +75,12 @@ DO_SUBMODULE() {
 
     if ! test -e "$FILE_NAME_FULL"; then
 
+        if ! touch "$FILE_NAME_FULL"; then
+
+            echo "ERROR: Could not create file '$FILE_NAME'"
+            exit 1
+        fi
+
         cat > "$FILE_NAME_FULL" <<EOL
 #!/bin/bash
 
