@@ -68,6 +68,7 @@ DO_FILE() {
     REPO=""
     SUBMODULE=""    
     SUBMODULE_OPENING="[submodule"
+    SUBMODULE_URL_MARK="url = "
     
     CONTENT=$(cat "$FILE")
 
@@ -77,11 +78,14 @@ DO_FILE() {
 
         if check_prefixes "$ITEM" "$SUBMODULE_OPENING"; then
 
-            echo ">>>> $ITEM"
+            echo "Submodule: $ITEM"
 
         else
 
-            echo ">> $ITEM" 
+            if check_contains "$ITEM" "$SUBMODULE_URL_MARK"; then
+
+                echo "Url: $ITEM" 
+            fi
         fi
     done;
 }
