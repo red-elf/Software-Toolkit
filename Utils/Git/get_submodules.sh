@@ -23,8 +23,12 @@ DO_FILE() {
     
     CONTENT=$(cat "$FILE")
 
-    # TODO: Parsing
-    echo "$CONTENT" | awk '{split($0, a, /=/); split(a[1], b, /\./); print b[0], b[2], b[3], a[2]}'
+    IFS=$'\n'
+
+    for ITEM in $CONTENT; do
+
+        echo ">> $ITEM"
+    done;
 }
 
 # shellcheck disable=SC2044
