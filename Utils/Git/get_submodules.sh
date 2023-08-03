@@ -90,8 +90,6 @@ DO_FILE() {
         if check_prefixes "$ITEM" "$SUBMODULE_OPENING"; then
 
             SUBMODULE=$(echo "$ITEM" | grep -o -P '(?<=").*(?=")')
-            
-            echo "Submodule: $SUBMODULE"
 
         else
 
@@ -99,7 +97,10 @@ DO_FILE() {
 
                 REPO=$(echo "$ITEM" | grep -o -P '(?<=url = ).*(?=)')
 
-                echo "Url: $REPO" 
+                DO_SUBMODULE "$SUBMODULE" "$REPO"
+
+                SUBMODULE=""
+                REPO=""
             fi
         fi
     done;
