@@ -61,6 +61,14 @@ DO_SUBMODULE() {
     SUBMODULE="$1"
     REPO="$2"
 
+    if check_prefixes "$REPO" "https://"; then
+
+        # FIXME: Parse this
+
+        echo "ERROR: The https repo is not supported '$REPO'"
+        exit 1
+    fi
+
     NAME=$(echo "$REPO" | grep -o -P '(?<=/).*(?=.git)')
 
     if [ "$NAME" = "" ]; then
