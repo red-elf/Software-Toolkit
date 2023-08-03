@@ -62,8 +62,19 @@ DO_SUBMODULE() {
     REPO="$2"
 
     NAME=$(echo "$REPO" | grep -o -P '(?<=/).*(?=.git)')
+    FILE_NAME="$NAME.submodule"
+    FILE_NAME_FULL="$DIR_SUBMODULES_FULL/$FILE_NAME"
     
     echo "Processing Git submodule Name='$NAME', Submodule='$SUBMODULE', Repo='$REPO'"
+
+    if ! test -e "$FILE_NAME_FULL"; then
+
+        cat > "$FILE_NAME_FULL" <<EOL
+#!/bin/bash
+
+REPO="$REPO"
+EOL
+    fi
 }
 
 DO_FILE() {
