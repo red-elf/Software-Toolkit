@@ -86,7 +86,9 @@ DO_FILE() {
 
             if check_contains "$ITEM" "$SUBMODULE_URL_MARK"; then
 
-                echo "Url: $ITEM" 
+                REPO=$(echo "$ITEM" | grep -o -P '(?<=url = ).*(?=)')
+
+                echo "Url: $REPO" 
             fi
         fi
     done;
