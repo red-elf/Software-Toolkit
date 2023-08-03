@@ -1,6 +1,8 @@
 #!/bin/bash
 
 LOCATION="$(pwd)"
+DIR_SUBMODULES="_Submodules"
+DIR_SUBMODULES_FULL="$LOCATION/$DIR_SUBMODULES"
 
 if [ -n "$1" ]; then
 
@@ -8,6 +10,15 @@ if [ -n "$1" ]; then
 fi
 
 echo "We are going to gather Git submodules information from: $LOCATION"
+
+if ! test -e "$DIR_SUBMODULES_FULL"; then
+
+    if ! mkdir -p "$DIR_SUBMODULES_FULL"; then
+
+        echo "ERROR: Could not create directory '$DIR_SUBMODULES_FULL'"
+        exit 1
+    fi
+fi
 
 check_prefixes () {
     value=$1
