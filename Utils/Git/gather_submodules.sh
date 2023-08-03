@@ -62,6 +62,12 @@ DO_SUBMODULE() {
     REPO="$2"
 
     NAME=$(echo "$REPO" | grep -o -P '(?<=/).*(?=.git)')
+
+    if [ "$NAME" = "" ]; then
+
+        NAME=$(echo "$REPO" | grep -o -P '(?<=/).*(?=)')
+    fi
+
     FILE_NAME="$NAME.submodule"
     FILE_NAME_FULL="$DIR_SUBMODULES_FULL/$FILE_NAME"
     
