@@ -60,8 +60,10 @@ DO_SUBMODULE() {
 
     SUBMODULE="$1"
     REPO="$2"
+
+    NAME=$(echo "$REPO" | grep -o -P '(?<=/).*(?=.git)')
     
-    echo "Processing Git submodule '$SUBMODULE': $REPO"
+    echo "Processing Git submodule Name='$NAME', Submodule='$SUBMODULE', Repo='$REPO'"
 }
 
 DO_FILE() {
