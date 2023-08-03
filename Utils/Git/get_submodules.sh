@@ -78,7 +78,9 @@ DO_FILE() {
 
         if check_prefixes "$ITEM" "$SUBMODULE_OPENING"; then
 
-            echo "Submodule: $ITEM"
+            SUBMODULE=$(echo "$ITEM" | grep -o -P '(?<=").*(?=")')
+            
+            echo "Submodule: $SUBMODULE"
 
         else
 
