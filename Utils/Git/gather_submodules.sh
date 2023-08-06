@@ -61,19 +61,17 @@ DO_SUBMODULE() {
     SUBMODULE="$1"
     REPO="$2"
 
-    if check_prefixes "$REPO" "https://"; then
+    NAME=$(echo "$REPO" | sed 's:.*/::' | grep -o -P '(?<=).*(?=.git)')
+    
+    if [ "$NAME" = "" ]; then
 
-        # FIXME: Parse this
-
-        echo "ERROR: The https repo is not supported '$REPO'"
-        exit 1
+        NAME=$(echo "$REPO" | sed 's:.*/::' | grep -o -P '(?<=/).*(?=)')
     fi
-
-    NAME=$(echo "$REPO" | grep -o -P '(?<=/).*(?=.git)')
 
     if [ "$NAME" = "" ]; then
 
-        NAME=$(echo "$REPO" | grep -o -P '(?<=/).*(?=)')
+        echo "ERROR: No name obtained for repo '$REPO'"
+        exit 1
     fi
 
     FILE_NAME="$NAME.submodule"
