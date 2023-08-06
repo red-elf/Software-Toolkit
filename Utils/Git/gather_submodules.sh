@@ -95,6 +95,7 @@ DO_SUBMODULE() {
         cat > "$FILE_NAME_FULL" <<EOL
 #!/bin/bash
 
+NAME="$NAME"
 REPO="$REPO"
 EOL
     fi
