@@ -64,10 +64,10 @@ DO_SUBMODULE() {
         exit 1
     fi
 
-    SUBMODULE="$1"
     REPO="$2"
+    SUBMODULE="$1"
     SUBMODULE_PATH="$3"
-    
+
     NAME=$(echo "$REPO" | sed 's:.*/::' | grep -o -P '(?<=).*(?=.git)')
     
     if [ "$NAME" = "" ]; then
@@ -106,12 +106,11 @@ NAME="$NAME"
 REPO="$REPO"
 EOL
 
-    echo "Submodule file has been written: $FILE_NAME_FULL"
+    echo "Git submodule file has been written: $FILE_NAME_FULL"
 
     fi
 
     # TODO: Init submodule if needed and point to it
-    echo "Git submodule path: $SUBMODULE_PATH"
 }
 
 DO_FILE() {
@@ -129,6 +128,7 @@ DO_FILE() {
     REPO=""
     SUBMODULE=""
     SUBMODULE_PATH=""
+    
     SUBMODULE_OPENING="[submodule"
     SUBMODULE_URL_MARK="url = "
     SUBMODULE_PATH_MARK="path = "
@@ -139,35 +139,33 @@ DO_FILE() {
 
     for ITEM in $CONTENT; do
 
-        if check_prefixes "$ITEM" "$SUBMODULE_OPENING"; then
+        if [ ! "$ITEM" = ""  ]; then
 
-            SUBMODULE=$(echo "$ITEM" | grep -o -P '(?<=").*(?=")')
-        fi
+            if check_prefixes "$ITEM" "$SUBMODULE_OPENING"; then
 
-        if check_contains "$ITEM" "$SUBMODULE_URL_MARK"; then
+                SUBMODULE=$(echo "$ITEM" | grep -o -P '(?<=").*(?=")')
+            fi
 
-            REPO=$(echo "$ITEM" | grep -o -P '(?<=url = ).*(?=)')
-        fi
+            if check_contains "$ITEM" "$SUBMODULE_URL_MARK"; then
 
-        if check_contains "$ITEM" "$SUBMODULE_PATH_MARK"; then
+                REPO=$(echo "$ITEM" | grep -o -P '(?<=url = ).*(?=)')
+            fi
 
-            SUBMODULE_PATH=$(echo "$ITEM" | grep -o -P '(?<=path = ).*(?=)')
+            if check_contains "$ITEM" "$SUBMODULE_PATH_MARK"; then
+
+                SUBMODULE_PATH=$(echo "$ITEM" | grep -o -P '(?<=path = ).*(?=)')
+            fi
+
+            if [ ! "$SUBMODULE" = "" ] && [ ! "$REPO" = "" ] && [ ! "$SUBMODULE_PATH" = "" ]; then
+
+                DO_SUBMODULE "$SUBMODULE" "$REPO" "$SUBMODULE_PATH"
+
+                REPO=""
+                SUBMODULE=""
+                SUBMODULE_PATH=""
+            fi
         fi
     done;
-
-    if [ ! "$SUBMODULE" = "" ] && [ ! "$REPO" = "" ] && [ ! "$SUBMODULE_PATH" = "" ]; then
-
-        DO_SUBMODULE "$SUBMODULE" "$REPO" "$SUBMODULE_PATH"
-
-        REPO=""
-        SUBMODULE=""
-        SUBMODULE_PATH=""
-
-    else
-
-        echo "ERROR: Missing property(es), SUBMODULE=$SUBMODULE, REPO=$REPO, PATH=$SUBMODULE_PATH"
-        exit 1
-    fi
 }
 
 # shellcheck disable=SC2044
