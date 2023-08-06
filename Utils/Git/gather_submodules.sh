@@ -66,19 +66,19 @@ DO_SUBMODULE() {
 
     SUBMODULE="$1"
     REPO="$2"
-    PATH="$3"
-
-    # NAME=$(echo "$REPO" | sed 's:.*/::' | grep -o -P '(?<=).*(?=.git)')
+    SUBMODULE_PATH="$3"
     
-    # if [ "$NAME" = "" ]; then
+    NAME=$(echo "$REPO" | sed 's:.*/::' | grep -o -P '(?<=).*(?=.git)')
+    
+    if [ "$NAME" = "" ]; then
 
-    #     NAME=$(echo "$REPO" | sed 's:.*/::' | grep -o -P '(?<=/).*(?=)')
-    # fi
+        NAME=$(echo "$REPO" | sed 's:.*/::' | grep -o -P '(?<=/).*(?=)')
+    fi
 
-    # if [ "$NAME" = "" ]; then
+    if [ "$NAME" = "" ]; then
 
-    #     NAME=$(echo "$REPO" | grep -o -P '(?<=https:/).*' | sed 's:.*/::')
-    # fi
+        NAME=$(echo "$REPO" | grep -o -P '(?<=https:/).*' | sed 's:.*/::')
+    fi
 
     if [ "$NAME" = "" ]; then
 
@@ -89,7 +89,7 @@ DO_SUBMODULE() {
     FILE_NAME="$NAME.submodule"
     FILE_NAME_FULL="$DIR_SUBMODULES_FULL/$FILE_NAME"
     
-    echo "Processing Git submodule Name='$NAME', Submodule='$SUBMODULE', Repo='$REPO'"
+    echo "Processing Git submodule Name='$NAME', Submodule='$SUBMODULE', Repo='$REPO', Path='$SUBMODULE_PATH'"
 
     if ! test -e "$FILE_NAME_FULL"; then
 
@@ -109,6 +109,8 @@ EOL
     echo "Submodule file has been written: $FILE_NAME_FULL"
 
     fi
+
+    # TODO: Init submodule if needed and point to it
 }
 
 DO_FILE() {
