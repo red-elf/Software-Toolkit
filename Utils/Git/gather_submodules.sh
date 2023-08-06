@@ -89,7 +89,7 @@ DO_SUBMODULE() {
     FILE_NAME="$NAME.submodule"
     FILE_NAME_FULL="$DIR_SUBMODULES_FULL/$FILE_NAME"
     
-    echo "Processing Git submodule Name='$NAME', Submodule='$SUBMODULE', Repo='$REPO', Path='$SUBMODULE_PATH'"
+    echo "Git submodule: Name='$NAME', Submodule='$SUBMODULE', Repo='$REPO', Path='$SUBMODULE_PATH'"
 
     if ! test -e "$FILE_NAME_FULL"; then
 
@@ -111,6 +111,7 @@ EOL
     fi
 
     # TODO: Init submodule if needed and point to it
+    echo "Git submodule path: $SUBMODULE_PATH"
 }
 
 DO_FILE() {
@@ -123,7 +124,7 @@ DO_FILE() {
 
     FILE="$1"
     
-    echo "Processing Git modules file: $FILE"
+    echo "Git modules file: $FILE"
 
     REPO=""
     SUBMODULE=""
