@@ -70,6 +70,11 @@ DO_SUBMODULE() {
 
     if [ "$NAME" = "" ]; then
 
+        NAME=$(echo "$REPO" | grep -o -P '(?<=https:/).*' | sed 's:.*/::')
+    fi
+
+    if [ "$NAME" = "" ]; then
+
         echo "ERROR: No name obtained for repo '$REPO'"
         exit 1
     fi
