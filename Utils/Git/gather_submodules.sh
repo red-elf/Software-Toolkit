@@ -58,20 +58,27 @@ DO_SUBMODULE() {
         exit 1
     fi
 
+    if [ -z "$3" ]; then
+
+        echo "ERROR: Submodule path is mandatory parameter for the function"
+        exit 1
+    fi
+
     SUBMODULE="$1"
     REPO="$2"
+    PATH="$3"
 
-    NAME=$(echo "$REPO" | sed 's:.*/::' | grep -o -P '(?<=).*(?=.git)')
+    # NAME=$(echo "$REPO" | sed 's:.*/::' | grep -o -P '(?<=).*(?=.git)')
     
-    if [ "$NAME" = "" ]; then
+    # if [ "$NAME" = "" ]; then
 
-        NAME=$(echo "$REPO" | sed 's:.*/::' | grep -o -P '(?<=/).*(?=)')
-    fi
+    #     NAME=$(echo "$REPO" | sed 's:.*/::' | grep -o -P '(?<=/).*(?=)')
+    # fi
 
-    if [ "$NAME" = "" ]; then
+    # if [ "$NAME" = "" ]; then
 
-        NAME=$(echo "$REPO" | grep -o -P '(?<=https:/).*' | sed 's:.*/::')
-    fi
+    #     NAME=$(echo "$REPO" | grep -o -P '(?<=https:/).*' | sed 's:.*/::')
+    # fi
 
     if [ "$NAME" = "" ]; then
 
@@ -98,6 +105,9 @@ DO_SUBMODULE() {
 NAME="$NAME"
 REPO="$REPO"
 EOL
+
+    echo "Submodule file has been written: $FILE_NAME_FULL"
+
     fi
 }
 
@@ -114,9 +124,11 @@ DO_FILE() {
     echo "Processing Git modules file: $FILE"
 
     REPO=""
-    SUBMODULE=""    
+    SUBMODULE=""
+    SUBMODULE_PATH=""
     SUBMODULE_OPENING="[submodule"
     SUBMODULE_URL_MARK="url = "
+    SUBMODULE_PATH_MARK="path = "
     
     CONTENT=$(cat "$FILE")
 
@@ -127,20 +139,32 @@ DO_FILE() {
         if check_prefixes "$ITEM" "$SUBMODULE_OPENING"; then
 
             SUBMODULE=$(echo "$ITEM" | grep -o -P '(?<=").*(?=")')
+        fi
 
-        else
+        if check_contains "$ITEM" "$SUBMODULE_URL_MARK"; then
 
-            if check_contains "$ITEM" "$SUBMODULE_URL_MARK"; then
+            REPO=$(echo "$ITEM" | grep -o -P '(?<=url = ).*(?=)')
+        fi
 
-                REPO=$(echo "$ITEM" | grep -o -P '(?<=url = ).*(?=)')
+        if check_contains "$ITEM" "$SUBMODULE_PATH_MARK"; then
 
-                DO_SUBMODULE "$SUBMODULE" "$REPO"
-
-                SUBMODULE=""
-                REPO=""
-            fi
+            SUBMODULE_PATH=$(echo "$ITEM" | grep -o -P '(?<=path = ).*(?=)')
         fi
     done;
+
+    if [ ! "$SUBMODULE" = "" ] && [ ! "$REPO" = "" ] && [ ! "$SUBMODULE_PATH" = "" ]; then
+
+        DO_SUBMODULE "$SUBMODULE" "$REPO" "$SUBMODULE_PATH"
+
+        REPO=""
+        SUBMODULE=""
+        SUBMODULE_PATH=""
+
+    else
+
+        echo "ERROR: Missing property(es), SUBMODULE=$SUBMODULE, REPO=$REPO, PATH=$SUBMODULE_PATH"
+        exit 1
+    fi
 }
 
 # shellcheck disable=SC2044
