@@ -64,10 +64,18 @@ DO_SUBMODULE() {
         exit 1
     fi
 
+    if [ -z "$4" ]; then
+
+        echo "ERROR: Parent .submodule file path is mandatory parameter for the function"
+        exit 1
+    fi
+
+    FILE="$4"
     REPO="$2"
     SUBMODULE="$1"
     SUBMODULE_PATH="$3"
-
+    DIR_PARENT="$(dirname "$FILE")"
+    
     NAME=$(echo "$REPO" | sed 's:.*/::' | grep -o -P '(?<=).*(?=.git)')
     
     if [ "$NAME" = "" ]; then
@@ -85,6 +93,8 @@ DO_SUBMODULE() {
         echo "ERROR: No name obtained for repo '$REPO'"
         exit 1
     fi
+
+    DIR_DESTINATION="$DIR_SUBMODULES_FULL/$NAME"
 
     FILE_NAME="$NAME.submodule"
     FILE_NAME_FULL="$DIR_SUBMODULES_FULL/$FILE_NAME"
@@ -110,7 +120,17 @@ EOL
 
     fi
 
-    # TODO: Init submodule if needed and point to it
+    APSOLUTE_SUBMOPDULE_PATH="$DIR_PARENT/$SUBMODULE_PATH"
+
+    if test -e "$APSOLUTE_SUBMOPDULE_PATH"; then
+    
+        echo "Pointing Git submodule: $APSOLUTE_SUBMOPDULE_PATH into $DIR_DESTINATION"
+
+    else
+
+        echo "ERROR: Submodule path does not exist '$APSOLUTE_SUBMOPDULE_PATH'"
+        exit 1
+    fi
 }
 
 DO_FILE() {
@@ -158,7 +178,7 @@ DO_FILE() {
 
             if [ ! "$SUBMODULE" = "" ] && [ ! "$REPO" = "" ] && [ ! "$SUBMODULE_PATH" = "" ]; then
 
-                DO_SUBMODULE "$SUBMODULE" "$REPO" "$SUBMODULE_PATH"
+                DO_SUBMODULE "$SUBMODULE" "$REPO" "$SUBMODULE_PATH" "$FILE"
 
                 REPO=""
                 SUBMODULE=""
