@@ -136,6 +136,8 @@ EOL
 
                 echo "Git submodule repository '$REPO' already initialized in '$DIR_DESTINATION'"
 
+                git status
+
                 if git checkout main || git checkout master; then
 
                     echo "Set to main branch at '$DIR_DESTINATION'"
