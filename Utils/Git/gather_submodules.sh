@@ -132,6 +132,8 @@ EOL
         
             echo "Pointing Git submodule: $APSOLUTE_SUBMOPDULE_PATH into $DIR_DESTINATION"
 
+            # TODO: Keep track about recently updated submodules so we do not iterate endlessly
+
             if test -e "$DIR_DESTINATION"; then
 
                 if cd "$DIR_DESTINATION" && \
