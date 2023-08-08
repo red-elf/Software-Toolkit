@@ -179,7 +179,17 @@ EOL
 
                 echo "Git submodule repository '$REPO' will be initialized into '$DIR_DESTINATION'"
 
-                if git submodule add "$REPO" "$DIR_DESTINATION" && git config pull.rebase false; then
+                if git submodule add "$REPO" "$DIR_DESTINATION"; then
+
+                    if cd "$DIR_DESTINATION" && git config pull.rebase false && cd "$LOCATION"; then
+
+                        echo "Git merging strategy set for: '$DIR_DESTINATION'"
+
+                    else
+
+                        echo "ERROR: Could not set Git merging strategy for '$DIR_DESTINATION'"
+                        exit 1
+                    fi
 
                     echo "Git submodule repository '$REPO' has been initialized into '$DIR_DESTINATION'"
 
