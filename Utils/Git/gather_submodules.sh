@@ -126,6 +126,25 @@ EOL
     
         echo "Pointing Git submodule: $APSOLUTE_SUBMOPDULE_PATH into $DIR_DESTINATION"
 
+        if test -e "$DIR_DESTINATION"; then
+
+            echo "Git submodule repository '$REPO' already initialized in '$DIR_DESTINATION'"
+
+        else
+
+            echo "Git submodule repository '$REPO' will be initialized into '$DIR_DESTINATION'"
+
+            if git submodule add "$REPO" "$DIR_DESTINATION"; then
+
+                echo "Git submodule repository '$REPO' has been initialized into '$DIR_DESTINATION'"
+
+            else
+
+                echo "ERROR: Git submodule repository '$REPO' has failed to initialize into '$DIR_DESTINATION'"
+                exit 1
+            fi
+        fi
+
     else
 
         echo "ERROR: Submodule path does not exist '$APSOLUTE_SUBMOPDULE_PATH'"
