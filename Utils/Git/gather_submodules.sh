@@ -134,9 +134,16 @@ EOL
 
             if test -e "$DIR_DESTINATION"; then
 
-                echo "Git submodule repository '$REPO' already initialized in '$DIR_DESTINATION'"
+                if cd "$DIR_DESTINATION" && \
+                    echo "Git submodule repository '$REPO' already initialized in '$DIR_DESTINATION'"; then
 
-                git status
+                    echo "Entered directory: '$DIR_DESTINATION'"
+
+                else
+
+                    echo "ERROR: Could not enter directory '$DIR_DESTINATION'"
+                    exit 1
+                fi
 
                 if git checkout main || git checkout master; then
 
@@ -155,6 +162,16 @@ EOL
                 else
 
                     echo "ERROR: Failed to set the main branch at '$DIR_DESTINATION'"
+                    exit 1
+                fi
+
+                if cd "$LOCATION"; then
+
+                    echo "Entered starting point directory: '$LOCATION'"
+
+                else
+
+                    echo "ERROR: Could not enter starting point directory '$LOCATION'"
                     exit 1
                 fi
 
