@@ -146,6 +146,8 @@ EOL
 
                     echo "Git submodule repository '$REPO' has been initialized into '$DIR_DESTINATION'"
 
+                    # TODO: git config pull.rebase false
+
                     DIR_UPSTREAMS="$DIR_DESTINATION/Upstreams"
 
                     if test -e "$DIR_UPSTREAMS"; then
