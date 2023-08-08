@@ -136,7 +136,26 @@ EOL
 
                 echo "Git submodule repository '$REPO' already initialized in '$DIR_DESTINATION'"
 
-                # TODO: Fetch the latest and greatest
+                if git checkout main || git checkout master; then
+
+                    echo "Set to main branch at '$DIR_DESTINATION'"
+
+                    if git fetch && git pull; then
+
+                        echo "Main branch updated at '$DIR_DESTINATION'"
+
+                    else
+
+
+                        echo "ERROR: Failed to update main branch at '$DIR_DESTINATION'"
+                        exit 1
+                    fi
+
+                else
+
+                    echo "ERROR: Failed to set the main branch at '$DIR_DESTINATION'"
+                    exit 1
+                fi
 
             else
 
