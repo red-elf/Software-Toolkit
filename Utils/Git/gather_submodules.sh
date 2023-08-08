@@ -136,6 +136,8 @@ EOL
 
                 echo "Git submodule repository '$REPO' already initialized in '$DIR_DESTINATION'"
 
+                # TODO: Fetch the latest and greatest
+
             else
 
                 echo "Git submodule repository '$REPO' will be initialized into '$DIR_DESTINATION'"
@@ -143,6 +145,26 @@ EOL
                 if git submodule add "$REPO" "$DIR_DESTINATION"; then
 
                     echo "Git submodule repository '$REPO' has been initialized into '$DIR_DESTINATION'"
+
+                    DIR_UPSTREAMS="$DIR_DESTINATION/Upstreams"
+
+                    if test -e "$DIR_UPSTREAMS"; then
+
+                        echo "Bringing up Upstreams from '$DIR_UPSTREAMS'"
+
+                        DIR_UPSTREAMABLE="$LOCATION/Upstreamable"
+                        SCRIPT_INSTALL_UPSTREAMS="$DIR_UPSTREAMABLE/install_upstreams.sh"
+
+                        if test -e "$SCRIPT_INSTALL_UPSTREAMS"; then
+
+                            sh "$SCRIPT_INSTALL_UPSTREAMS" "$DIR_UPSTREAMS"
+
+                        else
+
+                            echo "ERROR: Script not found '$SCRIPT_INSTALL_UPSTREAMS'"
+                            exit 1
+                        fi
+                    fi
 
                 else
 
