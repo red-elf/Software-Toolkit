@@ -140,12 +140,11 @@ EOL
 
                     echo "Set to main branch at '$DIR_DESTINATION'"
 
-                    if git fetch && git pull; then
+                    if git fetch && git pull && git config pull.rebase false; then
 
                         echo "Main branch updated at '$DIR_DESTINATION'"
 
                     else
-
 
                         echo "ERROR: Failed to update main branch at '$DIR_DESTINATION'"
                         exit 1
@@ -161,11 +160,9 @@ EOL
 
                 echo "Git submodule repository '$REPO' will be initialized into '$DIR_DESTINATION'"
 
-                if git submodule add "$REPO" "$DIR_DESTINATION"; then
+                if git submodule add "$REPO" "$DIR_DESTINATION" && git config pull.rebase false; then
 
                     echo "Git submodule repository '$REPO' has been initialized into '$DIR_DESTINATION'"
-
-                    # TODO: git config pull.rebase false
 
                     DIR_UPSTREAMS="$DIR_DESTINATION/Upstreams"
 
