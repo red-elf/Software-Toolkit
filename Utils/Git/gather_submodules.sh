@@ -1,5 +1,6 @@
 #!/bin/bash
 
+UPDATED=""
 LOCATION="$(pwd)"
 DIR_SUBMODULES="_Submodules"
 DIR_SUBMODULES_FULL="$LOCATION/$DIR_SUBMODULES"
@@ -132,8 +133,6 @@ EOL
         
             echo "Pointing Git submodule: $APSOLUTE_SUBMOPDULE_PATH into $DIR_DESTINATION"
 
-            # TODO: Keep track about recently updated submodules so we do not iterate endlessly
-
             if test -e "$DIR_DESTINATION"; then
 
                 if cd "$DIR_DESTINATION" && \
@@ -147,24 +146,34 @@ EOL
                     exit 1
                 fi
 
-                if git checkout main || git checkout master; then
+                if check_contains "$UPDATED" "$DIR_DESTINATION;"; then
 
-                    echo "Set to main branch at '$DIR_DESTINATION'"
-
-                    if git fetch && git pull && git config pull.rebase false; then
-
-                        echo "Main branch updated at '$DIR_DESTINATION'"
-
-                    else
-
-                        echo "ERROR: Failed to update main branch at '$DIR_DESTINATION'"
-                        exit 1
-                    fi
+                    echo "SKIPPING: Already recently set to the main branch at '$DIR_DESTINATION' (and updated if it was needed)"
 
                 else
 
-                    echo "ERROR: Failed to set the main branch at '$DIR_DESTINATION'"
-                    exit 1
+                    if git checkout main || git checkout master; then
+
+                        echo "Set to main branch at '$DIR_DESTINATION'"
+
+                        if git fetch && git pull && git config pull.rebase false; then
+
+                            echo "Main branch updated at '$DIR_DESTINATION'"
+
+                            UPDATED="$DIR_DESTINATION;$UPDATED"
+
+                        else
+
+                            echo "ERROR: Failed to update main branch at '$DIR_DESTINATION'"
+                            exit 1
+                        fi
+
+                    else
+
+                        echo "ERROR: Failed to set the main branch at '$DIR_DESTINATION'"
+                        exit 1
+                    fi
+
                 fi
 
                 if cd "$LOCATION"; then
