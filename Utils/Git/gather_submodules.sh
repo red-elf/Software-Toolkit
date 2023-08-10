@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# TODO: Do not connect _Dependencies submodules if they are not targeting the main branch,
+
 UPDATED=""
 LOCATION="$(pwd)"
 DIR_SUBMODULES="_Submodules"
