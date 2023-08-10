@@ -1,6 +1,9 @@
 #!/bin/bash
 
-# TODO: Do not connect _Dependencies submodules if they are not targeting the main branch,
+# TODO: Do not connect _Dependencies submodules if they are not targeting the main branch:
+# 
+# - When on tag:    HEAD detached at
+# - When on btanch: On branch 
 
 UPDATED=""
 LOCATION="$(pwd)"
