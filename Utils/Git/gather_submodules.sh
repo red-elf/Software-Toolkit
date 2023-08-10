@@ -1,10 +1,5 @@
 #!/bin/bash
 
-# TODO: Do not connect _Dependencies submodules if they are not targeting the main branch:
-# 
-# - When on tag:    HEAD detached at
-# - When on btanch: On branch 
-
 UPDATED=""
 LOCATION="$(pwd)"
 DIR_SUBMODULES="_Submodules"
@@ -135,6 +130,11 @@ EOL
     else
 
         if test -e "$APSOLUTE_SUBMOPDULE_PATH"; then
+
+            # TODO: Do not connect _Dependencies submodules if they are not targeting the main branch:
+            # 
+            # - When on tag:    HEAD detached at
+            # - When on btanch: On branch
         
             echo "Pointing Git submodule: $APSOLUTE_SUBMOPDULE_PATH into $DIR_DESTINATION"
 
