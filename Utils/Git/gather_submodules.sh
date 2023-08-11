@@ -131,109 +131,144 @@ EOL
 
         if test -e "$APSOLUTE_SUBMOPDULE_PATH"; then
 
-            # TODO: Do not connect _Dependencies submodules if they are not targeting the main branch:
-            # 
-            # - When on tag:    HEAD detached at
-            # - When on btanch: On branch
-        
-            echo "Pointing Git submodule: $APSOLUTE_SUBMOPDULE_PATH into $DIR_DESTINATION"
+            if cd "$APSOLUTE_SUBMOPDULE_PATH"; then
 
-            if test -e "$DIR_DESTINATION"; then
+                echo "Entered directory: '$APSOLUTE_SUBMOPDULE_PATH'"
 
-                if cd "$DIR_DESTINATION" && \
-                    echo "Git submodule repository '$REPO' already initialized in '$DIR_DESTINATION'"; then
+                STATUS="$(git status)"
 
-                    echo "Entered directory: '$DIR_DESTINATION'"
+                if echo "$STATUS" | grep "HEAD detached at" || echo "$STATUS" | grep "On branch"; then
 
-                else
+                    echo "SKIPPING: Git submodule '$SUBMODULE_PATH' does not point to the main branch"
 
-                    echo "ERROR: Could not enter directory '$DIR_DESTINATION'"
-                    exit 1
-                fi
+                    if cd "$LOCATION"; then
 
-                if check_contains "$UPDATED" "$DIR_DESTINATION;"; then
+                        echo "Entered starting point directory: '$LOCATION'"
 
-                    echo "SKIPPING: Already recently set to the main branch at '$DIR_DESTINATION' (and updated if it was needed)"
+                    else
+
+                        echo "ERROR: Could not enter starting point directory '$LOCATION'"
+                        exit 1
+                    fi
 
                 else
 
-                    if git checkout main || git checkout master; then
+                    echo "Pointing Git submodule: $APSOLUTE_SUBMOPDULE_PATH into $DIR_DESTINATION"
 
-                        echo "Set to main branch at '$DIR_DESTINATION'"
+                    if test -e "$DIR_DESTINATION"; then
 
-                        if git fetch && git pull && git config pull.rebase false; then
+                        if cd "$DIR_DESTINATION" && \
+                            echo "Git submodule repository '$REPO' already initialized in '$DIR_DESTINATION'"; then
 
-                            echo "Main branch updated at '$DIR_DESTINATION'"
-
-                            UPDATED="$DIR_DESTINATION;$UPDATED"
+                            echo "Entered directory: '$DIR_DESTINATION'"
 
                         else
 
-                            echo "ERROR: Failed to update main branch at '$DIR_DESTINATION'"
+                            echo "ERROR: Could not enter directory '$DIR_DESTINATION'"
+                            exit 1
+                        fi
+
+                        if check_contains "$UPDATED" "$DIR_DESTINATION;"; then
+
+                            echo "SKIPPING: Already recently set to the main branch at '$DIR_DESTINATION' (and updated if it was needed)"
+
+                        else
+
+                            if git checkout main || git checkout master; then
+
+                                echo "Set to main branch at '$DIR_DESTINATION'"
+
+                                if git fetch && git pull && git config pull.rebase false; then
+
+                                    echo "Main branch updated at '$DIR_DESTINATION'"
+
+                                    UPDATED="$DIR_DESTINATION;$UPDATED"
+
+                                else
+
+                                    echo "ERROR: Failed to update main branch at '$DIR_DESTINATION'"
+                                    exit 1
+                                fi
+
+                            else
+
+                                echo "ERROR: Failed to set the main branch at '$DIR_DESTINATION'"
+                                exit 1
+                            fi
+
+                        fi
+
+                        if cd "$LOCATION"; then
+
+                            echo "Entered starting point directory (3): '$LOCATION'"
+
+                        else
+
+                            echo "ERROR: Could not enter starting point directory (3) '$LOCATION'"
                             exit 1
                         fi
 
                     else
 
-                        echo "ERROR: Failed to set the main branch at '$DIR_DESTINATION'"
+                        echo "Git submodule repository '$REPO' will be initialized into '$DIR_DESTINATION'"
+
+                        if git submodule add "$REPO" "$DIR_DESTINATION"; then
+
+                            if cd "$DIR_DESTINATION" && git config pull.rebase false && cd "$LOCATION"; then
+
+                                echo "Git merging strategy set for: '$DIR_DESTINATION'"
+
+                            else
+
+                                echo "ERROR: Could not set Git merging strategy for '$DIR_DESTINATION'"
+                                exit 1
+                            fi
+
+                            echo "Git submodule repository '$REPO' has been initialized into '$DIR_DESTINATION'"
+
+                            DIR_UPSTREAMS="$DIR_DESTINATION/Upstreams"
+
+                            if test -e "$DIR_UPSTREAMS"; then
+
+                                echo "Bringing up Upstreams from '$DIR_UPSTREAMS'"
+
+                                DIR_UPSTREAMABLE="$LOCATION/Upstreamable"
+                                SCRIPT_INSTALL_UPSTREAMS="$DIR_UPSTREAMABLE/install_upstreams.sh"
+
+                                if test -e "$SCRIPT_INSTALL_UPSTREAMS"; then
+
+                                    sh "$SCRIPT_INSTALL_UPSTREAMS" "$DIR_UPSTREAMS"
+
+                                else
+
+                                    echo "ERROR: Script not found '$SCRIPT_INSTALL_UPSTREAMS'"
+                                    exit 1
+                                fi
+                            fi
+
+                        else
+
+                            echo "ERROR: Git submodule repository '$REPO' has failed to initialize into '$DIR_DESTINATION'"
+                            exit 1
+                        fi
+                    fi
+
+                    if cd "$LOCATION"; then
+
+                        echo "Entered starting point directory (2): '$LOCATION'"
+
+                    else
+
+                        echo "ERROR: Could not enter starting point directory (2) '$LOCATION'"
                         exit 1
                     fi
 
-                fi
-
-                if cd "$LOCATION"; then
-
-                    echo "Entered starting point directory: '$LOCATION'"
-
-                else
-
-                    echo "ERROR: Could not enter starting point directory '$LOCATION'"
-                    exit 1
                 fi
 
             else
 
-                echo "Git submodule repository '$REPO' will be initialized into '$DIR_DESTINATION'"
-
-                if git submodule add "$REPO" "$DIR_DESTINATION"; then
-
-                    if cd "$DIR_DESTINATION" && git config pull.rebase false && cd "$LOCATION"; then
-
-                        echo "Git merging strategy set for: '$DIR_DESTINATION'"
-
-                    else
-
-                        echo "ERROR: Could not set Git merging strategy for '$DIR_DESTINATION'"
-                        exit 1
-                    fi
-
-                    echo "Git submodule repository '$REPO' has been initialized into '$DIR_DESTINATION'"
-
-                    DIR_UPSTREAMS="$DIR_DESTINATION/Upstreams"
-
-                    if test -e "$DIR_UPSTREAMS"; then
-
-                        echo "Bringing up Upstreams from '$DIR_UPSTREAMS'"
-
-                        DIR_UPSTREAMABLE="$LOCATION/Upstreamable"
-                        SCRIPT_INSTALL_UPSTREAMS="$DIR_UPSTREAMABLE/install_upstreams.sh"
-
-                        if test -e "$SCRIPT_INSTALL_UPSTREAMS"; then
-
-                            sh "$SCRIPT_INSTALL_UPSTREAMS" "$DIR_UPSTREAMS"
-
-                        else
-
-                            echo "ERROR: Script not found '$SCRIPT_INSTALL_UPSTREAMS'"
-                            exit 1
-                        fi
-                    fi
-
-                else
-
-                    echo "ERROR: Git submodule repository '$REPO' has failed to initialize into '$DIR_DESTINATION'"
-                    exit 1
-                fi
+                echo "ERROR: Could not enter directory '$APSOLUTE_SUBMOPDULE_PATH'"
+                exit 1
             fi
 
         else
