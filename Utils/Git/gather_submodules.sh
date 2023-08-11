@@ -102,25 +102,6 @@ DO_SUBMODULE() {
     
     echo "Git submodule: Name='$NAME', Submodule='$SUBMODULE', Repo='$REPO', Path='$SUBMODULE_PATH'"
 
-    if ! test -e "$FILE_NAME_FULL"; then
-
-        if ! touch "$FILE_NAME_FULL"; then
-
-            echo "ERROR: Could not create file '$FILE_NAME'"
-            exit 1
-        fi
-
-        cat > "$FILE_NAME_FULL" <<EOL
-#!/bin/bash
-
-NAME="$NAME"
-REPO="$REPO"
-EOL
-
-    echo "Git submodule file has been written: $FILE_NAME_FULL"
-
-    fi
-
     APSOLUTE_SUBMOPDULE_PATH="$DIR_PARENT/$SUBMODULE_PATH"
 
     if check_prefixes "$SUBMODULE_PATH" "$DIR_SUBMODULES_FULL"; then
@@ -179,6 +160,25 @@ EOL
                     # fi
 
                 else
+
+                    if ! test -e "$FILE_NAME_FULL"; then
+
+                        if ! touch "$FILE_NAME_FULL"; then
+
+                            echo "ERROR: Could not create file '$FILE_NAME'"
+                            exit 1
+                        fi
+
+                        cat > "$FILE_NAME_FULL" <<EOL
+#!/bin/bash
+
+NAME="$NAME"
+REPO="$REPO"
+EOL
+
+                        echo "Git submodule file has been written: $FILE_NAME_FULL"
+
+                    fi
 
                     echo "Pointing Git submodule: $APSOLUTE_SUBMOPDULE_PATH into $DIR_DESTINATION"
 
