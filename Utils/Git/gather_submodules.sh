@@ -135,8 +135,22 @@ EOL
 
                 echo "Entered directory: '$APSOLUTE_SUBMOPDULE_PATH'"
 
+                MAIN_BRANCH=""
+                LAST_MAIN_COMMIT=""
                 STATUS="$(git status)"
 
+                if git log -n 1 main | grep "commit "; then
+
+                    MAIN_BRANCH="main"
+
+                else
+
+                    MAIN_BRANCH="master"
+                fi
+
+                LAST_MAIN_COMMIT=$(git log -n 1 "$MAIN_BRANCH" | grep "commit ")
+                
+                # TODO: Tune up the condition
                 if echo "$STATUS" | grep "HEAD detached at" || \
                     (! echo "$STATUS" | grep "On branch main" && ! echo "$STATUS" | grep "On branch master"); then
 
