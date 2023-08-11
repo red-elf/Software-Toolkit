@@ -137,9 +137,10 @@ EOL
 
                 STATUS="$(git status)"
 
-                if echo "$STATUS" | grep "HEAD detached at" || echo "$STATUS" | grep "On branch"; then
+                if echo "$STATUS" | grep "HEAD detached at" || \
+                    (! echo "$STATUS" | grep "On branch main" && ! echo "$STATUS" | grep "On branch master"); then
 
-                    echo "SKIPPING: Git submodule '$SUBMODULE_PATH' does not point to the main branch"
+                    echo "SKIPPING: Git submodule from '$APSOLUTE_SUBMOPDULE_PATH' does not point to the main branch"
 
                     if cd "$LOCATION"; then
 
