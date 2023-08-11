@@ -149,22 +149,34 @@ EOL
                 fi
 
                 LAST_MAIN_COMMIT=$(git log -n 1 "$MAIN_BRANCH" | grep "commit ")
+                LAST_MAIN_COMMIT=$(echo "$LAST_MAIN_COMMIT" | grep -o -P '(?<=commit ).*(?=)')
+
+                if [ "$LAST_MAIN_COMMIT" = "" ]; then
+
+                    echo "ERROR: Last main commit was not obtained for the Git submodule at '$APSOLUTE_SUBMOPDULE_PATH'"
+                    exit 1
+                fi
+
+                echo "Last main commit for the Git submodule at '$APSOLUTE_SUBMOPDULE_PATH': $LAST_MAIN_COMMIT"
                 
-                # TODO: Tune up the condition
-                if echo "$STATUS" | grep "HEAD detached at" || \
+                # TODO:
+                if true || echo "$STATUS" | grep "HEAD detached at" || \
                     (! echo "$STATUS" | grep "On branch main" && ! echo "$STATUS" | grep "On branch master"); then
 
-                    echo "SKIPPING: Git submodule from '$APSOLUTE_SUBMOPDULE_PATH' does not point to the main branch"
+                    echo "TO BE IMPLEMENTED"
 
-                    if cd "$LOCATION"; then
+                    # TODO:
+                    # echo "SKIPPING: Git submodule from '$APSOLUTE_SUBMOPDULE_PATH' does not point to the main branch"
 
-                        echo "Entered starting point directory: '$LOCATION'"
+                    # if cd "$LOCATION"; then
 
-                    else
+                    #     echo "Entered starting point directory: '$LOCATION'"
 
-                        echo "ERROR: Could not enter starting point directory '$LOCATION'"
-                        exit 1
-                    fi
+                    # else
+
+                    #     echo "ERROR: Could not enter starting point directory '$LOCATION'"
+                    #     exit 1
+                    # fi
 
                 else
 
