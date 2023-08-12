@@ -118,7 +118,6 @@ DO_SUBMODULE() {
 
                 MAIN_BRANCH=""
                 LAST_MAIN_COMMIT=""
-                STATUS="$(git status)"
 
                 if git log -n 1 main | grep "commit "; then
 
@@ -129,6 +128,7 @@ DO_SUBMODULE() {
                     MAIN_BRANCH="master"
                 fi
 
+                CURRENT_COMMIT=$(git rev-parse HEAD)
                 LAST_MAIN_COMMIT=$(git log -n 1 "$MAIN_BRANCH" | grep "commit ")
                 LAST_MAIN_COMMIT=$(echo "$LAST_MAIN_COMMIT" | grep -o -P '(?<=commit ).*(?=)')
 
@@ -138,28 +138,15 @@ DO_SUBMODULE() {
                     exit 1
                 fi
 
-                echo "Last main commit for the Git submodule at '$APSOLUTE_SUBMOPDULE_PATH': $LAST_MAIN_COMMIT"
+                if [ "$CURRENT_COMMIT" = "" ]; then
+
+                    echo "ERROR: Current commit was not obtained for the Git submodule at '$APSOLUTE_SUBMOPDULE_PATH'"
+                    exit 1
+                fi
+
+                echo "Last on main commit: $LAST_MAIN_COMMIT, Current commit: $CURRENT_COMMIT"
                 
-                # TODO:
-                if true || echo "$STATUS" | grep "HEAD detached at" || \
-                    (! echo "$STATUS" | grep "On branch main" && ! echo "$STATUS" | grep "On branch master"); then
-
-                    echo "TO BE IMPLEMENTED"
-
-                    # TODO:
-                    # echo "SKIPPING: Git submodule from '$APSOLUTE_SUBMOPDULE_PATH' does not point to the main branch"
-
-                    # if cd "$LOCATION"; then
-
-                    #     echo "Entered starting point directory: '$LOCATION'"
-
-                    # else
-
-                    #     echo "ERROR: Could not enter starting point directory '$LOCATION'"
-                    #     exit 1
-                    # fi
-
-                else
+                if [ "$LAST_MAIN_COMMIT" = "$CURRENT_COMMIT" ]; then
 
                     if ! test -e "$FILE_NAME_FULL"; then
 
@@ -290,6 +277,19 @@ EOL
                         exit 1
                     fi
 
+                else
+
+                    echo "SKIPPING: Git submodule from '$APSOLUTE_SUBMOPDULE_PATH' does not point to the main branch"
+
+                    if cd "$LOCATION"; then
+
+                        echo "Entered starting point directory: '$LOCATION'"
+
+                    else
+
+                        echo "ERROR: Could not enter starting point directory '$LOCATION'"
+                        exit 1
+                    fi
                 fi
 
             else
