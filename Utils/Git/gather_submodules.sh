@@ -374,3 +374,69 @@ do
         DO_FILE "$FILE"
     fi
 done;
+
+# TODO: Recipe
+# 
+# 10047  mkdir GitTest
+# 10048  cd GitTest/
+# 10049  git init
+# 10050  mkdir _Submodules
+# 10051  cd _Submodules/
+# 10052  git submodule add git@github.com:red-elf/Upstreamable.git ./Upstreamable
+# 10053  ls
+# 10054  cd ..
+# 10055  git submodule add git@github.com:Helix-Track/Core.git ./Core
+# 10056  cd Core/
+# 10057  ls
+# 10058  git submodule init
+# 10059  git submodule update
+# 10060  cd Upstreamable/
+# 10061  git submodule deinit
+# 10062  cd ..
+# 10063  git submodule deinit --all
+# 10064  ls
+# 10065  cd Upstreamable/
+# 10066  ls
+# 10067  cd ..
+# 10068  cd ..
+# 10069  ln -s _Submodules/Upstreamable/ Core/Upstreamable/
+# 10070  cd Core/Upstreamable/
+# 10071  ls
+# 10072  cd ..
+# 10073  cd ..
+# 10074  cd _Submodules/
+# 10075  ls
+# 10076  cd Upstreamable/
+# 10077  ls
+# 10078  cd ..
+# 10079  cd ..
+# 10080  ln -s _Submodules/Upstreamable/ Core
+# 10081  rm -f ./Core/Upstreamable/ && ln -s ./_Submodules/Upstreamable/ ./Core/Upstreamable/
+# 10082  rm -rf ./Core/Upstreamable/ && ln -s ./_Submodules/Upstreamable/ ./Core/Upstreamable/
+# 10083  rm -rf ./Core/Upstreamable/ && ln -s ./_Submodules/Upstreamable/ ./Core/Upstreamable/
+# 10084  rm -rf ./Core/Upstreamable/ && ln -sf ./_Submodules/Upstreamable/ ./Core/Upstreamable/
+# 10085  rm -rf ./Core/Upstreamable/ && ln -sf ./_Submodules/Upstreamable/ ./Core
+# 10086  cd Core/
+# 10087  ls
+# 10088  cd Upstreamable
+# 10089  ls
+# 10090  cd ..
+# 10091  ls
+# 10092  ls -lF
+# 10093  cd ..
+# 10094  rm -rf ./Core/Upstreamable/ && ln -sf ./_Submodules/Upstreamable ./Core
+# 10095  cd Core/
+# 10096  ls -LF
+# 10097  ls -LFa
+# 10098  ls -lF
+# 10099  cd Upstreamable
+# 10100  ls
+# 10101  cd ..
+# 10102  cd ..
+# 10103  rm -rf ~/Documents/Temp/GitTest/Core/Upstreamable/ && ln -sf ~/Documents/Temp/GitTest/_Submodules/Upstreamable ~/Documents/Temp/GitTest/Core
+# 10104  cd Core/
+# 10105  ls -lF
+# 10106  cd Upstreamable
+# 10107  ls
+# 10108  cd ..
+# 10109  cd ..
