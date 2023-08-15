@@ -377,6 +377,8 @@ done;
 
 # TODO: Extend push_all script so it:
 # - Move its implementation to be referenced from Utils/Git/push_all.sh
+# - Introduce the global variable that will define the home _Submodules directory, scripts will use it if exported, othervise, 
+#   it will perform he default behavior regarding the paths
 # - Obtains the info about the current module being pushed
 # - The it iterates recursively through the project and updates all modules to this commit
 # - After the update commit head changes and push them all to upstream with generic commit message and some additional info if needed.
