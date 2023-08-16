@@ -399,5 +399,5 @@ done;
 # TODO: Extend push_all script so it:
 #
 # - Obtains the info about the current module being pushed
-# - The it iterates recursively through the project and updates all modules to this commit
+# - Then iterate recursively through the project and updates all modules to this commit
 # - After the update commit head changes and push them all to upstream with generic commit message and some additional info if needed.
