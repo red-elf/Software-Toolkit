@@ -1,5 +1,50 @@
 #!/bin/bash
 
+DIR_HOME=$(eval echo ~"$USER")
+FILE_ZSH_RC="$DIR_HOME/.zshrc"
+FILE_BASH_RC="$DIR_HOME/.bashrc"
+
+FILE_RC=""
+    
+if test -e "$FILE_ZSH_RC"; then
+
+  FILE_RC="$FILE_ZSH_RC"
+
+else
+
+    if test -e "$FILE_BASH_RC"; then
+
+      FILE_RC="$FILE_BASH_RC"
+
+    else
+
+      echo "ERROR: No '$FILE_ZSH_RC' or '$FILE_BASH_RC' found on the system"
+      exit 1
+    fi
+fi
+
+# shellcheck disable=SC1090
+. "$FILE_RC"
+
+if [ -z "$SUBMODULES_HOME" ]; then
+
+  echo "ERROR: The SUBMODULES_HOME is not defined"
+  exit 1
+fi
+
+SCRIPT_STRINGS="$SUBMODULES_HOME/Software-Toolkit/Utils/strings.sh"
+
+if test -e "$SCRIPT_STRINGS"; then
+
+    # shellcheck disable=SC1090
+  . "$SCRIPT_STRINGS"
+
+else
+
+  echo "ERROR: Script not found '$SCRIPT_STRINGS'"
+  exit 1
+fi
+
 UPDATED=""
 LOCATION="$(pwd)"
 DIR_SUBMODULES="_Submodules"
@@ -20,30 +65,6 @@ if ! test -e "$DIR_SUBMODULES_FULL"; then
         exit 1
     fi
 fi
-
-check_prefixes () {
-    value=$1
-    shift
-
-    for prefix do
-        case $value in
-            "$prefix"*) return 0
-        esac
-    done
-
-    return 1
-}
-
-check_contains () {
-    value=$1
-    shift
-
-    case $value in
-        *"$1"*) return 0
-    esac
-
-    return 1
-}
 
 DO_SUBMODULE() {
 
