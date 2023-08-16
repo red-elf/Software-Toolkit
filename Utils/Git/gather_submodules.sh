@@ -397,7 +397,6 @@ do
 done;
 
 # TODO: Extend push_all script so it:
-# - Move its implementation to be referenced from Utils/Git/push_all.sh
 # - Introduce the global variable that will define the home _Submodules directory, scripts will use it if exported, othervise, 
 #   it will perform he default behavior regarding the paths
 # - Create the command shortcut for Upstreamable/push_all.sh -> push_all, with maybe some parameters
