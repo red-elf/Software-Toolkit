@@ -2,7 +2,21 @@
 
 if [ -n "$1" ]; then
 
-    FLAGS="$1"
+    if check_contains "$1" "FLAGS="; then
+    
+        FLAGS="$1"
+    fi
+fi
+
+if [ -n "$2" ]; then
+
+    if check_contains "$2" "FLAGS="; then
+    
+        FLAGS="$2"
+    fi
+fi
+
+if [ -n "$FLAGS" ]; then
 
     echo "Flags: $FLAGS"
 fi
@@ -59,7 +73,10 @@ DIR_SUBMODULES_FULL="$LOCATION/$DIR_SUBMODULES"
 
 if [ -n "$1" ]; then
 
-    LOCATION="$1"
+    if ! check_contains "$1" "FLAGS="; then
+    
+        LOCATION="$1"
+    fi
 fi
 
 echo "We are going to gather Git submodules information from: $LOCATION"
@@ -414,5 +431,5 @@ done;
 
 if check_contains "$FLAGS" FLAG_HELLO; then
 
-    echo "Test hello flag is on. Wel then, HELLO! :)"
+    echo "Test hello flag is on. Well then, HELLO! :)"
 fi
