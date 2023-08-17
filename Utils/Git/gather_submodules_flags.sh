@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# shellcheck disable=SC2034
+
+# Flags:
+#
+# FLAG_HELLO
+# FLAG_UPDATE_ALWAYS
+# FLAG_UPDATE_ONLY=PATH
+#
+# =====================
+
+OPEN="{"
+CLOSE="}"
+
+FLAG_HELLO="FLAG_HELLO"
+FLAG_UPDATE_ONLY="FLAG_UPDATE_ONLY"
+FLAG_UPDATE_ALWAYS="FLAG_UPDATE_ALWAYS"

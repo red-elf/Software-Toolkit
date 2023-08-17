@@ -4,6 +4,7 @@ DIR_HOME=$(eval echo ~"$USER")
 FILE_ZSH_RC="$DIR_HOME/.zshrc"
 FILE_BASH_RC="$DIR_HOME/.bashrc"
 
+
 FILE_RC=""
     
 if test -e "$FILE_ZSH_RC"; then
@@ -37,12 +38,25 @@ SCRIPT_STRINGS="$SUBMODULES_HOME/Software-Toolkit/Utils/strings.sh"
 if test -e "$SCRIPT_STRINGS"; then
 
     # shellcheck disable=SC1090
-  . "$SCRIPT_STRINGS"
+    . "$SCRIPT_STRINGS"
 
 else
 
   echo "ERROR: Script not found '$SCRIPT_STRINGS'"
   exit 1
+fi
+
+SCRIPT_FLAGS="$SUBMODULES_HOME/Software-Toolkit/Utils/Git/gather_submodules_flags.sh"
+
+if test -e "$SCRIPT_FLAGS"; then
+
+    # shellcheck disable=SC1090
+    . "$SCRIPT_FLAGS"
+
+else
+
+    echo "ERROR: Flags script not found '$SCRIPT_FLAGS'"
+    exit 1
 fi
 
 if [ -n "$1" ]; then
@@ -62,6 +76,11 @@ if [ -n "$2" ]; then
 fi
 
 if [ -n "$FLAGS" ]; then
+
+    if ! check_contains "$FLAGS" "$CLOSE]"; then
+
+        echo "ERROR: Invalid Flags parameter '$FLAGS', must close with '$CLOSE]'"
+    fi
 
     echo "Flags: $FLAGS"
 fi
@@ -241,7 +260,34 @@ EOL
 
                                     echo "Main branch updated at '$DIR_DESTINATION'"
 
-                                    if ! check_contains "$FLAGS" FLAG_UPDATE_ALWAYS; then
+                                    if ! check_contains "$FLAGS" "$FLAG_UPDATE_ALWAYS"; then
+
+                                        if check_contains "$FLAGS" "$FLAG_UPDATE_ONLY"; then
+
+                                            UPDATE_ONLY=$(echo "$FLAGS" | grep -o -P "(?<=$FLAG_UPDATE_ONLY=).*(?=)")
+                                            UPDATE_ONLY=$(echo "$UPDATE_ONLY" | cut -f1 "-d$CLOSE" )
+
+                                            if [ "$UPDATE_ONLY" = "" ]; then
+
+                                                echo "ERROR: Got empty path for the '$FLAG_UPDATE_ONLY' flag"
+
+                                            else
+
+                                                if test -e "$UPDATE_ONLY"; then
+
+                                                    echo "Update only: $UPDATE_ONLY"
+                                                    
+                                                    # TODO: Support this flag
+
+                                                else
+
+                                                    echo "ERROR: Path '$UPDATE_ONLY' does not exist for the '$FLAG_UPDATE_ONLY' flag"
+                                                    exit 1
+                                                fi
+                                            fi
+                                            
+                                            UPDATED="$DIR_DESTINATION;$UPDATED"
+                                        fi
 
                                         UPDATED="$DIR_DESTINATION;$UPDATED"
                                     fi
@@ -429,7 +475,7 @@ done;
 # - Then iterate recursively through the project and updates all modules to this commit
 # - After the update commit head changes and push them all to upstream with generic commit message and some additional info if needed.
 
-if check_contains "$FLAGS" FLAG_HELLO; then
+if check_contains "$FLAGS" "$FLAG_HELLO"; then
 
     echo "Test hello flag is on. Well then, HELLO! :)"
 fi
