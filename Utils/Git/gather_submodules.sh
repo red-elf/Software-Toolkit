@@ -1,5 +1,12 @@
 #!/bin/bash
 
+if [ -n "$1" ]; then
+
+    FLAGS="$1"
+
+    echo "Flags: $FLAGS"
+fi
+
 DIR_HOME=$(eval echo ~"$USER")
 FILE_ZSH_RC="$DIR_HOME/.zshrc"
 FILE_BASH_RC="$DIR_HOME/.bashrc"
@@ -217,7 +224,10 @@ EOL
 
                                     echo "Main branch updated at '$DIR_DESTINATION'"
 
-                                    UPDATED="$DIR_DESTINATION;$UPDATED"
+                                    if ! check_contains "$FLAGS" FLAG_UPDATE_ALWAYS; then
+
+                                        UPDATED="$DIR_DESTINATION;$UPDATED"
+                                    fi
 
                                 else
 
@@ -401,3 +411,8 @@ done;
 # - Obtains the info about the current module being pushed
 # - Then iterate recursively through the project and updates all modules to this commit
 # - After the update commit head changes and push them all to upstream with generic commit message and some additional info if needed.
+
+if check_contains "$FLAGS" FLAG_HELLO; then
+
+    echo "Test hello flag is on. Wel then, HELLO! :)"
+fi
