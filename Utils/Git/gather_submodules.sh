@@ -1,26 +1,5 @@
 #!/bin/bash
 
-if [ -n "$1" ]; then
-
-    if check_contains "$1" "FLAGS="; then
-    
-        FLAGS="$1"
-    fi
-fi
-
-if [ -n "$2" ]; then
-
-    if check_contains "$2" "FLAGS="; then
-    
-        FLAGS="$2"
-    fi
-fi
-
-if [ -n "$FLAGS" ]; then
-
-    echo "Flags: $FLAGS"
-fi
-
 DIR_HOME=$(eval echo ~"$USER")
 FILE_ZSH_RC="$DIR_HOME/.zshrc"
 FILE_BASH_RC="$DIR_HOME/.bashrc"
@@ -64,6 +43,27 @@ else
 
   echo "ERROR: Script not found '$SCRIPT_STRINGS'"
   exit 1
+fi
+
+if [ -n "$1" ]; then
+
+    if check_contains "$1" "FLAGS="; then
+    
+        FLAGS="$1"
+    fi
+fi
+
+if [ -n "$2" ]; then
+
+    if check_contains "$2" "FLAGS="; then
+    
+        FLAGS="$2"
+    fi
+fi
+
+if [ -n "$FLAGS" ]; then
+
+    echo "Flags: $FLAGS"
 fi
 
 UPDATED=""
