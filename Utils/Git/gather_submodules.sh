@@ -212,6 +212,14 @@ DO_SUBMODULE() {
 
                 echo "Last on main commit: $LAST_MAIN_COMMIT, Current commit: $CURRENT_COMMIT"
                 
+                # FIXME: 
+                # Git submodule: Name='Software-Toolkit', Submodule='Toolkit', Repo='git@github.com:red-elf/Software-Toolkit.git', Path='Toolkit'
+                # Entered directory: '/home/milosvasic/Projects/HelixTrack/Core/Propriatery/Toolkit'
+                # commit 66bb1064d7151957529407464d29fc17f7c7f471
+                # Fetching ...
+                # Last on main commit: 415b9569bf1948a785c3a5a1f1d652bf6ea78ec6, Current commit: 66bb1064d7151957529407464d29fc17f7c7f471
+                # SKIPPING: Git submodule from '/home/milosvasic/Projects/HelixTrack/Core/Propriatery/Toolkit' does not point to the main branch
+                #
                 if [ "$LAST_MAIN_COMMIT" = "$CURRENT_COMMIT" ]; then
 
                     if ! test -e "$FILE_NAME_FULL"; then
