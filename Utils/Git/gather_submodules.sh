@@ -193,7 +193,7 @@ DO_SUBMODULE() {
                 fi
 
                 CURRENT_COMMIT=$(git rev-parse HEAD)
-                LAST_MAIN_COMMIT=$(git log -n 1 "$MAIN_BRANCH" | grep "commit ")
+                LAST_MAIN_COMMIT=$(git fetch && git log -n 1 "$MAIN_BRANCH" | grep "commit ")
                 LAST_MAIN_COMMIT=$(echo "$LAST_MAIN_COMMIT" | grep -o -P '(?<=commit ).*(?=)')
 
                 if [ "$LAST_MAIN_COMMIT" = "" ]; then
