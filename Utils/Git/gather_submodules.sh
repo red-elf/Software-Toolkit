@@ -275,11 +275,15 @@ EOL
 
                                                 if test -e "$UPDATE_ONLY"; then
 
+                                                    
+
                                                     if [ "$UPDATE_ONLY" -ef "$DIR_DESTINATION" ]; then
 
-                                                        echo "Will update only: $UPDATE_ONLY"
+                                                        echo "Update only, will update: $DIR_DESTINATION"
 
                                                     else
+
+                                                        echo "Update only, will skip: $DIR_DESTINATION"
 
                                                         UPDATED="$DIR_DESTINATION;$UPDATED"
                                                     fi
