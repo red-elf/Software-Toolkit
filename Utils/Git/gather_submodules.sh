@@ -281,7 +281,7 @@ EOL
 
                                                     else
 
-                                                        echo "Update only, will update: $DIR_DESTINATION"
+                                                        echo "Update only, will skip: $DIR_DESTINATION"
 
                                                         UPDATED="$DIR_DESTINATION;$UPDATED"
                                                     fi
