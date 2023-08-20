@@ -248,17 +248,17 @@ EOL
 
                         if check_contains "$UPDATED" "$DIR_DESTINATION;"; then
 
-                            echo "SKIPPING: Already recently set to the main branch at '$DIR_DESTINATION' (and updated if it was needed)"
+                            echo "SKIPPING: Already recently set to the main branch and updated at: '$DIR_DESTINATION'"
 
                         else
 
                             if git checkout main || git checkout master; then
 
-                                echo "Set to main branch at '$DIR_DESTINATION'"
+                                echo "Set to main branch at: '$DIR_DESTINATION'"
 
                                 if git fetch && git pull && git config pull.rebase false; then
 
-                                    echo "Main branch updated at '$DIR_DESTINATION'"
+                                    echo "Main branch updated at: '$DIR_DESTINATION'"
 
                                     if ! check_contains "$FLAGS" "$FLAG_UPDATE_ALWAYS"; then
 
