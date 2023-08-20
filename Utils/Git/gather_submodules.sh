@@ -277,11 +277,11 @@ EOL
 
                                                     if [ "$UPDATE_ONLY" -ef "$DIR_DESTINATION" ]; then
 
-                                                        echo "Update only, will update: $DIR_DESTINATION"
+                                                        echo "Update only, will be updating: $SUBMODULE"
 
                                                     else
 
-                                                        echo "Update only, will skip: $DIR_DESTINATION"
+                                                        echo "Update only, will be skipping: $SUBMODULE"
 
                                                         UPDATED="$DIR_DESTINATION;$UPDATED"
                                                     fi
