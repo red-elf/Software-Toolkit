@@ -275,9 +275,14 @@ EOL
 
                                                 if test -e "$UPDATE_ONLY"; then
 
-                                                    echo "Update only: $UPDATE_ONLY"
-                                                    
-                                                    # TODO: Support this flag
+                                                    if [ "$UPDATE_ONLY" -ef "$DIR_DESTINATION" ]; then
+
+                                                        echo "Will update only: $UPDATE_ONLY"
+
+                                                    else
+
+                                                        UPDATED="$DIR_DESTINATION;$UPDATED"
+                                                    fi
 
                                                 else
 
@@ -285,11 +290,11 @@ EOL
                                                     exit 1
                                                 fi
                                             fi
-                                            
+                                        
+                                        else
+                                        
                                             UPDATED="$DIR_DESTINATION;$UPDATED"
                                         fi
-
-                                        UPDATED="$DIR_DESTINATION;$UPDATED"
                                     fi
 
                                 else
