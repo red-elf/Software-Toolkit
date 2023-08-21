@@ -178,7 +178,7 @@ DO_SUBMODULE() {
 
             if cd "$APSOLUTE_SUBMOPDULE_PATH"; then
 
-                echo "Entered directory: '$APSOLUTE_SUBMOPDULE_PATH'"
+                echo "Entered directory (1): '$APSOLUTE_SUBMOPDULE_PATH'"
 
                 MAIN_BRANCH=""
 
@@ -219,11 +219,11 @@ EOL
                         if cd "$DIR_DESTINATION" && \
                             echo "Git submodule repository '$REPO' already initialized in '$DIR_DESTINATION'"; then
 
-                            echo "Entered directory: '$DIR_DESTINATION'"
+                            echo "Entered directory (2): '$DIR_DESTINATION'"
 
                         else
 
-                            echo "ERROR: Could not enter directory '$DIR_DESTINATION'"
+                            echo "ERROR: Could not enter directory (2) '$DIR_DESTINATION'"
                             exit 1
                         fi
 
@@ -376,7 +376,7 @@ EOL
 
             else
 
-                echo "ERROR: Could not enter directory '$APSOLUTE_SUBMOPDULE_PATH'"
+                echo "ERROR: Could not enter directory (1) '$APSOLUTE_SUBMOPDULE_PATH'"
                 exit 1
             fi
 
