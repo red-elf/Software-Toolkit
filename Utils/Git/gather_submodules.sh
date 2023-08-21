@@ -233,9 +233,11 @@ EOL
 
                         else
 
+                            echo "We are about to set to main branch at: '$DIR_DESTINATION'"
+
                             if git checkout main || git checkout master; then
 
-                                echo "Set to main branch at: '$DIR_DESTINATION'"
+                                echo "We have set to main branch at: '$DIR_DESTINATION'"
 
                                 if git fetch && git pull && git config pull.rebase false; then
 
