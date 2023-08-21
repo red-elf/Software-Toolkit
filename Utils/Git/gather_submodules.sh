@@ -181,7 +181,6 @@ DO_SUBMODULE() {
                 echo "Entered directory: '$APSOLUTE_SUBMOPDULE_PATH'"
 
                 MAIN_BRANCH=""
-                LAST_MAIN_COMMIT=""
 
                 if git log -n 1 main | grep "commit "; then
 
@@ -191,34 +190,8 @@ DO_SUBMODULE() {
 
                     MAIN_BRANCH="master"
                 fi
-
-                CURRENT_COMMIT=$(git rev-parse HEAD)
-                LAST_MAIN_COMMIT=$(git log -n 1 "origin/$MAIN_BRANCH" | grep "commit ")
-                LAST_MAIN_COMMIT=$(echo "$LAST_MAIN_COMMIT" | grep -o -P '(?<=commit ).*(?=)')
-
-                if [ "$LAST_MAIN_COMMIT" = "" ]; then
-
-                    echo "ERROR: Last main commit was not obtained for the Git submodule at '$APSOLUTE_SUBMOPDULE_PATH'"
-                    exit 1
-                fi
-
-                if [ "$CURRENT_COMMIT" = "" ]; then
-
-                    echo "ERROR: Current commit was not obtained for the Git submodule at '$APSOLUTE_SUBMOPDULE_PATH'"
-                    exit 1
-                fi
-
-                echo "Last on main commit: $LAST_MAIN_COMMIT, Current commit: $CURRENT_COMMIT"
                 
-                # FIXME: 
-                # Git submodule: Name='Software-Toolkit', Submodule='Toolkit', Repo='git@github.com:red-elf/Software-Toolkit.git', Path='Toolkit'
-                # Entered directory: '/home/milosvasic/Projects/HelixTrack/Core/Propriatery/Toolkit'
-                # commit 66bb1064d7151957529407464d29fc17f7c7f471
-                # Fetching ...
-                # Last on main commit: 415b9569bf1948a785c3a5a1f1d652bf6ea78ec6, Current commit: 66bb1064d7151957529407464d29fc17f7c7f471
-                # SKIPPING: Git submodule from '/home/milosvasic/Projects/HelixTrack/Core/Propriatery/Toolkit' does not point to the main branch
-                #
-                if [ "$LAST_MAIN_COMMIT" = "$CURRENT_COMMIT" ]; then
+                if git symbolic-ref HEAD | grep "refs/heads/$MAIN_BRANCH"; then
 
                     if ! test -e "$FILE_NAME_FULL"; then
 
