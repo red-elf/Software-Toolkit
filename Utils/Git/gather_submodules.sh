@@ -214,11 +214,16 @@ EOL
 
                     echo "Pointing Git submodule: $APSOLUTE_SUBMOPDULE_PATH into $DIR_DESTINATION"
 
+                    # FIXME: EXtract update logic into a function
+                    # Then, do the update for: $APSOLUTE_SUBMOPDULE_PATH and $DIR_DESTINATION"
+                    # by CD-ing and leaving them
+
                     if test -e "$DIR_DESTINATION"; then
 
-                        if cd "$DIR_DESTINATION" && \
-                            echo "Git submodule repository '$REPO' already initialized in '$DIR_DESTINATION'"; then
+                        echo "Git submodule repository '$REPO' already initialized in '$DIR_DESTINATION'"
 
+                        if cd "$DIR_DESTINATION"; then
+                        
                             echo "Entered directory (2): '$DIR_DESTINATION'"
 
                         else
