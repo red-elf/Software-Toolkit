@@ -214,9 +214,10 @@ EOL
 
                     echo "Pointing Git submodule: $APSOLUTE_SUBMOPDULE_PATH into $DIR_DESTINATION"
 
-                    # FIXME: EXtract update logic into a function
+                    # FIXME: Extract update logic into a function
                     # Then, do the update for: $APSOLUTE_SUBMOPDULE_PATH and $DIR_DESTINATION"
                     # by CD-ing and leaving them
+                    # Perform update routine by comapring if the hash is at the latest one.
 
                     if test -e "$DIR_DESTINATION"; then
 
