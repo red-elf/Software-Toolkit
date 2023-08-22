@@ -226,13 +226,6 @@ EOL
                             exit 1
                         fi
 
-                        BRANCH="$MAIN_BRANCH"
-
-                        if [ -n "$2" ]; then
-
-                            BRANCH="$2"
-                        fi
-
                         DIR_REPOSITORY="$1"
 
                         if cd "$DIR_REPOSITORY"; then
@@ -243,6 +236,22 @@ EOL
 
                             echo "ERROR: Could not enter directory (2) '$DIR_REPOSITORY'"
                             exit 1
+                        fi
+
+                        if [ -n "$2" ]; then
+
+                            BRANCH="$2"
+
+                        else
+
+                            if git log -n 1 main | grep "commit "; then
+
+                                BRANCH="main"
+
+                            else
+
+                                BRANCH="master"
+                            fi
                         fi
 
                         if check_contains "$UPDATED" "$DIR_REPOSITORY;"; then
