@@ -215,7 +215,7 @@ EOL
                     echo "Pointing Git submodule: $APSOLUTE_SUBMOPDULE_PATH into $DIR_DESTINATION"
 
                     # TODO: Extract function into separate shell script
-                    
+
                     DO_UPDATE() {
 
                         # TODO: Perform update routine by comapring if the hash is at the latest one.
@@ -486,8 +486,6 @@ done;
 
 # TODO: Extend push_all script so it:
 #
-# - Obtains the info about the current module being pushed
-# - Then iterate recursively through the project and updates all modules to this commit
 # - After the update commit head changes and push them all to upstream with generic commit message and some additional info if needed.
 
 if check_contains "$FLAGS" "$FLAG_HELLO"; then
