@@ -214,40 +214,52 @@ EOL
 
                     echo "Pointing Git submodule: $APSOLUTE_SUBMOPDULE_PATH into $DIR_DESTINATION"
 
-                    # FIXME: Extract update logic into a function
-                    # Then, do the update for: $APSOLUTE_SUBMOPDULE_PATH and $DIR_DESTINATION"
-                    # by CD-ing and leaving them
-                    # Perform update routine by comapring if the hash is at the latest one.
+                    # TODO: Extract function into separate shell script
+                    
+                    DO_UPDATE() {
 
-                    if test -e "$DIR_DESTINATION"; then
+                        # TODO: Perform update routine by comapring if the hash is at the latest one.
 
-                        echo "Git submodule repository '$REPO' already initialized in '$DIR_DESTINATION'"
+                        if [ -z "$1" ]; then
 
-                        if cd "$DIR_DESTINATION"; then
-                        
-                            echo "Entered directory (2): '$DIR_DESTINATION'"
-
-                        else
-
-                            echo "ERROR: Could not enter directory (2) '$DIR_DESTINATION'"
+                            echo "ERROR: Absoulte repository path parameter is mandatory"
                             exit 1
                         fi
 
-                        if check_contains "$UPDATED" "$DIR_DESTINATION;"; then
+                        BRANCH="$MAIN_BRANCH"
 
-                            echo "SKIPPING: Already recently set to the main branch and updated at: '$DIR_DESTINATION'"
+                        if [ -n "$2" ]; then
+
+                            BRANCH="$2"
+                        fi
+
+                        DIR_REPOSITORY="$1"
+
+                        if cd "$DIR_REPOSITORY"; then
+                        
+                            echo "Entered directory (2): '$DIR_REPOSITORY'"
 
                         else
 
-                            echo "We are about to set to main branch at: '$DIR_DESTINATION'"
+                            echo "ERROR: Could not enter directory (2) '$DIR_REPOSITORY'"
+                            exit 1
+                        fi
 
-                            if git checkout main || git checkout master; then
+                        if check_contains "$UPDATED" "$DIR_REPOSITORY;"; then
 
-                                echo "We have set to main branch at: '$DIR_DESTINATION'"
+                            echo "SKIPPING: Already recently set to the main branch and updated at: '$DIR_REPOSITORY'"
+
+                        else
+
+                            echo "We are about to checkout branch: '$BRANCH' at '$DIR_REPOSITORY'"
+
+                            if git checkout "$BRANCH"; then
+
+                                echo "We have checked out branch: '$BRANCH' at '$DIR_REPOSITORY'"
 
                                 if git fetch && git pull && git config pull.rebase false; then
 
-                                    echo "Main branch updated at: '$DIR_DESTINATION'"
+                                    echo "Branch '$BRANCH' branch updated at: '$DIR_REPOSITORY'"
 
                                     if ! check_contains "$FLAGS" "$FLAG_UPDATE_ALWAYS"; then
 
@@ -264,7 +276,7 @@ EOL
 
                                                 if test -e "$UPDATE_ONLY"; then
 
-                                                    if [ "$UPDATE_ONLY" -ef "$DIR_DESTINATION" ]; then
+                                                    if [ "$UPDATE_ONLY" -ef "$DIR_REPOSITORY" ]; then
 
                                                         echo "Update only, will be updating: $SUBMODULE"
 
@@ -272,7 +284,7 @@ EOL
 
                                                         echo "Update only, will be skipping: $SUBMODULE"
 
-                                                        UPDATED="$DIR_DESTINATION;$UPDATED"
+                                                        UPDATED="$DIR_REPOSITORY;$UPDATED"
                                                     fi
 
                                                 else
@@ -284,22 +296,21 @@ EOL
                                         
                                         else
                                         
-                                            UPDATED="$DIR_DESTINATION;$UPDATED"
+                                            UPDATED="$DIR_REPOSITORY;$UPDATED"
                                         fi
                                     fi
 
                                 else
 
-                                    echo "ERROR: Failed to update main branch at '$DIR_DESTINATION'"
+                                    echo "ERROR: Failed to update '$BRANCH' branch at '$DIR_REPOSITORY'"
                                     exit 1
                                 fi
 
                             else
 
-                                echo "ERROR: Failed to set the main branch at '$DIR_DESTINATION'"
+                                echo "ERROR: Failed to set the '$BRANCH' branch at '$DIR_REPOSITORY'"
                                 exit 1
                             fi
-
                         fi
 
                         if cd "$LOCATION"; then
@@ -311,6 +322,11 @@ EOL
                             echo "ERROR: Could not enter starting point directory (3) '$LOCATION'"
                             exit 1
                         fi
+                    }
+
+                    if test -e "$DIR_DESTINATION"; then
+
+                        echo "Git submodule repository '$REPO' already initialized in '$DIR_DESTINATION'"
 
                     else
 
@@ -366,6 +382,9 @@ EOL
                         echo "ERROR: Could not enter starting point directory (2) '$LOCATION'"
                         exit 1
                     fi
+
+                    DO_UPDATE "$APSOLUTE_SUBMOPDULE_PATH"
+                    DO_UPDATE "$DIR_DESTINATION"
 
                 else
 
