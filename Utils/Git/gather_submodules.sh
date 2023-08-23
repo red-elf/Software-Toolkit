@@ -276,7 +276,7 @@ EOL
 
                                     if git fetch && git pull && git config pull.rebase false; then
 
-                                        echo "Branch '$BRANCH' branch updated at: '$DIR_REPOSITORY'"
+                                        echo "Branch '$BRANCH' updated at: '$DIR_REPOSITORY'"
 
                                         if ! check_contains "$FLAGS" "$FLAG_UPDATE_ALWAYS"; then
 
