@@ -218,8 +218,6 @@ EOL
 
                     DO_UPDATE() {
 
-                        # TODO: Perform update routine by comapring if the hash is at the latest one.
-
                         if [ -z "$1" ]; then
 
                             echo "ERROR: Absoulte repository path parameter is mandatory"
@@ -265,6 +263,8 @@ EOL
                             if git checkout "$BRANCH"; then
 
                                 echo "We have checked out branch: '$BRANCH' at '$DIR_REPOSITORY'"
+
+                                # TODO: Perform update routine by comapring if the hash is at the latest one.
 
                                 if git fetch && git pull && git config pull.rebase false; then
 
