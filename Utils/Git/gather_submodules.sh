@@ -260,7 +260,7 @@ EOL
 
                             echo "We are about to checkout branch: '$BRANCH' at '$DIR_REPOSITORY'"
 
-                            if git checkout "$BRANCH"; then
+                            if git checkout "$BRANCH" && git fetch; then
 
                                 echo "We have checked out branch: '$BRANCH' at '$DIR_REPOSITORY'"
 
@@ -274,7 +274,7 @@ EOL
 
                                 else
 
-                                    if git fetch && git pull && git config pull.rebase false; then
+                                    if git pull && git config pull.rebase false; then
 
                                         echo "Branch '$BRANCH' updated at: '$DIR_REPOSITORY'"
 
