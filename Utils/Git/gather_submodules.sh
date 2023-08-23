@@ -264,55 +264,65 @@ EOL
 
                                 echo "We have checked out branch: '$BRANCH' at '$DIR_REPOSITORY'"
 
-                                # TODO: Perform update routine by comapring if the hash is at the latest one.
+                                CURRENT_COMMIT=$(git rev-parse HEAD)
+                                LAST_MAIN_COMMIT=$(git log -n 1 "origin/$BRANCH" | grep "commit ")
+                                LAST_MAIN_COMMIT=$(echo "$LAST_MAIN_COMMIT" | grep -o -P '(?<=commit ).*(?=)')
 
-                                if git fetch && git pull && git config pull.rebase false; then
+                                if [ "$CURRENT_COMMIT" = "$LAST_MAIN_COMMIT" ]; then
 
-                                    echo "Branch '$BRANCH' branch updated at: '$DIR_REPOSITORY'"
-
-                                    if ! check_contains "$FLAGS" "$FLAG_UPDATE_ALWAYS"; then
-
-                                        if check_contains "$FLAGS" "$FLAG_UPDATE_ONLY"; then
-
-                                            UPDATE_ONLY=$(echo "$FLAGS" | grep -o -P "(?<=$FLAG_UPDATE_ONLY=).*(?=)")
-                                            UPDATE_ONLY=$(echo "$UPDATE_ONLY" | cut -f1 "-d$CLOSE" )
-
-                                            if [ "$UPDATE_ONLY" = "" ]; then
-
-                                                echo "ERROR: Got empty path for the '$FLAG_UPDATE_ONLY' flag"
-
-                                            else
-
-                                                if test -e "$UPDATE_ONLY"; then
-
-                                                    if [ "$UPDATE_ONLY" -ef "$DIR_REPOSITORY" ]; then
-
-                                                        echo "Update only, will be updating: $SUBMODULE"
-
-                                                    else
-
-                                                        echo "Update only, will be skipping: $SUBMODULE"
-
-                                                        UPDATED="$DIR_REPOSITORY;$UPDATED"
-                                                    fi
-
-                                                else
-
-                                                    echo "ERROR: Path '$UPDATE_ONLY' does not exist for the '$FLAG_UPDATE_ONLY' flag"
-                                                    exit 1
-                                                fi
-                                            fi
-                                        
-                                        else
-                                        
-                                            UPDATED="$DIR_REPOSITORY;$UPDATED"
-                                        fi
-                                    fi
+                                    echo "Branch '$BRANCH' is already at the latest commit: $CURRENT_COMMIT"
 
                                 else
 
-                                    echo "ERROR: Failed to update '$BRANCH' branch at '$DIR_REPOSITORY'"
-                                    exit 1
+                                    if git fetch && git pull && git config pull.rebase false; then
+
+                                        echo "Branch '$BRANCH' branch updated at: '$DIR_REPOSITORY'"
+
+                                        if ! check_contains "$FLAGS" "$FLAG_UPDATE_ALWAYS"; then
+
+                                            if check_contains "$FLAGS" "$FLAG_UPDATE_ONLY"; then
+
+                                                UPDATE_ONLY=$(echo "$FLAGS" | grep -o -P "(?<=$FLAG_UPDATE_ONLY=).*(?=)")
+                                                UPDATE_ONLY=$(echo "$UPDATE_ONLY" | cut -f1 "-d$CLOSE" )
+
+                                                if [ "$UPDATE_ONLY" = "" ]; then
+
+                                                    echo "ERROR: Got empty path for the '$FLAG_UPDATE_ONLY' flag"
+
+                                                else
+
+                                                    if test -e "$UPDATE_ONLY"; then
+
+                                                        if [ "$UPDATE_ONLY" -ef "$DIR_REPOSITORY" ]; then
+
+                                                            echo "Update only, will be updating: $SUBMODULE"
+
+                                                        else
+
+                                                            echo "Update only, will be skipping: $SUBMODULE"
+
+                                                            UPDATED="$DIR_REPOSITORY;$UPDATED"
+                                                        fi
+
+                                                    else
+
+                                                        echo "ERROR: Path '$UPDATE_ONLY' does not exist for the '$FLAG_UPDATE_ONLY' flag"
+                                                        exit 1
+                                                    fi
+                                                fi
+                                            
+                                            else
+                                            
+                                                UPDATED="$DIR_REPOSITORY;$UPDATED"
+                                            fi
+                                        fi
+
+                                    else
+
+                                        echo "ERROR: Failed to update '$BRANCH' branch at '$DIR_REPOSITORY'"
+                                        exit 1
+                                    fi
+
                                 fi
 
                             else
