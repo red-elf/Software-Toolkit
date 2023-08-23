@@ -274,6 +274,8 @@ EOL
 
                                 else
 
+                                    # TODO: If provided update only provided repo, othervise skip
+
                                     if git pull && git config pull.rebase false; then
 
                                         echo "Branch '$BRANCH' updated at: '$DIR_REPOSITORY'"
