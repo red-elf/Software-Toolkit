@@ -97,6 +97,8 @@ DO_SUBMODULE() {
     REPO="$2"
     SUBMODULE="$1"
     SUBMODULE_PATH="$3"
+    DIR_PARENT="$(dirname "$FILE")"
+    SUBMODULE_FULL_PATH="$DIR_PARENT/$SUBMODULE_PATH"
     
     NAME=$(echo "$REPO" | sed 's:.*/::' | grep -o -P '(?<=).*(?=.git)')
     
@@ -116,7 +118,13 @@ DO_SUBMODULE() {
         exit 1
     fi
 
-    echo "Git submodule: Name='$NAME', Submodule='$SUBMODULE', Repo='$REPO', Path='$SUBMODULE_PATH'"
+    echo "Git submodule: Name='$NAME', Submodule='$SUBMODULE', Repo='$REPO', Path='$SUBMODULE_FULL_PATH'"
+
+    if ! test -e "$SUBMODULE_FULL_PATH"; then
+
+      echo "ERROR: Submodule full path does not exist '$SUBMODULE_FULL_PATH'"
+      exit 1
+    fi
 }
 
 # shellcheck disable=SC2044
