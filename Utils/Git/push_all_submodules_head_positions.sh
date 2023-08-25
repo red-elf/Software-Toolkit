@@ -33,8 +33,15 @@ if [ -z "$SUBMODULES_HOME" ]; then
   exit 1
 fi
 
+SCRIPT_PUSH_ALL="$SUBMODULES_HOME/Upstreamable/push_all.sh"
 SCRIPT_STRINGS="$SUBMODULES_HOME/Software-Toolkit/Utils/strings.sh"
 SCRIPT_DO_FILE="$SUBMODULES_HOME/Software-Toolkit/Utils/Git/do_file.sh"
+
+if ! test -e "$SCRIPT_PUSH_ALL"; then
+
+  echo "ERROR: Script not found '$SCRIPT_PUSH_ALL'"
+  exit 1
+fi
 
 if test -e "$SCRIPT_STRINGS"; then
 
