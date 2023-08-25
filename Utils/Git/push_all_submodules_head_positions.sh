@@ -3,7 +3,8 @@
 DIR_HOME=$(eval echo ~"$USER")
 FILE_ZSH_RC="$DIR_HOME/.zshrc"
 FILE_BASH_RC="$DIR_HOME/.bashrc"
-SESSION=$(($(date +%s%N)/1000000))
+
+export SESSION=$(($(date +%s%N)/1000000))
 
 FILE_RC=""
     
@@ -33,15 +34,9 @@ if [ -z "$SUBMODULES_HOME" ]; then
   exit 1
 fi
 
-SCRIPT_PUSH_ALL="$SUBMODULES_HOME/Upstreamable/push_all.sh"
 SCRIPT_STRINGS="$SUBMODULES_HOME/Software-Toolkit/Utils/strings.sh"
 SCRIPT_DO_FILE="$SUBMODULES_HOME/Software-Toolkit/Utils/Git/do_file.sh"
-
-if ! test -e "$SCRIPT_PUSH_ALL"; then
-
-  echo "ERROR: Script not found '$SCRIPT_PUSH_ALL'"
-  exit 1
-fi
+SCRIPT_DO_SUBMODULE="$SUBMODULES_HOME/Software-Toolkit/Utils/Git/do_submodule_push.sh"
 
 if test -e "$SCRIPT_STRINGS"; then
 
@@ -74,95 +69,11 @@ fi
 
 echo "We are going to push all submodule head positions recursively from: $LOCATION"
 
-DO_SUBMODULE() {
-
-    if [ -z "$1" ]; then
-
-        echo "ERROR: Submodule name is mandatory parameter for the function"
-        exit 1
-    fi
-
-    if [ -z "$2" ]; then
-
-        echo "ERROR: Submodule repo is mandatory parameter for the function"
-        exit 1
-    fi
-
-    if [ -z "$3" ]; then
-
-        echo "ERROR: Submodule path is mandatory parameter for the function"
-        exit 1
-    fi
-
-    if [ -z "$4" ]; then
-
-        echo "ERROR: Parent .submodule file path is mandatory parameter for the function"
-        exit 1
-    fi
-
-    FILE="$4"
-    REPO="$2"
-    SUBMODULE="$1"
-    SUBMODULE_PATH="$3"
-    DIR_PARENT="$(dirname "$FILE")"
-    SUBMODULE_FULL_PATH="$DIR_PARENT/$SUBMODULE_PATH"
-    
-    NAME=$(echo "$REPO" | sed 's:.*/::' | grep -o -P '(?<=).*(?=.git)')
-    
-    if [ "$NAME" = "" ]; then
-
-        NAME=$(echo "$REPO" | sed 's:.*/::' | grep -o -P '(?<=/).*(?=)')
-    fi
-
-    if [ "$NAME" = "" ]; then
-
-        NAME=$(echo "$REPO" | grep -o -P '(?<=https:/).*' | sed 's:.*/::')
-    fi
-
-    if [ "$NAME" = "" ]; then
-
-        echo "ERROR: No name obtained for repo '$REPO'"
-        exit 1
-    fi
-
-    echo "Git submodule: Name='$NAME', Submodule='$SUBMODULE', Repo='$REPO', Path='$SUBMODULE_FULL_PATH'"
-
-    if ! test -e "$SUBMODULE_FULL_PATH"; then
-
-      echo "ERROR: Submodule full path does not exist '$SUBMODULE_FULL_PATH'"
-      exit 1
-    fi
-
-    if cd "$SUBMODULE_FULL_PATH"; then
-
-        echo "Entered directory: '$SUBMODULE_FULL_PATH'"
-
-    else
-
-        echo "ERROR: Could not enter directory '$SUBMODULE_FULL_PATH'"
-        exit 1
-    fi
-
-    # TODO:
-    
-    git status
-
-    if cd "$LOCATION"; then
-
-        echo "Entered starting point directory: '$LOCATION'"
-
-    else
-
-        echo "ERROR: Could not enter starting point directory '$LOCATION'"
-        exit 1
-    fi
-}
-
 # shellcheck disable=SC2044
 for FILE in $(find "$LOCATION" -type f -name '.gitmodules');
 do
     
-    DO_FILE "$FILE"
+    DO_FILE "$FILE" "$SCRIPT_DO_SUBMODULE"
 done;
 
 

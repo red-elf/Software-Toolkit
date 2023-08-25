@@ -9,8 +9,7 @@ DO_FILE() {
     fi
 
     SCRIPT_STRINGS="$SUBMODULES_HOME/Software-Toolkit/Utils/strings.sh"
-    SCRIPT_DO_SUBMODULE="$SUBMODULES_HOME/Software-Toolkit/Utils/Git/do_submodule.sh"
-
+    
     if test -e "$SCRIPT_STRINGS"; then
 
         # shellcheck disable=SC1090
@@ -22,14 +21,14 @@ DO_FILE() {
         exit 1
     fi
 
-    if test -e "$SCRIPT_DO_SUBMODULE"; then
+    if [ -n "$2" ]; then
 
         # shellcheck disable=SC1090
-        . "$SCRIPT_DO_SUBMODULE"
+        . "$2"
 
     else
 
-        echo "ERROR: Script not found '$SCRIPT_DO_SUBMODULE'"
+        echo "ERROR: No 'DO_SUBMODULE' function script provided"
         exit 1
     fi
 

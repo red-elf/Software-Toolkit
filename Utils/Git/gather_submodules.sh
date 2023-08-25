@@ -44,6 +44,7 @@ fi
 
 SCRIPT_STRINGS="$SUBMODULES_HOME/Software-Toolkit/Utils/strings.sh"
 SCRIPT_DO_FILE="$SUBMODULES_HOME/Software-Toolkit/Utils/Git/do_file.sh"
+SCRIPT_DO_SUBMODULE="$SUBMODULES_HOME/Software-Toolkit/Utils/Git/do_submodule.sh"
 
 if test -e "$SCRIPT_STRINGS"; then
 
@@ -88,7 +89,7 @@ do
 
     else
     
-        DO_FILE "$FILE"
+        DO_FILE "$FILE" "$SCRIPT_DO_SUBMODULE"
     fi
 done;
 
