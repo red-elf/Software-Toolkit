@@ -2,6 +2,25 @@
 
 DO_SUBMODULE() {
 
+    if [ -z "$SUBMODULES_HOME" ]; then
+
+        echo "ERROR: The SUBMODULES_HOME is not defined"
+        exit 1
+    fi
+
+    SCRIPT_DO_UPDATE="$SUBMODULES_HOME/Software-Toolkit/Utils/Git/do_update.sh"
+
+    if test -e "$SCRIPT_DO_UPDATE"; then
+
+        # shellcheck disable=SC1090
+        . "$SCRIPT_DO_UPDATE"
+
+    else
+
+        echo "ERROR: Script not found '$SCRIPT_DO_UPDATE'"
+        exit 1
+    fi
+
     if [ -z "$LOCATION" ]; then
 
         LOCATION="$(pwd)"
