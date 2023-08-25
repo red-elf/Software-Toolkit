@@ -2,6 +2,37 @@
 
 DO_FILE() {
 
+    if [ -z "$SUBMODULES_HOME" ]; then
+
+        echo "ERROR: The SUBMODULES_HOME is not defined"
+        exit 1
+    fi
+
+    SCRIPT_STRINGS="$SUBMODULES_HOME/Software-Toolkit/Utils/strings.sh"
+    SCRIPT_DO_SUBMODULE="$SUBMODULES_HOME/Software-Toolkit/Utils/Git/do_submodule.sh"
+
+    if test -e "$SCRIPT_STRINGS"; then
+
+        # shellcheck disable=SC1090
+        . "$SCRIPT_STRINGS"
+
+    else
+
+        echo "ERROR: Script not found '$SCRIPT_STRINGS'"
+        exit 1
+    fi
+
+    if test -e "$SCRIPT_DO_SUBMODULE"; then
+
+        # shellcheck disable=SC1090
+        . "$SCRIPT_DO_SUBMODULE"
+
+    else
+
+        echo "ERROR: Script not found '$SCRIPT_DO_SUBMODULE'"
+        exit 1
+    fi
+
     if [ -z "$1" ]; then
 
         echo "ERROR: File path is mandatory parameter for the function"

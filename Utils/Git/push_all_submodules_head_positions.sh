@@ -144,6 +144,7 @@ DO_SUBMODULE() {
     fi
 
     # TODO:
+    
     git status
 
     if cd "$LOCATION"; then
