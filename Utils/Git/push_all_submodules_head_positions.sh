@@ -3,7 +3,7 @@
 DIR_HOME=$(eval echo ~"$USER")
 FILE_ZSH_RC="$DIR_HOME/.zshrc"
 FILE_BASH_RC="$DIR_HOME/.bashrc"
-
+SESSION=$(($(date +%s%N)/1000000))
 
 FILE_RC=""
     
@@ -62,7 +62,7 @@ LOCATION="$(pwd)"
 
 if [ -n "$1" ]; then
 
-    LOCATION="$1"
+    LOCATION=$(realpath "$1")
 fi
 
 echo "We are going to push all submodule head positions recursively from: $LOCATION"
@@ -124,6 +124,29 @@ DO_SUBMODULE() {
 
       echo "ERROR: Submodule full path does not exist '$SUBMODULE_FULL_PATH'"
       exit 1
+    fi
+
+    if cd "$SUBMODULE_FULL_PATH"; then
+
+        echo "Entered directory: '$SUBMODULE_FULL_PATH'"
+
+    else
+
+        echo "ERROR: Could not enter directory '$SUBMODULE_FULL_PATH'"
+        exit 1
+    fi
+
+    # TODO:
+    git status
+
+    if cd "$LOCATION"; then
+
+        echo "Entered starting point directory: '$LOCATION'"
+
+    else
+
+        echo "ERROR: Could not enter starting point directory '$LOCATION'"
+        exit 1
     fi
 }
 
