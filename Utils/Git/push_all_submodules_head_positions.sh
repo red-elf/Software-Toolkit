@@ -81,3 +81,12 @@ done;
 # Entered starting point directory: '/home/milosvasic/Projects/HelixTrack/Core'
 # Git submodule: Name='Upstreamable', Submodule='/home/milosvasic/Projects/HelixTrack/Core/_Submodules/Upstreamable', Repo='git@github.com:red-elf/Upstreamable.git', Path='/home/milosvasic/Projects/HelixTrack/Core//home/milosvasic/Projects/HelixTrack/Core/_Submodules/Upstreamable'
 # ERROR: Submodule full path does not exist '/home/milosvasic/Projects/HelixTrack/Core//home/milosvasic/Projects/HelixTrack/Core/_Submodules/Upstreamable'
+
+# FIXME:
+# 
+# Git submodule file has been written: /home/milosvasic/Projects/HelixTrack/Core/_Submodules/drogon.submodule
+# Pointing Git submodule: /home/milosvasic/Projects/HelixTrack/Core/Core/_Dependencies/Cache/Drogon/Library into /home/milosvasic/Projects/HelixTrack/Core/_Submodules/drogon
+# Git submodule repository 'git@github.com:drogonframework/drogon.git' will be initialized into '/home/milosvasic/Projects/HelixTrack/Core/_Submodules/drogon'
+# fatal: /home/milosvasic/Projects/HelixTrack/Core/_Submodules/drogon: '/home/milosvasic/Projects/HelixTrack/Core/_Submodules/drogon' is outside repository at '/home/milosvasic/Projects/HelixTrack/Core/Core/_Dependencies/Cache/Drogon/Library'
+# ERROR: Git submodule repository 'git@github.com:drogonframework/drogon.git' has failed to initialize into '/home/milosvasic/Projects/HelixTrack/Core/_Submodules/drogon'
+# ERROR: Push all failure
