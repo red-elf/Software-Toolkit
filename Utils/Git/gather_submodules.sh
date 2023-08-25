@@ -92,8 +92,3 @@ do
         DO_FILE "$FILE" "$SCRIPT_DO_SUBMODULE"
     fi
 done;
-
-if check_contains "$FLAGS" "$FLAG_HELLO"; then
-
-    echo "Test hello flag is on. Well then, HELLO! :)"
-fi

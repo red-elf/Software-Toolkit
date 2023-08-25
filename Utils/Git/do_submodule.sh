@@ -218,4 +218,14 @@ EOL
 
     DO_UPDATE "$APSOLUTE_SUBMOPDULE_PATH"
     DO_UPDATE "$DIR_DESTINATION"
+
+    if cd "$LOCATION"; then
+
+        echo "Entered starting point directory (3): '$LOCATION'"
+
+    else
+
+        echo "ERROR: Could not enter starting point directory (3) '$LOCATION'"
+        exit 1
+    fi
 }
