@@ -448,8 +448,6 @@ EOL
     fi
 }
 
-...
-
 # shellcheck disable=SC2044
 for FILE in $(find "$LOCATION" -type f -name '.gitmodules');
 do
