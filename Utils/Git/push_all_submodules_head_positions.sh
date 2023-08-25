@@ -76,5 +76,8 @@ do
     DO_FILE "$FILE" "$SCRIPT_DO_SUBMODULE"
 done;
 
-
-
+# FIXME:
+# 
+# Entered starting point directory: '/home/milosvasic/Projects/HelixTrack/Core'
+# Git submodule: Name='Upstreamable', Submodule='/home/milosvasic/Projects/HelixTrack/Core/_Submodules/Upstreamable', Repo='git@github.com:red-elf/Upstreamable.git', Path='/home/milosvasic/Projects/HelixTrack/Core//home/milosvasic/Projects/HelixTrack/Core/_Submodules/Upstreamable'
+# ERROR: Submodule full path does not exist '/home/milosvasic/Projects/HelixTrack/Core//home/milosvasic/Projects/HelixTrack/Core/_Submodules/Upstreamable'
