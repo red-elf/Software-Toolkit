@@ -55,5 +55,10 @@ fi
 
 echo "We are going to push all submodule head positions recursively from: $LOCATION"
 
+# TODO: Implement
+
+echo "ERROR: Push all submodule head positions not yet implemented"
+exit 1
+
 
 
