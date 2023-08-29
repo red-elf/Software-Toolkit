@@ -15,6 +15,12 @@ DO_UPDATE() {
 
     DIR_REPOSITORY="$1"
 
+    if ! test -e "$DIR_REPOSITORY"; then
+
+        echo "WARNING: Nothing to update at '$DIR_REPOSITORY'"
+        exit 0
+    fi
+
     if cd "$DIR_REPOSITORY"; then
 
         echo "Entered directory (2): '$DIR_REPOSITORY'"
