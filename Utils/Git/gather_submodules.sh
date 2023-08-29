@@ -83,6 +83,8 @@ fi
 for FILE in $(find "$LOCATION" -type f -name '.gitmodules');
 do
     
+    # FIXME: If file at particular location is part of master or main branch, then ok, if not do skip.
+
     if check_prefixes "$FILE" "$DIR_SUBMODULES_FULL"; then
 
         echo "SKIPPING: '$FILE'"
