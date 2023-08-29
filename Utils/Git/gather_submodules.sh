@@ -83,14 +83,34 @@ fi
 for FILE in $(find "$LOCATION" -type f -name '.gitmodules');
 do
     
-    # FIXME: If file at particular location is part of master or main branch, then ok, if not do skip.
+    MAIN_BRANCH=""
 
-    if check_prefixes "$FILE" "$DIR_SUBMODULES_FULL"; then
+    if git log -n 1 main | grep "commit "; then
 
-        echo "SKIPPING: '$FILE'"
+        MAIN_BRANCH="main"
 
     else
-    
-        DO_FILE "$FILE" "$SCRIPT_DO_SUBMODULE"
+
+        if git log -n 1 master | grep "commit "; then
+
+          MAIN_BRANCH="master"
+
+        fi
+    fi
+
+    if [ "$MAIN_BRANCH" = "main" ] || [ "$MAIN_BRANCH" = "master" ]; then
+
+      if check_prefixes "$FILE" "$DIR_SUBMODULES_FULL"; then
+
+          echo "SKIPPING: '$FILE'"
+
+      else
+      
+          DO_FILE "$FILE" "$SCRIPT_DO_SUBMODULE"
+      fi
+
+    else
+
+      echo "SKIPPING (not on main branch): '$FILE'" 
     fi
 done;
