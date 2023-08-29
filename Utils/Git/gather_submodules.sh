@@ -1,6 +1,7 @@
 #!/bin/bash
 
-LOCATION="$(pwd)"
+HERE="$(pwd)"
+LOCATION="$HERE"
 
 if [ -n "$1" ]; then
 
@@ -82,7 +83,19 @@ fi
 # shellcheck disable=SC2044
 for FILE in $(find "$LOCATION" -type f -name '.gitmodules');
 do
-    
+
+    FILE_PATH="$(dirname -- "$FILE")"
+
+    if cd "$FILE_PATH"; then
+
+      echo "Entered: '$FILE_PATH'"
+
+    else
+
+      echo "ERROR: Could not eneter '$FILE_PATH'"
+      exit 1
+    fi
+
     MAIN_BRANCH=""
 
     if git log -n 1 main | grep "commit "; then
@@ -96,6 +109,16 @@ do
           MAIN_BRANCH="master"
 
         fi
+    fi
+
+    if cd "$HERE"; then
+
+      echo "Got back to: '$HERE'"
+
+    else
+
+      echo "ERROR: Could not go back to '$HERE'"
+      exit 1
     fi
 
     if [ "$MAIN_BRANCH" = "main" ] || [ "$MAIN_BRANCH" = "master" ]; then
