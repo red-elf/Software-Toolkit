@@ -81,6 +81,15 @@ DO_UPDATE() {
 
     echo "We are about to checkout branch: '$BRANCH' at '$DIR_REPOSITORY'"
 
+    if [ "$BRANCH" = "main" ] || [ "$BRANCH" = "master" ]; then
+
+        if git status | grep "HEAD detached at "; then
+
+            echo "SKIPPING (head detached) at '$DIR_REPOSITORY'"
+            exit 0
+        fi
+    fi
+
     if git checkout "$BRANCH" && git fetch; then
 
         echo "We have checked out branch: '$BRANCH' at '$DIR_REPOSITORY'"
