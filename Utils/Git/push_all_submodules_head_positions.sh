@@ -1,5 +1,6 @@
 #!/bin/bash
 
+HERE="$(pwd)"
 DIR_HOME=$(eval echo ~"$USER")
 FILE_ZSH_RC="$DIR_HOME/.zshrc"
 FILE_BASH_RC="$DIR_HOME/.bashrc"
@@ -72,6 +73,51 @@ echo "We are going to push all submodule head positions recursively from: $LOCAT
 # shellcheck disable=SC2044
 for FILE in $(find "$LOCATION" -type f -name '.gitmodules');
 do
-    
+
+  FILE_PATH="$(dirname -- "$FILE")"
+
+  if cd "$FILE_PATH"; then
+
+    echo "Entered: '$FILE_PATH'"
+
+  else
+
+    echo "ERROR: Could not eneter '$FILE_PATH'"
+    exit 1
+  fi
+
+  MAIN_BRANCH=""
+
+  if git log -n 1 main | grep "commit "; then
+
+      MAIN_BRANCH="main"
+
+  else
+
+      if git log -n 1 master | grep "commit "; then
+
+        MAIN_BRANCH="master"
+
+      fi
+  fi
+
+  if cd "$HERE"; then
+
+    echo "Got back to: '$HERE'"
+
+  else
+
+    echo "ERROR: Could not go back to '$HERE'"
+    exit 1
+  fi
+  
+  if [ "$MAIN_BRANCH" = "main" ] || [ "$MAIN_BRANCH" = "master" ]; then
+
     DO_FILE "$FILE" "$SCRIPT_DO_SUBMODULE"
+
+  else
+
+    echo "SKIPPING (not on main branch): '$FILE'" 
+  fi
+  
 done;
