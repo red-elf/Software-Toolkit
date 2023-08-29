@@ -129,7 +129,15 @@ do
 
       else
       
-          DO_FILE "$FILE" "$SCRIPT_DO_SUBMODULE"
+          if git status | grep "HEAD detached at "; then
+
+            echo "SKIPPING (head detached): '$FILE'"
+
+          else
+
+            DO_FILE "$FILE" "$SCRIPT_DO_SUBMODULE"
+            
+          fi
       fi
 
     else

@@ -113,11 +113,18 @@ do
   
   if [ "$MAIN_BRANCH" = "main" ] || [ "$MAIN_BRANCH" = "master" ]; then
 
-    DO_FILE "$FILE" "$SCRIPT_DO_SUBMODULE"
+    if git status | grep "HEAD detached at "; then
+
+      echo "SKIPPING (head detached): '$FILE'"
+
+    else
+
+      DO_FILE "$FILE" "$SCRIPT_DO_SUBMODULE"
+    fi
 
   else
 
     echo "SKIPPING (not on main branch): '$FILE'" 
   fi
-  
+
 done;
