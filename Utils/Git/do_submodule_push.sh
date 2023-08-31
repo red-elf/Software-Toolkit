@@ -142,9 +142,13 @@ DO_SUBMODULE() {
         exit 1
     fi
 
-    # TODO:
-    
-    git status
+    if ! git status | grep "Your branch is up to date with 'origin/$MAIN_BRANCH'"; then
+
+        echo "We are going to commit and push changes at '#SUBMODULE_FULL_PATH'"
+
+        # TODO:
+        
+    fi
 
     if cd "$LOCATION"; then
 
