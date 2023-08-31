@@ -90,7 +90,8 @@ if sh "$SCRIPT_CHECK_ALT_LINUX"; then
 
         echo "Gradle is added into the system path"
 
-        . "$FILE_RC"
+        # shellcheck disable=SC1090
+        . "$FILE_RC" >/dev/null 2>&1
 
         if ! gradle -v; then
 

@@ -13,7 +13,7 @@ DO_SUBMODULE() {
     if test -e "$SCRIPT_DO_UPDATE"; then
 
         # shellcheck disable=SC1090
-        . "$SCRIPT_DO_UPDATE"
+        . "$SCRIPT_DO_UPDATE" >/dev/null 2>&1
 
     else
 
