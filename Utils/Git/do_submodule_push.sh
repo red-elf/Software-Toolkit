@@ -144,7 +144,7 @@ DO_SUBMODULE() {
 
     if git status | grep "Changes not staged for commit:" >/dev/null 2>&1 || \
         git status | grep "Changes to be committed:" >/dev/null 2>&1 || \
-        git status | grep "Your branch is ahead of " >/dev/null 2>&1; then
+        git status | grep "Your branch is ahead of " | grep "by " | grep "commits." >/dev/null 2>&1; then
 
         echo "We are going to commit and push changes at '$SUBMODULE_FULL_PATH'"
 
