@@ -154,7 +154,7 @@ DO_SUBMODULE() {
 
             if git commit -m "Auto commit: $SESSION"; then
 
-                # TODO:
+                # TODO: Push all
                 #
                 echo "Changes have been commited at '$SUBMODULE_FULL_PATH'"
 
