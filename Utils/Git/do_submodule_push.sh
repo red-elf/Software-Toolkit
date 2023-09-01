@@ -150,9 +150,19 @@ DO_SUBMODULE() {
 
         if git add . >/dev/null 2>&1; then
         
-            # TODO:
-            #
             echo "Changes staged at '$SUBMODULE_FULL_PATH'"
+
+            if git commit -m "Auto commit: $SESSION"; then
+
+                # TODO:
+                #
+                echo "Changes have been commited at '$SUBMODULE_FULL_PATH'"
+
+            else
+
+                echo "ERROR: Could not commit changes at '$SUBMODULE_FULL_PATH'"
+                exit 1
+            fi
 
         else
 
