@@ -142,7 +142,7 @@ DO_SUBMODULE() {
         exit 1
     fi
 
-    if ! git status | grep "Your branch is up to date with 'origin/$MAIN_BRANCH'" >/dev/null 2>&1; then
+    if ! git status | grep "nothing to commit, working tree clean" >/dev/null 2>&1; then
 
         if ! git status | grep "HEAD detached at " >/dev/null 2>&1; then
 
