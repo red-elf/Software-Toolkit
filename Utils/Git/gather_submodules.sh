@@ -35,7 +35,7 @@ else
 fi
 
 # shellcheck disable=SC1090
-. "$FILE_RC"
+. "$FILE_RC" >/dev/null 2>&1
 
 if [ -z "$SUBMODULES_HOME" ]; then
 
@@ -98,13 +98,13 @@ do
 
     MAIN_BRANCH=""
 
-    if git log -n 1 main | grep "commit "; then
+    if git log -n 1 main | grep "commit " >/dev/null 2>&1; then
 
         MAIN_BRANCH="main"
 
     else
 
-        if git log -n 1 master | grep "commit "; then
+        if git log -n 1 master | grep "commit " >/dev/null 2>&1; then
 
           MAIN_BRANCH="master"
 
