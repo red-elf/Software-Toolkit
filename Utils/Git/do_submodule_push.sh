@@ -68,7 +68,7 @@ DO_SUBMODULE() {
     fi
 
     # shellcheck disable=SC1090
-    . "$FILE_RC"
+    . "$FILE_RC" >/dev/null 2>&1
 
     if [ -z "$SUBMODULES_HOME" ]; then
 
@@ -142,9 +142,33 @@ DO_SUBMODULE() {
         exit 1
     fi
 
-    # TODO:
-    
-    git status
+    if git status | grep "Changes not staged for commit:" >/dev/null 2>&1 || \
+        git status | grep "Changes to be committed:" >/dev/null 2>&1 || \
+        git status | grep "Your branch is ahead of " | grep "by " | grep "commits." >/dev/null 2>&1; then
+
+        echo "We are going to commit and push changes at '$SUBMODULE_FULL_PATH'"
+
+        if git add . >/dev/null 2>&1; then
+        
+            echo "Changes staged at '$SUBMODULE_FULL_PATH'"
+
+            if git commit -m "Auto commit: $SESSION"; then
+
+                # TODO: Push all
+                #
+                echo "Changes have been commited at '$SUBMODULE_FULL_PATH'"
+
+            else
+
+                echo "ERROR: Could not commit changes at '$SUBMODULE_FULL_PATH'"
+                exit 1
+            fi
+
+        else
+
+            echo "WARNING: Changes not staged at '$SUBMODULE_FULL_PATH'"
+        fi
+    fi
 
     if cd "$LOCATION"; then
 
