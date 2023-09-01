@@ -142,7 +142,7 @@ DO_SUBMODULE() {
         exit 1
     fi
 
-    if git status | grep "Changes to be committed:" >/dev/null 2>&1; then
+    if git status | grep "Changes not staged for commit:" >/dev/null 2>&1; then
 
         echo "We are going to commit and push changes at '$SUBMODULE_FULL_PATH'"
 
@@ -150,7 +150,7 @@ DO_SUBMODULE() {
         
             # TODO:
             #
-            echo ""
+            echo "Changes staged at '$SUBMODULE_FULL_PATH'"
 
         else
 
