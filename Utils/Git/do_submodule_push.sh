@@ -142,24 +142,20 @@ DO_SUBMODULE() {
         exit 1
     fi
 
-    if ! git status | grep "nothing to commit, working tree clean" >/dev/null 2>&1; then
+    if git status | grep "Changes to be committed:" >/dev/null 2>&1; then
 
-        if ! git status | grep "HEAD detached at " >/dev/null 2>&1; then
+        echo "We are going to commit and push changes at '$SUBMODULE_FULL_PATH'"
 
-            echo "We are going to commit and push changes at '$SUBMODULE_FULL_PATH'"
+        if git add . >/dev/null 2>&1; then
+        
+            # TODO:
+            #
+            echo ""
 
-            if git add . >/dev/null 2>&1; then
-            
-                # TODO:
-                #
-                echo ""
+        else
 
-            else
-
-                echo "WARNING: Changes not staged at '$SUBMODULE_FULL_PATH'"
-            fi
+            echo "WARNING: Changes not staged at '$SUBMODULE_FULL_PATH'"
         fi
-
     fi
 
     if cd "$LOCATION"; then
