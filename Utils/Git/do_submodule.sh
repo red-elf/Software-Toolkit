@@ -97,7 +97,7 @@ DO_SUBMODULE() {
 
                 MAIN_BRANCH=""
 
-                if git log -n 1 main | grep "commit "; then
+                if git log -n 1 main | grep "commit " >/dev/null 2>&1; then
 
                     MAIN_BRANCH="main"
 
@@ -106,7 +106,7 @@ DO_SUBMODULE() {
                     MAIN_BRANCH="master"
                 fi
                 
-                if git symbolic-ref HEAD | grep "refs/heads/$MAIN_BRANCH"; then
+                if git symbolic-ref HEAD | grep "refs/heads/$MAIN_BRANCH" >/dev/null 2>&1; then
 
                     if ! test -e "$FILE_NAME_FULL"; then
 
