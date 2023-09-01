@@ -148,7 +148,16 @@ DO_SUBMODULE() {
 
             echo "We are going to commit and push changes at '$SUBMODULE_FULL_PATH'"
 
-            # TODO:
+            if git add . >/dev/null 2>&1; then
+            
+                # TODO:
+                #
+                echo ""
+
+            else
+
+                echo "WARNING: Changes not staged at '$SUBMODULE_FULL_PATH'"
+            fi
         fi
 
     fi
