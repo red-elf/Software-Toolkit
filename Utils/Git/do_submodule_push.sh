@@ -142,9 +142,39 @@ DO_SUBMODULE() {
         exit 1
     fi
 
+    PUSH_ALL() {
+        
+        if [ -z "$1" ]; then
+
+            echo "ERROR: The Upstreams argument is mandatory"
+            exit 1
+        fi
+
+        UPSTREAMS="$1"
+
+        if test -e "$UPSTREAMS"; then
+
+            echo "We are about to push all the changes to remote upstreams"
+
+        else
+
+            echo "ERROR: Upstreams not found at '$UPSTREAMS'"
+            exit 1
+        fi
+
+        # TODO: Push all
+        #
+    }
+
+    UPSTREAMS="$SUBMODULE_FULL_PATH/Upstreams"
+
+    if git status | grep "Your branch is ahead of " | grep "by " | grep "commits." >/dev/null 2>&1; then
+
+        PUSH_ALL "$UPSTREAMS"
+    fi
+
     if git status | grep "Changes not staged for commit:" >/dev/null 2>&1 || \
-        git status | grep "Changes to be committed:" >/dev/null 2>&1 || \
-        git status | grep "Your branch is ahead of " | grep "by " | grep "commits." >/dev/null 2>&1; then
+        git status | grep "Changes to be committed:" >/dev/null 2>&1; then
 
         echo "We are going to commit and push changes at '$SUBMODULE_FULL_PATH'"
 
@@ -154,21 +184,9 @@ DO_SUBMODULE() {
 
             if git commit -m "Auto commit: $SESSION"; then
 
-                # TODO: Push all
-                #
                 echo "Changes have been commited at '$SUBMODULE_FULL_PATH'"
 
-                UPSTREAMS="$SUBMODULE_FULL_PATH/Upstreams"
-
-                if test -e "$UPSTREAMS"; then
-
-                    echo "We are about to push all the changes to remote upstreams"
-
-                else
-
-                    echo "ERROR: Upstreams not found at '$UPSTREAMS'"
-                    exit 1
-                fi
+                PUSH_ALL "$UPSTREAMS"
 
             else
 
