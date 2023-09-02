@@ -79,7 +79,7 @@ DO_SUBMODULE() {
     DIR_UPSTREAMABLE="$SUBMODULES_HOME/Upstreamable"
     SCRIPT_INSTALL_UPSTREAMS="$DIR_UPSTREAMABLE/install_upstreams.sh"
     SCRIPT_STRINGS="$SUBMODULES_HOME/Software-Toolkit/Utils/strings.sh"
-    SCRIPT_PUSH_ALL="$SUBMODULES_HOME/Software-Toolkit/Utils/push_all.sh"
+    SCRIPT_PUSH_ALL="$SUBMODULES_HOME/Software-Toolkit/Utils/Git/push_all.sh"
 
     if test -e "$SCRIPT_STRINGS"; then
 
@@ -95,7 +95,7 @@ DO_SUBMODULE() {
 
     if ! test -e "$SCRIPT_PUSH_ALL"; then
 
-        echo "ERROR: Script not found '$SCRIPT_STRINGS'"
+        echo "ERROR: Script not found '$SCRIPT_PUSH_ALL'"
         exit 1
     fi
 
