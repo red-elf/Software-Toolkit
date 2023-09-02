@@ -142,7 +142,44 @@ DO_SUBMODULE() {
 
     if cd "$SUBMODULE_FULL_PATH"; then
 
-        echo "Entered directory: '$SUBMODULE_FULL_PATH'" && git submodule init && git submodule update
+        echo "Entered directory: '$SUBMODULE_FULL_PATH'"
+
+        # shellcheck disable=SC2012
+        if [ "$(ls -1 | wc -l)" = "0" ]; then
+
+            if git submodule init && git submodule update; then
+
+                MAIN_BRANCH=""
+
+                if git log -n 1 main | grep "commit " >/dev/null 2>&1; then
+
+                    MAIN_BRANCH="main"
+
+                else
+
+                    if git log -n 1 master | grep "commit " >/dev/null 2>&1; then
+
+                    MAIN_BRANCH="master"
+
+                    fi
+                fi
+
+                if git checkout "$MAIN_BRANCH" && git fetch && git pull; then
+
+                    echo "Submodule updated at '$SUBMODULE_FULL_PATH'"
+
+                else
+
+                    echo "ERROR: Submodule failed to update at '$SUBMODULE_FULL_PATH'"
+                    exit 1
+                fi
+
+            else
+
+                echo "ERROR: Submodule initialization failed at '$SUBMODULE_FULL_PATH'"
+                exit 1
+            fi
+        fi
 
     else
 
