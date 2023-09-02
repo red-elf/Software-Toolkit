@@ -199,12 +199,9 @@ DO_SUBMODULE() {
             exit 1
         fi
 
-        if ! sh "$SCRIPT_INSTALL_UPSTREAMS" "$UPSTREAMS"; then
+        sh "$SCRIPT_INSTALL_UPSTREAMS" "$UPSTREAMS"
 
-            echo "WARNING: Failed to install upstreams from '$UPSTREAMS'"
-        fi
-
-        if git fetch && git pull; then
+        if git fetch && git config pull.rebase false && git pull; then
 
             echo "Submodule updated at '$SUBMODULE_FULL_PATH'"
 
@@ -240,7 +237,7 @@ DO_SUBMODULE() {
             exit 1
         fi
 
-        if git config pull.rebase false && "$SCRIPT_PUSH_ALL" "$UPSTREAMS"; then
+        if sh "$SCRIPT_PUSH_ALL" "$UPSTREAMS"; then
 
             echo "Push all at '$SUBMODULE_FULL_PATH'"
 
