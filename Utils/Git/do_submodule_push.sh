@@ -164,7 +164,20 @@ DO_SUBMODULE() {
                     fi
                 fi
 
-                if git checkout "$MAIN_BRANCH" && git fetch && git pull; then
+                if git checkout "$MAIN_BRANCH"; then
+
+                    echo "'$MAIN_BRANCH' checked out at '$SUBMODULE_FULL_PATH'"
+
+                else
+
+                    echo "ERROR: '$MAIN_BRANCH' failed to check out at '$SUBMODULE_FULL_PATH'"
+                    exit 1
+                fi
+
+                # TODO: Install upstreams and set merging strategy - This has to be done if zero or more items
+                # With and without git init needed.
+
+                if git fetch && git pull; then
 
                     echo "Submodule updated at '$SUBMODULE_FULL_PATH'"
 
