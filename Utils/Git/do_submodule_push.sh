@@ -158,6 +158,18 @@ DO_SUBMODULE() {
                 #
                 echo "Changes have been commited at '$SUBMODULE_FULL_PATH'"
 
+                UPSTREAMS="$SUBMODULE_FULL_PATH/Upstreams"
+
+                if test -e "$UPSTREAMS"; then
+
+                    echo "We are about to push all the changes to remote upstreams"
+
+                else
+
+                    echo "ERROR: Upstreams not found at '$UPSTREAMS'"
+                    exit 1
+                fi
+
             else
 
                 echo "ERROR: Could not commit changes at '$SUBMODULE_FULL_PATH'"
