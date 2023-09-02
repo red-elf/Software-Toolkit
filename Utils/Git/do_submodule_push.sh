@@ -142,7 +142,7 @@ DO_SUBMODULE() {
 
     if cd "$SUBMODULE_FULL_PATH"; then
 
-        echo "Entered directory: '$SUBMODULE_FULL_PATH'"
+        echo "Entered directory: '$SUBMODULE_FULL_PATH'" && git submodule init && git submodule update
 
     else
 
