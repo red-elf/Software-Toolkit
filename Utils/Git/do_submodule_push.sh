@@ -76,7 +76,10 @@ DO_SUBMODULE() {
         exit 1
     fi
 
+    DIR_UPSTREAMABLE="$SUBMODULES_HOME/Upstreamable"
+    SCRIPT_INSTALL_UPSTREAMS="$DIR_UPSTREAMABLE/install_upstreams.sh"
     SCRIPT_STRINGS="$SUBMODULES_HOME/Software-Toolkit/Utils/strings.sh"
+    SCRIPT_PUSH_ALL="$SUBMODULES_HOME/Software-Toolkit/Utils/push_all.sh"
 
     if test -e "$SCRIPT_STRINGS"; then
 
@@ -86,6 +89,19 @@ DO_SUBMODULE() {
     else
 
         echo "ERROR: Script not found '$SCRIPT_STRINGS'"
+        exit 1
+    fi
+    
+
+    if ! test -e "$SCRIPT_PUSH_ALL"; then
+
+        echo "ERROR: Script not found '$SCRIPT_STRINGS'"
+        exit 1
+    fi
+
+    if ! test -e "$SCRIPT_INSTALL_UPSTREAMS"; then
+
+        echo "ERROR: Script not found '$SCRIPT_INSTALL_UPSTREAMS'"
         exit 1
     fi
 
@@ -149,49 +165,54 @@ DO_SUBMODULE() {
 
             if git submodule init && git submodule update; then
 
-                MAIN_BRANCH=""
-
-                if git log -n 1 main | grep "commit " >/dev/null 2>&1; then
-
-                    MAIN_BRANCH="main"
-
-                else
-
-                    if git log -n 1 master | grep "commit " >/dev/null 2>&1; then
-
-                    MAIN_BRANCH="master"
-
-                    fi
-                fi
-
-                if git checkout "$MAIN_BRANCH"; then
-
-                    echo "'$MAIN_BRANCH' checked out at '$SUBMODULE_FULL_PATH'"
-
-                else
-
-                    echo "ERROR: '$MAIN_BRANCH' failed to check out at '$SUBMODULE_FULL_PATH'"
-                    exit 1
-                fi
-
-                # TODO: Install upstreams and set merging strategy - This has to be done if zero or more items
-                # With and without git init needed.
-
-                if git fetch && git pull; then
-
-                    echo "Submodule updated at '$SUBMODULE_FULL_PATH'"
-
-                else
-
-                    echo "ERROR: Submodule failed to update at '$SUBMODULE_FULL_PATH'"
-                    exit 1
-                fi
+                echo "Submodule (re) initialized at: '$SUBMODULE_FULL_PATH'"
 
             else
 
                 echo "ERROR: Submodule initialization failed at '$SUBMODULE_FULL_PATH'"
                 exit 1
             fi
+        fi
+
+        MAIN_BRANCH=""
+
+        if git log -n 1 main | grep "commit " >/dev/null 2>&1; then
+
+            MAIN_BRANCH="main"
+
+        else
+
+            if git log -n 1 master | grep "commit " >/dev/null 2>&1; then
+
+            MAIN_BRANCH="master"
+
+            fi
+        fi
+
+        if git checkout "$MAIN_BRANCH"; then
+
+            echo "'$MAIN_BRANCH' checked out at '$SUBMODULE_FULL_PATH'"
+
+        else
+
+            echo "ERROR: '$MAIN_BRANCH' failed to check out at '$SUBMODULE_FULL_PATH'"
+            exit 1
+        fi
+
+        if ! "$SCRIPT_INSTALL_UPSTREAMS" "$UPSTREAMS"; then
+
+            echo "ERROR: Failed to install upstreams from '$UPSTREAMS'"
+            exit 1
+        fi
+
+        if git fetch && git pull; then
+
+            echo "Submodule updated at '$SUBMODULE_FULL_PATH'"
+
+        else
+
+            echo "ERROR: Submodule failed to update at '$SUBMODULE_FULL_PATH'"
+            exit 1
         fi
 
     else
@@ -220,16 +241,11 @@ DO_SUBMODULE() {
             exit 1
         fi
 
-        SCRIPT_PUSH_ALL="$SUBMODULES_HOME/Software-Toolkit/Utils/push_all.sh"
+        if ! "$SCRIPT_PUSH_ALL" "$UPSTREAMS"; then
 
-        if ! test -e "$SCRIPT_PUSH_ALL"; then
-
-            echo "ERROR: Script not found '$SCRIPT_STRINGS'"
+            echo "ERROR: Failed to push at '$SUBMODULE_FULL_PATH'"
             exit 1
         fi
-
-        # TODO: Push all
-        #
     }
 
     UPSTREAMS="$SUBMODULE_FULL_PATH/Upstreams"
