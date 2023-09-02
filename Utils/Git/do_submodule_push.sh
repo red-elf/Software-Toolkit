@@ -100,7 +100,15 @@ DO_SUBMODULE() {
 
     SCRIPT_PUSH_ALL="$SUBMODULES_HOME/Upstreamable/push_all.sh"
 
-    if ! test -e "$SCRIPT_PUSH_ALL"; then
+    if test -e "$SCRIPT_PUSH_ALL"; then
+
+        if ! sh "$SCRIPT_PUSH_ALL" "$UPSTREAMS"; then
+
+            echo "ERROR: Push all failure"
+            exit 1  
+        fi
+
+    else
 
         echo "ERROR: Script not found '$SCRIPT_PUSH_ALL'"
         exit 1
@@ -159,6 +167,14 @@ DO_SUBMODULE() {
         else
 
             echo "ERROR: Upstreams not found at '$UPSTREAMS'"
+            exit 1
+        fi
+
+        SCRIPT_PUSH_ALL="$SUBMODULES_HOME/Software-Toolkit/Utils/push_all.sh"
+
+        if ! test -e "$SCRIPT_PUSH_ALL"; then
+
+            echo "ERROR: Script not found '$SCRIPT_STRINGS'"
             exit 1
         fi
 
