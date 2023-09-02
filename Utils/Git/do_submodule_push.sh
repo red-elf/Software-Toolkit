@@ -199,7 +199,7 @@ DO_SUBMODULE() {
             exit 1
         fi
 
-        sh "$SCRIPT_INSTALL_UPSTREAMS" "$UPSTREAMS"
+        sh "$SCRIPT_INSTALL_UPSTREAMS" "$UPSTREAMS" >/dev/null 2>&1
 
         if git fetch && git config pull.rebase false && git pull; then
 
