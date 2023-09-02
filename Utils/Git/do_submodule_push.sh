@@ -240,7 +240,11 @@ DO_SUBMODULE() {
             exit 1
         fi
 
-        if ! "$SCRIPT_PUSH_ALL" "$UPSTREAMS"; then
+        if git config pull.rebase false && "$SCRIPT_PUSH_ALL" "$UPSTREAMS"; then
+
+            echo "Push all at '$SUBMODULE_FULL_PATH'"
+
+        else
 
             echo "ERROR: Failed to push at '$SUBMODULE_FULL_PATH'"
             exit 1
