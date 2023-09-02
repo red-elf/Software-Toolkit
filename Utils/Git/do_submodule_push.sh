@@ -199,10 +199,9 @@ DO_SUBMODULE() {
             exit 1
         fi
 
-        if ! "$SCRIPT_INSTALL_UPSTREAMS" "$UPSTREAMS"; then
+        if ! sh "$SCRIPT_INSTALL_UPSTREAMS" "$UPSTREAMS"; then
 
-            echo "ERROR: Failed to install upstreams from '$UPSTREAMS'"
-            exit 1
+            echo "WARNING: Failed to install upstreams from '$UPSTREAMS'"
         fi
 
         if git fetch && git pull; then
