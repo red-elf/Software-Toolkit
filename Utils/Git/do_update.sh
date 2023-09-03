@@ -79,20 +79,22 @@ DO_UPDATE() {
         fi
     fi
 
-    echo "We are about to checkout branch: '$BRANCH' at '$DIR_REPOSITORY'"
+    echo "Checking out branch: '$BRANCH' at '$DIR_REPOSITORY' :: Step 1"
 
     if [ "$BRANCH" = "main" ] || [ "$BRANCH" = "master" ]; then
 
-        if git status | grep "HEAD detached at " >/dev/null 2>&1; then
+        if git submodule init && git submodule update && git status | grep "HEAD detached at " >/dev/null 2>&1; then
 
             echo "SKIPPING (head detached) at '$DIR_REPOSITORY'"
             exit 0
         fi
     fi
 
+    echo "Checking out branch: '$BRANCH' at '$DIR_REPOSITORY' :: Step 2"
+
     if git fetch && git checkout "$BRANCH"; then
 
-        echo "We have checked out branch: '$BRANCH' at '$DIR_REPOSITORY'"
+        echo "Checking out branch: '$BRANCH' at '$DIR_REPOSITORY' :: Step 3 :: SUCCESS"
 
         CURRENT_COMMIT=$(git rev-parse HEAD)
         LAST_MAIN_COMMIT=$(git log -n 1 "origin/$BRANCH" | grep "commit ")
