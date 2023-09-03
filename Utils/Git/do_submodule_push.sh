@@ -189,6 +189,8 @@ DO_SUBMODULE() {
             fi
         fi
 
+        # FIXME: See the details in below FIXME
+        #
         if git checkout "$MAIN_BRANCH"; then
 
             echo "'$MAIN_BRANCH' checked out at '$SUBMODULE_FULL_PATH'"
@@ -201,6 +203,30 @@ DO_SUBMODULE() {
 
         sh "$SCRIPT_INSTALL_UPSTREAMS" "$UPSTREAMS" >/dev/null 2>&1
 
+        # FIXME:
+        # 
+        # Entered directory: '/home/milosvasic/Projects/HelixTrack/Core/_Submodules/Propriatery/Toolkit'
+        # M	Definitions/main/docker
+        # M	Definitions/main/software
+        # M	Definitions/main/stacks
+        # M	Utils/VSCode/Installable
+        # Already on 'main'
+        # Your branch is behind 'origin/main' by 10 commits, and can be fast-forwarded.
+        #   (use "git pull" to update your local branch)
+        # 'main' checked out at '/home/milosvasic/Projects/HelixTrack/Core/_Submodules/Propriatery/Toolkit'
+        # remote: Enumerating objects: 17, done.
+        # remote: Counting objects: 100% (17/17), done.
+        # remote: Compressing objects: 100% (11/11), done.
+        # remote: Total 17 (delta 7), reused 15 (delta 5), pack-reused 0
+        # Unpacking objects: 100% (17/17), 2.93 KiB | 428.00 KiB/s, done.
+        # From github.com:red-elf/Software-Toolkit
+        #    932538c..819ea72  main       -> origin/main
+        # Fetching submodule Utils/VSCode/Installable
+        # fatal: remote error: upload-pack: not our ref 19063545d4983d16f05acc31b81c20f26f549863
+        # Errors during submodule fetch:
+        # 	Utils/VSCode/Installable
+        # ERROR: Submodule failed to update at '/home/milosvasic/Projects/HelixTrack/Core/_Submodules/Propriatery/Toolkit'
+        #
         if git fetch && git config pull.rebase false && git pull; then
 
             echo "Submodule updated at '$SUBMODULE_FULL_PATH'"
