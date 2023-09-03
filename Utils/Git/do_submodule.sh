@@ -149,6 +149,16 @@ EOL
                                 exit 1
                             fi
 
+                            if git submodule init && git submodule update; then
+
+                                echo "Submodule (re) initialized at: '$SUBMODULE_FULL_PATH'"
+
+                            else
+
+                                echo "ERROR: Submodule initialization failed at '$SUBMODULE_FULL_PATH'"
+                                exit 1
+                            fi
+
                             echo "Git submodule repository '$REPO' has been initialized into '$DIR_DESTINATION'"
 
                             DIR_UPSTREAMS="$DIR_DESTINATION/Upstreams"

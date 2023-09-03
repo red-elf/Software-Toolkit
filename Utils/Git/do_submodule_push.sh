@@ -76,7 +76,10 @@ DO_SUBMODULE() {
         exit 1
     fi
 
+    DIR_UPSTREAMABLE="$SUBMODULES_HOME/Upstreamable"
+    SCRIPT_INSTALL_UPSTREAMS="$DIR_UPSTREAMABLE/install_upstreams.sh"
     SCRIPT_STRINGS="$SUBMODULES_HOME/Software-Toolkit/Utils/strings.sh"
+    SCRIPT_PUSH_ALL="$SUBMODULES_HOME/Software-Toolkit/Utils/Git/push_all.sh"
 
     if test -e "$SCRIPT_STRINGS"; then
 
@@ -86,6 +89,19 @@ DO_SUBMODULE() {
     else
 
         echo "ERROR: Script not found '$SCRIPT_STRINGS'"
+        exit 1
+    fi
+    
+
+    if ! test -e "$SCRIPT_PUSH_ALL"; then
+
+        echo "ERROR: Script not found '$SCRIPT_PUSH_ALL'"
+        exit 1
+    fi
+
+    if ! test -e "$SCRIPT_INSTALL_UPSTREAMS"; then
+
+        echo "ERROR: Script not found '$SCRIPT_INSTALL_UPSTREAMS'"
         exit 1
     fi
 
@@ -100,7 +116,15 @@ DO_SUBMODULE() {
 
     SCRIPT_PUSH_ALL="$SUBMODULES_HOME/Upstreamable/push_all.sh"
 
-    if ! test -e "$SCRIPT_PUSH_ALL"; then
+    if test -e "$SCRIPT_PUSH_ALL"; then
+
+        if ! sh "$SCRIPT_PUSH_ALL" "$UPSTREAMS"; then
+
+            echo "ERROR: Push all failure"
+            exit 1  
+        fi
+
+    else
 
         echo "ERROR: Script not found '$SCRIPT_PUSH_ALL'"
         exit 1
@@ -136,15 +160,103 @@ DO_SUBMODULE() {
 
         echo "Entered directory: '$SUBMODULE_FULL_PATH'"
 
+        # shellcheck disable=SC2012
+        if [ "$(ls -1 | wc -l)" = "0" ]; then
+
+            if git submodule init && git submodule update; then
+
+                echo "Submodule (re) initialized at: '$SUBMODULE_FULL_PATH'"
+
+            else
+
+                echo "ERROR: Submodule initialization failed at '$SUBMODULE_FULL_PATH'"
+                exit 1
+            fi
+        fi
+
+        MAIN_BRANCH=""
+
+        if git log -n 1 main | grep "commit " >/dev/null 2>&1; then
+
+            MAIN_BRANCH="main"
+
+        else
+
+            if git log -n 1 master | grep "commit " >/dev/null 2>&1; then
+
+            MAIN_BRANCH="master"
+
+            fi
+        fi
+
+        if git checkout "$MAIN_BRANCH"; then
+
+            echo "'$MAIN_BRANCH' checked out at '$SUBMODULE_FULL_PATH'"
+
+        else
+
+            echo "ERROR: '$MAIN_BRANCH' failed to check out at '$SUBMODULE_FULL_PATH'"
+            exit 1
+        fi
+
+        sh "$SCRIPT_INSTALL_UPSTREAMS" "$UPSTREAMS" >/dev/null 2>&1
+
+        if git fetch && git config pull.rebase false && git pull; then
+
+            echo "Submodule updated at '$SUBMODULE_FULL_PATH'"
+
+        else
+
+            echo "ERROR: Submodule failed to update at '$SUBMODULE_FULL_PATH'"
+            exit 1
+        fi
+
     else
 
         echo "ERROR: Could not enter directory '$SUBMODULE_FULL_PATH'"
         exit 1
     fi
 
+    PUSH_ALL() {
+        
+        if [ -z "$1" ]; then
+
+            echo "ERROR: The Upstreams argument is mandatory"
+            exit 1
+        fi
+
+        UPSTREAMS="$1"
+
+        if test -e "$UPSTREAMS"; then
+
+            echo "We are about to push all the changes to remote upstreams"
+
+        else
+
+            echo "ERROR: Upstreams not found at '$UPSTREAMS'"
+            exit 1
+        fi
+
+        if sh "$SCRIPT_PUSH_ALL" "$UPSTREAMS"; then
+
+            echo "Push all at '$SUBMODULE_FULL_PATH'"
+
+        else
+
+            echo "ERROR: Failed to push at '$SUBMODULE_FULL_PATH'"
+            exit 1
+        fi
+    }
+
+    UPSTREAMS="$SUBMODULE_FULL_PATH/Upstreams"
+
+    if git status | grep "Your branch is ahead of " | grep "by " | grep "commits." >/dev/null 2>&1; then
+
+        PUSH_ALL "$UPSTREAMS"
+    fi
+
     if git status | grep "Changes not staged for commit:" >/dev/null 2>&1 || \
-        git status | grep "Changes to be committed:" >/dev/null 2>&1 || \
-        git status | grep "Your branch is ahead of " | grep "by " | grep "commits." >/dev/null 2>&1; then
+        git status | grep "Changes to be committed:" >/dev/null 2>&1; then
 
         echo "We are going to commit and push changes at '$SUBMODULE_FULL_PATH'"
 
@@ -154,9 +266,9 @@ DO_SUBMODULE() {
 
             if git commit -m "Auto commit: $SESSION"; then
 
-                # TODO: Push all
-                #
                 echo "Changes have been commited at '$SUBMODULE_FULL_PATH'"
+
+                PUSH_ALL "$UPSTREAMS"
 
             else
 
