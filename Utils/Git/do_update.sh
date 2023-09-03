@@ -83,14 +83,14 @@ DO_UPDATE() {
 
     if [ "$BRANCH" = "main" ] || [ "$BRANCH" = "master" ]; then
 
-        if git status | grep "HEAD detached at "; then
+        if git status | grep "HEAD detached at " >/dev/null 2>&1; then
 
             echo "SKIPPING (head detached) at '$DIR_REPOSITORY'"
             exit 0
         fi
     fi
 
-    if git checkout "$BRANCH" && git fetch; then
+    if git fetch && git checkout "$BRANCH"; then
 
         echo "We have checked out branch: '$BRANCH' at '$DIR_REPOSITORY'"
 
@@ -104,7 +104,7 @@ DO_UPDATE() {
 
         else
 
-            if git pull && git config pull.rebase false; then
+            if git fetch && git config pull.rebase false && git pull; then
 
                 echo "Branch '$BRANCH' updated at: '$DIR_REPOSITORY'"
 
