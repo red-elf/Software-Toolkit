@@ -92,7 +92,7 @@ DO_UPDATE() {
 
     echo "Checking out branch: '$BRANCH' at '$DIR_REPOSITORY' :: Step 2"
 
-    if git fetch && git checkout "$BRANCH"; then
+    if git submodule init && git submodule update && git fetch && git checkout "$BRANCH"; then
 
         echo "Checking out branch: '$BRANCH' at '$DIR_REPOSITORY' :: Step 3 :: SUCCESS"
 
