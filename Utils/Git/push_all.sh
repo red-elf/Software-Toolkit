@@ -7,73 +7,80 @@ if [ -n "$1" ]; then
   DIR_UPSTREAMS="$1"
 fi
 
-echo "Upstreams sources path: '$DIR_UPSTREAMS'"
+if test -e "$DIR_UPSTREAMS"; then
 
-UNSET_UPSTREAM_VARIABLES() {
+  echo "Upstreams sources path: '$DIR_UPSTREAMS'"
 
-  unset UPSTREAMABLE_REPOSITORY
+  UNSET_UPSTREAM_VARIABLES() {
 
-  if [ -n "$UPSTREAMABLE_REPOSITORY" ]; then
+    unset UPSTREAMABLE_REPOSITORY
 
-    echo "ERROR: The UPSTREAMABLE_REPOSITORY environment variable is still set"
-    exit 1
-  fi
-}
+    if [ -n "$UPSTREAMABLE_REPOSITORY" ]; then
 
-PROCESS_UPSTREAM() {
+      echo "ERROR: The UPSTREAMABLE_REPOSITORY environment variable is still set"
+      exit 1
+    fi
+  }
 
-  if [ -z "$1" ]; then
+  PROCESS_UPSTREAM() {
 
-    echo "ERROR: No upstream repository provided"
-    exit 1
-  fi
+    if [ -z "$1" ]; then
 
-  if [ -z "$2" ]; then
+      echo "ERROR: No upstream repository provided"
+      exit 1
+    fi
 
-    echo "ERROR: No upstream name provided"
-    exit 1
-  fi
+    if [ -z "$2" ]; then
 
-  UPSTREAM="$1"
-  NAME="$2"
+      echo "ERROR: No upstream name provided"
+      exit 1
+    fi
 
-  if echo "Upstream '$NAME': $UPSTREAM" && git push "$NAME"; then
+    UPSTREAM="$1"
+    NAME="$2"
 
-    git fetch && git pull
-  fi
-}
+    if echo "Upstream '$NAME': $UPSTREAM" && git push "$NAME"; then
 
-cd "$DIR_UPSTREAMS" && echo "Processing upstreams from: $DIR_UPSTREAMS"
+      git fetch && git pull
+    fi
+  }
 
-for i in *.sh; do
+  cd "$DIR_UPSTREAMS" && echo "Processing upstreams from: $DIR_UPSTREAMS"
 
-  UNSET_UPSTREAM_VARIABLES
+  for i in *.sh; do
 
-  if test -e "$i"; then
+    UNSET_UPSTREAM_VARIABLES
 
-    UPSTREAM_FILE="$(pwd)"/"$i"
-    # shellcheck disable=SC1090
-    echo "Processing the upstream file: $UPSTREAM_FILE" && . "$UPSTREAM_FILE"
+    if test -e "$i"; then
 
-    FILE_NAME=$(basename -- "$i")
-    FILE_NAME="${FILE_NAME%.*}"
-    FILE_NAME=$(echo "$FILE_NAME" | tr '[:upper:]' '[:lower:]')
+      UPSTREAM_FILE="$(pwd)"/"$i"
+      # shellcheck disable=SC1090
+      echo "Processing the upstream file: $UPSTREAM_FILE" && . "$UPSTREAM_FILE"
 
-    PROCESS_UPSTREAM "$UPSTREAMABLE_REPOSITORY" "$FILE_NAME"
+      FILE_NAME=$(basename -- "$i")
+      FILE_NAME="${FILE_NAME%.*}"
+      FILE_NAME=$(echo "$FILE_NAME" | tr '[:upper:]' '[:lower:]')
+
+      PROCESS_UPSTREAM "$UPSTREAMABLE_REPOSITORY" "$FILE_NAME"
+
+    else
+
+      echo "ERROR: '$i' not found at: '$(pwd)' (2)"
+      exit 1
+    fi
+  done
+
+  if git push --tags; then
+
+    echo "All tags have been pushed with success"
 
   else
 
-    echo "ERROR: '$i' not found at: '$(pwd)' (2)"
+    echo "ERROR: Tags have failed to be pushed pushed to upstream"
     exit 1
   fi
-done
-
-if git push --tags; then
-
-  echo "All tags have been pushed with success"
 
 else
 
-  echo "ERROR: Tags have failed to be pushed pushed to upstream"
-  exit 1
+  echo "WARNING: Upstreams sources path does notexist '$DIR_UPSTREAMS'"
 fi
