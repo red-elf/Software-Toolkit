@@ -231,20 +231,19 @@ DO_SUBMODULE() {
 
             echo "We are about to push all the changes to remote upstreams"
 
+            if sh "$SCRIPT_PUSH_ALL" "$UPSTREAMS"; then
+
+                echo "Push all at '$SUBMODULE_FULL_PATH'"
+
+            else
+
+                echo "ERROR: Failed to push at '$SUBMODULE_FULL_PATH'"
+                exit 1
+            fi
+
         else
 
-            echo "ERROR: Upstreams not found at '$UPSTREAMS'"
-            exit 1
-        fi
-
-        if sh "$SCRIPT_PUSH_ALL" "$UPSTREAMS"; then
-
-            echo "Push all at '$SUBMODULE_FULL_PATH'"
-
-        else
-
-            echo "ERROR: Failed to push at '$SUBMODULE_FULL_PATH'"
-            exit 1
+            echo "WARNING: Upstreams not found at '$UPSTREAMS'"
         fi
     }
 
