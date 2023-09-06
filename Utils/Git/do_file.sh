@@ -83,4 +83,6 @@ DO_FILE() {
             fi
         fi
     done;
+
+    echo "Entered directory: '$(pwd)' :: MARK"
 }
