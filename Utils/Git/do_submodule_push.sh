@@ -154,6 +154,7 @@ DO_SUBMODULE() {
 
       echo "ERROR: Submodule full path does not exist '$SUBMODULE_FULL_PATH'"
       exit 1
+      
     fi
 
     if cd "$SUBMODULE_FULL_PATH"; then
