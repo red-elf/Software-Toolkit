@@ -78,7 +78,7 @@ do
 
   if cd "$FILE_PATH"; then
 
-    echo "Entered: '$FILE_PATH'"
+    echo "Entered directory: '$FILE_PATH' :: MARK"
 
   else
 
@@ -120,6 +120,7 @@ do
     else
 
       DO_FILE "$FILE" "$SCRIPT_DO_SUBMODULE"
+
     fi
 
   else
