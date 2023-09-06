@@ -78,7 +78,7 @@ do
 
   if cd "$FILE_PATH"; then
 
-    echo "Entered directory: '$FILE_PATH' :: MARK"
+    echo "Entered: '$FILE_PATH'"
 
   else
 
@@ -101,16 +101,6 @@ do
       fi
   fi
 
-  if cd "$HERE"; then
-
-    echo "Got back to: '$HERE'"
-
-  else
-
-    echo "ERROR: Could not go back to '$HERE'"
-    exit 1
-  fi
-  
   if [ "$MAIN_BRANCH" = "main" ] || [ "$MAIN_BRANCH" = "master" ]; then
 
     if git status | grep "HEAD detached at "; then
@@ -126,6 +116,19 @@ do
   else
 
     echo "SKIPPING (not on main branch): '$FILE'" 
+  fi
+  
+  echo "Entered directory: '$FILE_PATH' :: MARK"
+  # TODO: Process the current directory as the submodule
+
+  if cd "$HERE"; then
+
+    echo "Got back to: '$HERE'"
+
+  else
+
+    echo "ERROR: Could not go back to '$HERE'"
+    exit 1
   fi
 
 done;
