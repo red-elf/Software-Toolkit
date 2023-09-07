@@ -121,7 +121,6 @@ do
   echo "Entered directory: '$FILE_PATH' :: MARK"
   # TODO: Process the current directory as the submodule
   # TODO: Add push_all to the system path - through the prepare script
-  # TODO: Generate symbolic links through the prepare script
 
   if cd "$HERE"; then
 
