@@ -120,7 +120,14 @@ do
   
   echo "Entered directory: '$FILE_PATH' :: MARK"
   # TODO: Process the current directory as the submodule
-  
+
+  # FIXME: Running push_all from exported path; Kill identity logs.
+  #
+  # Agent pid 98688
+  # Identity added: ...
+  # Identity added: ...
+  # ERROR: The SUBMODULES_HOME is not defined
+
   if cd "$HERE"; then
 
     echo "Got back to: '$HERE'"
