@@ -117,16 +117,15 @@ do
 
     echo "SKIPPING (not on main branch): '$FILE'" 
   fi
-  
-  echo "Entered directory: '$FILE_PATH' :: MARK"
-  # TODO: Process the current directory as the submodule
+   
+  SUBMODULE="${PWD##*/}"
+  SUBMODULE="${result:-/}"
+  SUBMODULE_PATH="$FILE_PATH"
+  FILE="$FILE_PATH/here.mock"
+  REPO="$(git config --get remote.origin.url)"
 
-  # FIXME: Running push_all from exported path; Kill identity logs.
-  #
-  # Agent pid 98688
-  # Identity added: ...
-  # Identity added: ...
-  # ERROR: The SUBMODULES_HOME is not defined
+  echo "Entered directory: '$FILE_PATH' :: MARK"
+  echo "MARK :: $SUBMODULE, $REPO, $SUBMODULE_PATH, $FILE"
 
   if cd "$HERE"; then
 
