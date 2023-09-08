@@ -106,7 +106,15 @@ DO_SUBMODULE() {
                     MAIN_BRANCH="master"
                 fi
                 
-                if git symbolic-ref HEAD | grep "refs/heads/$MAIN_BRANCH" >/dev/null 2>&1; then
+                SYM_HEAD="$(git symbolic-ref HEAD)"
+
+                if echo "$SYM_HEAD" | grep "fatal:"; then
+
+                    excho "ERROR: Git failure at '$APSOLUTE_SUBMOPDULE_PATH'"
+                    exit 1
+                fi
+
+                if echo "$SYM_HEAD" | grep "refs/heads/$MAIN_BRANCH" >/dev/null 2>&1; then
 
                     if ! test -e "$FILE_NAME_FULL"; then
 

@@ -239,7 +239,7 @@ DO_SUBMODULE() {
 
             echo "We are about to push all the changes to remote upstreams"
 
-            if git pull && sh "$SCRIPT_PUSH_ALL" "$UPSTREAMS"; then
+            if sh "$SCRIPT_PUSH_ALL" "$UPSTREAMS"; then
 
                 echo "Push all at '$SUBMODULE_FULL_PATH'"
 
@@ -259,7 +259,11 @@ DO_SUBMODULE() {
 
     if git status | grep "Your branch is ahead of " | grep "by " | grep "commits." >/dev/null 2>&1; then
 
-        PUSH_ALL "$UPSTREAMS"
+        if ! git pull && PUSH_ALL "$UPSTREAMS"; then
+
+            echo "ERROR: Pushing failed at (1) '$SUBMODULE_FULL_PATH'"
+            exit 1
+        fi
     fi
 
     if git status | grep "Changes not staged for commit:" >/dev/null 2>&1 || \
@@ -267,7 +271,7 @@ DO_SUBMODULE() {
 
         echo "We are going to commit and push changes at '$SUBMODULE_FULL_PATH'"
 
-        if git add . >/dev/null 2>&1; then
+        if git pull && git add . >/dev/null 2>&1; then
         
             echo "Changes staged at '$SUBMODULE_FULL_PATH'"
 
@@ -275,7 +279,11 @@ DO_SUBMODULE() {
 
                 echo "Changes have been commited at '$SUBMODULE_FULL_PATH'"
 
-                PUSH_ALL "$UPSTREAMS"
+                if ! PUSH_ALL "$UPSTREAMS"; then
+
+                    echo "ERROR: Pushing failed at (1) '$SUBMODULE_FULL_PATH'"
+                    exit 1
+                fi
 
             else
 
