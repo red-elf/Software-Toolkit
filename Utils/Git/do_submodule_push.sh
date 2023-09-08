@@ -239,7 +239,7 @@ DO_SUBMODULE() {
 
             echo "We are about to push all the changes to remote upstreams"
 
-            if sh "$SCRIPT_PUSH_ALL" "$UPSTREAMS"; then
+            if git pull && sh "$SCRIPT_PUSH_ALL" "$UPSTREAMS"; then
 
                 echo "Push all at '$SUBMODULE_FULL_PATH'"
 
