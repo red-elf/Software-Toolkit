@@ -118,8 +118,7 @@ do
     echo "SKIPPING (not on main branch): '$FILE'" 
   fi
    
-  SUBMODULE="${PWD##*/}"
-  SUBMODULE="${result:-/}"
+  SUBMODULE=$(basename "$HERE")
   SUBMODULE_PATH="$FILE_PATH"
   FILE="$FILE_PATH/here.mock"
   REPO="$(git config --get remote.origin.url)"
