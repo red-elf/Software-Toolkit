@@ -39,9 +39,21 @@ if test -e "$DIR_UPSTREAMS"; then
     UPSTREAM="$1"
     NAME="$2"
 
-    if ! echo "Upstream '$NAME': $UPSTREAM" && git fetch && git pull && git push "$NAME"; then
+    if git fetch && git pull; then
 
-      echo "ERROR: Upstream failed to push '$NAME': $UPSTREAM"
+      if echo "Upstream '$NAME': $UPSTREAM" && git push "$NAME"; then
+
+        echo "Upstream pushed '$NAME': $UPSTREAM"
+
+      else
+
+        echo "ERROR: Upstream failed to push '$NAME': $UPSTREAM"
+        exit 1
+      fi
+
+    else
+
+      echo "ERROR: Upstream failed to pull '$NAME': $UPSTREAM"
       exit 1
     fi
   }
