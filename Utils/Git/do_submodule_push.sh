@@ -209,7 +209,7 @@ DO_SUBMODULE() {
 
         sh "$SCRIPT_INSTALL_UPSTREAMS" "$UPSTREAMS" >/dev/null 2>&1
         
-        git submodule init && git submodule update >/dev/null 2>&1
+        git submodule init && git submodule update
 
         if git fetch && git config pull.rebase false && git pull; then
 
