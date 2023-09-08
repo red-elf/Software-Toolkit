@@ -208,6 +208,8 @@ DO_SUBMODULE() {
         fi
 
         sh "$SCRIPT_INSTALL_UPSTREAMS" "$UPSTREAMS" >/dev/null 2>&1
+
+        git submodule init && git submodule update
         
         FETCH() {
 
