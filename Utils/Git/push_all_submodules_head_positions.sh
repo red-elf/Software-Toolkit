@@ -117,14 +117,14 @@ do
 
     echo "SKIPPING (not on main branch): '$FILE'" 
   fi
-   
-  SUBMODULE=$(basename "$FILE_PATH")
+  
+  SUBMODULE="---"
   SUBMODULE_PATH="$FILE_PATH"
   FILE="$FILE_PATH/here.mock"
   REPO="$(git config --get remote.origin.url)"
 
   echo "Entered directory: '$FILE_PATH' :: MARK"
-  echo "MARK :: $SUBMODULE, $REPO, $SUBMODULE_PATH, $FILE"
+  echo "MARK :: $REPO :: $SUBMODULE_PATH"
 
   if cd "$HERE"; then
 

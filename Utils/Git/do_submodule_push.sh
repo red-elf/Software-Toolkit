@@ -148,7 +148,14 @@ DO_SUBMODULE() {
         exit 1
     fi
 
-    echo "Git submodule: Name='$NAME', Submodule='$SUBMODULE', Repo='$REPO', Path='$SUBMODULE_FULL_PATH'"
+    if [ "$SUBMODULE" = "---" ]; then
+
+        echo "Git submodule: Name='$NAME', Repo='$REPO', Path='$SUBMODULE_FULL_PATH'"
+
+    else
+        
+        echo "Git submodule: Name='$NAME', Submodule='$SUBMODULE', Repo='$REPO', Path='$SUBMODULE_FULL_PATH'"
+    fi
 
     if ! test -e "$SUBMODULE_FULL_PATH"; then
 
