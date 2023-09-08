@@ -88,7 +88,7 @@ do
 
     if cd "$FILE_PATH"; then
 
-      echo "Entered: '$FILE_PATH'"
+      echo "Entered (1): '$FILE_PATH'"
 
     else
 
