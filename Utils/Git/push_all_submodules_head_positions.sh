@@ -123,8 +123,11 @@ do
   FILE="$FILE_PATH/here.mock"
   REPO="$(git config --get remote.origin.url)"
 
-  echo "Entered directory: '$FILE_PATH' :: MARK"
-  echo "MARK :: $REPO :: $SUBMODULE_PATH"
+  if ! sh "$SCRIPT_DO_SUBMODULE" "$SUBMODULE" "$REPO" "$SUBMODULE_PATH" "$FILE";then
+
+    echo "ERROR: Filed to push '$SUBMODULE_PATH'"
+    exit 1
+  fi
 
   if cd "$HERE"; then
 
