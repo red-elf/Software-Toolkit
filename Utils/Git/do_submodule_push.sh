@@ -211,7 +211,8 @@ DO_SUBMODULE() {
         
         FETCH() {
 
-            git fetch && git config pull.rebase false && git pull
+            echo "We are about to fetch ..." && \
+                git fetch && git config pull.rebase false && git pull
         }
 
         if FETCH || FETCH; then
