@@ -85,14 +85,10 @@ fi
 SCRIPT_GET_DOCKER="$HERE/../Sys/Programs/get_docker.sh"
 SCRIPT_GET_DOCKER_COMPOSE="$HERE/../Sys/Programs/get_docker_compose.sh"
 
-DB="Sonarqube.$SONARQUBE_NAME"
-DB_DATA_DIRECTORY="$HERE/../../_Databases/Postgres/$DB"
-
 DOCKER_IMAGE="sonarqube"
 DOCKER_TAG="10.1.0-community"
 DOCKER_CONTAINER_PREFIX="sonarqube"
 DOCKER_CONTAINER="$DOCKER_CONTAINER_PREFIX.$SONARQUBE_NAME"
-DOKCER_IMAGE=$(echo "$DOCKER_CONTAINER" | tr '[:upper:]' '[:lower:]')
 
 echo "Docker image: $DOCKER_IMAGE"
 echo "Docker tag: $DOCKER_TAG"
@@ -182,11 +178,11 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
 
     else
 
-      docker volume rm "sonarqube_main.$DOCKER_CONTAINER.data" || true
-      docker volume rm "sonarqube_main.$DOCKER_CONTAINER.logs" || true
-      docker volume rm "sonarqube_main.$DOCKER_CONTAINER.extensions" || true
-      docker volume rm "sonarqube_postgres.$DOCKER_CONTAINER" || true
-      docker volume rm "sonarqube_postgres.$DOCKER_CONTAINER.data" || true
+      docker volume rm "sonarqube_main.$DOCKER_CONTAINER.data" >/dev/null 2>&1 || true
+      docker volume rm "sonarqube_main.$DOCKER_CONTAINER.logs" >/dev/null 2>&1 || true
+      docker volume rm "sonarqube_main.$DOCKER_CONTAINER.extensions" >/dev/null 2>&1 || true
+      docker volume rm "sonarqube_postgres.$DOCKER_CONTAINER" >/dev/null 2>&1 || true
+      docker volume rm "sonarqube_postgres.$DOCKER_CONTAINER.data" >/dev/null 2>&1 || true
       
       echo "Processing the Docker compose proto file: '$FILE_DOCKER_COMPOSE_PROTO' -> '$FILE_DOCKER_COMPOSE'"
 
@@ -228,7 +224,7 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
 
       else
 
-        exit "ERROR: Docker network '$DOCKER_CONTAINER' creation failed"
+        echo "ERROR: Docker network '$DOCKER_CONTAINER' creation failed"
         exit 1
       fi
 
