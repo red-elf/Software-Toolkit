@@ -45,6 +45,12 @@ else
   exit 1
 fi
 
+if [ -z "$SUBMODULES_HOME" ]; then
+
+  echo "ERROR: SUBMODULES_HOME not available"
+  exit 1
+fi
+
 CURRENT="$(pwd)"
 HERE="$(dirname -- "$0")"
 
@@ -53,7 +59,7 @@ FILE_DOCKER_COMPOSE="docker-compose.yml"
 FILE_DOCKER_COMPOSE_PROTO="proto.$FILE_DOCKER_COMPOSE"
 
 FILE_DOCKER_COMPOSE_PATH="$HERE/$FILE_DOCKER_COMPOSE"
-FILE_DOCKER_COMPOSE_PROTO_PATH="$CURRENT/Toolkit/Definitions/main/docker/sonarqube/$FILE_DOCKER_COMPOSE_PROTO"
+FILE_DOCKER_COMPOSE_PROTO_PATH="$SUBMODULES_HOME/Docker-Definitions/sonarqube/$FILE_DOCKER_COMPOSE_PROTO"
 
 if ! test -e "$FILE_DOCKER_COMPOSE_PROTO_PATH"; then
 
