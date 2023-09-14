@@ -51,7 +51,6 @@ if [ -z "$SUBMODULES_HOME" ]; then
   exit 1
 fi
 
-CURRENT="$(pwd)"
 HERE="$(dirname -- "$0")"
 
 FILE_SYSCTL_CONF="/etc/sysctl.conf"
@@ -210,7 +209,7 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
         exit 1
       fi
 
-      FILE_DOCKER_COMPOSE_PATH_FULL="$CURRENT/$FILE_DOCKER_COMPOSE_PATH"
+      FILE_DOCKER_COMPOSE_PATH_FULL="$FILE_DOCKER_COMPOSE_PATH"
 
       if ! test -e "$FILE_DOCKER_COMPOSE_PATH_FULL"; then
 
