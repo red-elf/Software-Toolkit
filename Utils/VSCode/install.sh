@@ -1,8 +1,14 @@
 #!/bin/bash
 
+if [ -z "$SUBMODULES_HOME" ]; then
+
+  echo "ERROR: The SUBMODULES_HOME is not defined"
+  exit 1
+fi
+
 HERE="$(dirname -- "$0")"
 PARAMS="$HERE/params.sh"
-INSTALL_SCRIPT="$HERE/Installable/install.sh"
+INSTALL_SCRIPT="$SUBMODULES_HOME/Installable/install.sh"
 
 if ! test -e "$PARAMS"; then
 
