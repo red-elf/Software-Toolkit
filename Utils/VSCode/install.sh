@@ -41,6 +41,6 @@ if ! test -e "$INSTALL_SCRIPT"; then
     exit 1
 fi
 
-# TODO: Pass the values to the installation script by exporting mandatory variables
-
-sh "$INSTALL_SCRIPT"
+# TODO: Pass and use the parameters overrides
+#
+sh "$INSTALL_SCRIPT" "$HERE"
