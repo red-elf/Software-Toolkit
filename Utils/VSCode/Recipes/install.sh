@@ -25,6 +25,8 @@ if ! test -e "$DIR_INSTALLATION_HOME"; then
     fi
 fi
 
+# TODO: If destination directory exists archive it as backup
+#
 if tar -xzf "$FILE_DOWNLOAD" -C "$DIR_INSTALLATION_HOME"; then
 
     echo "Extracted '$FILE_DOWNLOAD' into '$DIR_INSTALLATION_HOME'"
