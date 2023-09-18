@@ -43,5 +43,3 @@ else
     echo "ERROR: VSCode has failed to downloaded"
     exit 1
 fi
-
-
