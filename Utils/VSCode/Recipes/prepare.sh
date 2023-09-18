@@ -1,9 +1,27 @@
 #!/bin/bash
 
-# TODO: Download and cache (pickup VSCode and some mandatory and additional extensions from user's optional recipes)
+if [ -z  "$DOWNLOAD_URL" ]; then
 
-CURRENT="$(pwd)"
+    echo "ERROR: DOWNLOAD_URL variable not defined"
+    exit 1
+fi
 
-echo "CURRENT: $CURRENT"
+if [ -z  "$DIR_INSTALLATION_HOME" ]; then
 
-echo "WARNING: VSCode prepare script is not yet implemented"
+    echo "ERROR: DIR_INSTALLATION_HOME variable not defined"
+    exit 1
+fi
+
+DIR_HOME="$(readlink --canonicalize ~)"
+DIR_DOWNLOADS="$DIR_HOME/Downloads"
+
+if ! test -e "$DIR_DOWNLOADS"; then
+
+    if ! mkdir -p "$DIR_DOWNLOADS"; then
+
+        echo "ERROR: Could not crete downloads directory '$DIR_DOWNLOADS'"
+        exit 1
+    fi
+fi
+
+

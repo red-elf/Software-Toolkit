@@ -41,6 +41,7 @@ if ! test -e "$INSTALL_SCRIPT"; then
     exit 1
 fi
 
-# TODO: Pass and use the parameters overrides
-#
+export DOWNLOAD_URL
+export DIR_INSTALLATION_HOME
+
 sh "$INSTALL_SCRIPT" "$HERE"
