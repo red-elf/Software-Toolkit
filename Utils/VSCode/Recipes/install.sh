@@ -18,11 +18,13 @@ DIR_DOWNLOADS="$DIR_HOME/Downloads"
 FILE_DOWNLOAD="$DIR_DOWNLOADS/VSCode_Installation_$DAY_CODE.tar.gz"
 
 if test -e "$DIR_INSTALLATION_HOME"; then
-
+    
+    HERE=$(pwd)
     BACKUP_CODE=$(date +%Y.%m.%d.%H%M%S)
     BACKUP_FILE="backup_$BACKUP_CODE.tar.gz"
+    DIR_NAME=$(basename "$DIR_INSTALLATION_HOME")
 
-    if tar -cvz -f "$DIR_INSTALLATION_HOME/../$BACKUP_FILE" "$DIR_INSTALLATION_HOME"; then
+    if cd "$DIR_INSTALLATION_HOME/.." && tar -cvz -f "$DIR_INSTALLATION_HOME/../$BACKUP_FILE" "$DIR_NAME" && cd "$HERE"; then
 
         echo "Backup has been created: '$DIR_INSTALLATION_HOME' -> '$BACKUP_FILE'"
 
