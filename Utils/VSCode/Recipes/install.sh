@@ -25,8 +25,32 @@ if ! test -e "$DIR_INSTALLATION_HOME"; then
     fi
 fi
 
-# TODO: If destination directory exists archive it as backup
-#
+if test -e "$DIR_INSTALLATION_HOME"; then
+
+    BACKUP_CODE=$(date +%Y.%m.%d.%H%M%S)
+    BACKUP_FILE="backup_$BACKUP_CODE.tar.gz"
+
+    if tar -cvz -f "$DIR_INSTALLATION_HOME/../$BACKUP_FILE" "$DIR_INSTALLATION_HOME"; then
+
+        echo "Backup has been created: '$DIR_INSTALLATION_HOME' -> '$BACKUP_FILE'"
+
+        if rm -rf "$DIR_INSTALLATION_HOME"; then
+
+            echo "Directory has been removed: '$DIR_INSTALLATION_HOME'"
+
+        else
+
+            echo "ERROR: Directory has not been removed: '$DIR_INSTALLATION_HOME'"
+            exit 1
+        fi
+
+    else
+
+        echo "ERROR: Backup has failed to create '$DIR_INSTALLATION_HOME' -> '$BACKUP_FILE'"
+        exit 1
+    fi
+fi
+
 if tar -xzf "$FILE_DOWNLOAD" -C "$DIR_INSTALLATION_HOME"; then
 
     echo "Extracted '$FILE_DOWNLOAD' into '$DIR_INSTALLATION_HOME'"
