@@ -16,15 +16,6 @@ DIR_HOME="$(readlink --canonicalize ~)"
 DIR_DOWNLOADS="$DIR_HOME/Downloads"
 FILE_DOWNLOAD="$DIR_DOWNLOADS/VSCode_Installation.tar.gz"
 
-if ! test -e "$DIR_INSTALLATION_HOME"; then
-
-    if ! mkdir -p "$DIR_INSTALLATION_HOME"; then
-
-        echo "ERROR: Could create installation directory '$DIR_INSTALLATION_HOME'"
-        exit 1
-    fi
-fi
-
 if test -e "$DIR_INSTALLATION_HOME"; then
 
     BACKUP_CODE=$(date +%Y.%m.%d.%H%M%S)
@@ -47,6 +38,15 @@ if test -e "$DIR_INSTALLATION_HOME"; then
     else
 
         echo "ERROR: Backup has failed to create '$DIR_INSTALLATION_HOME' -> '$BACKUP_FILE'"
+        exit 1
+    fi
+fi
+
+if ! test -e "$DIR_INSTALLATION_HOME"; then
+
+    if ! mkdir -p "$DIR_INSTALLATION_HOME"; then
+
+        echo "ERROR: Could create installation directory '$DIR_INSTALLATION_HOME'"
         exit 1
     fi
 fi
