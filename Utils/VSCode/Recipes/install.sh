@@ -12,9 +12,10 @@ if [ -z  "$DIR_INSTALLATION_HOME" ]; then
     exit 1
 fi
 
+DAY_CODE=$(date +%Y.%m.%d)
 DIR_HOME="$(readlink --canonicalize ~)"
 DIR_DOWNLOADS="$DIR_HOME/Downloads"
-FILE_DOWNLOAD="$DIR_DOWNLOADS/VSCode_Installation.tar.gz"
+FILE_DOWNLOAD="$DIR_DOWNLOADS/VSCode_Installation_$DAY_CODE.tar.gz"
 
 if test -e "$DIR_INSTALLATION_HOME"; then
 
