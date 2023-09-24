@@ -15,7 +15,29 @@ fi
 DAY_CODE=$(date +%Y.%m.%d)
 DIR_HOME="$(readlink --canonicalize ~)"
 DIR_DOWNLOADS="$DIR_HOME/Downloads"
+
+FILE_ZSH_RC="$DIR_HOME/.zshrc"
+FILE_BASH_RC="$DIR_HOME/.bashrc"
 FILE_DOWNLOAD="$DIR_DOWNLOADS/VSCode_Installation_$DAY_CODE.tar.gz"
+
+FILE_RC=""
+    
+if test -e "$FILE_ZSH_RC"; then
+
+  FILE_RC="$FILE_ZSH_RC"
+
+else
+
+    if test -e "$FILE_BASH_RC"; then
+
+      FILE_RC="$FILE_BASH_RC"
+
+    else
+
+      echo "ERROR: No '$FILE_ZSH_RC' or '$FILE_BASH_RC' found on the system"
+      exit 1
+    fi
+fi
 
 if test -e "$DIR_INSTALLATION_HOME"; then
     
@@ -64,7 +86,25 @@ else
     exit 1
 fi
 
-# TODO: Extract installation and add to path
+APPEND="export PATH=\${PATH}:$DIR_INSTALLATION_HOME"
+
+# shellcheck disable=SC2002
+if cat "$FILE_RC" | grep "$APPEND" >/dev/null 2>&1; then
+
+    echo "VSCode path is already added into '$FILE_RC' configuration"    
+
+else
+
+    if echo "" >> "$FILE_RC" && echo "$APPEND" >> "$FILE_RC"; then
+
+        echo "VSCode path is added into '$FILE_RC' configuration"
+
+    else
+
+        echo "WARNING: VSCode path was not added into '$FILE_RC' configuration"
+    fi
+fi
+
 # TODO: Install extensions (pickup some mandatory and additional from user's optional recipes)
 
 unset DOWNLOAD_URL
