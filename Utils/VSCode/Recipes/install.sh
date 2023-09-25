@@ -94,6 +94,21 @@ if ! test -e "$APPEND_PATH"; then
     exit 1
 fi
 
+DIR_DATA="$APPEND_PATH/data"
+
+if ! test -e "$DIR_DATA"; then
+
+    if mkdir -p "$DIR_DATA"; then
+
+        echo "Data directory has been created: '$DIR_DATA'"
+
+    else
+
+        echo "ERROR: data directory has not been created: '$DIR_DATA'"
+        exit 1
+    fi
+fi
+
 APPEND="export PATH=\${PATH}:$APPEND_PATH"
 
 # shellcheck disable=SC2002
