@@ -95,10 +95,11 @@ if ! test -e "$APPEND_PATH"; then
 fi
 
 DIR_DATA="$APPEND_PATH/data"
+DIR_TMP="$DIR_DATA/tmp"
 
 if ! test -e "$DIR_DATA"; then
 
-    if mkdir -p "$DIR_DATA"; then
+    if mkdir -p "$DIR_TMP"; then
 
         echo "Data directory has been created: '$DIR_DATA'"
 
@@ -128,7 +129,7 @@ else
     fi
 fi
 
-# TODO: Install extensions (pickup some mandatory and additional from user's optional recipes)
+# TODO: extendsions (archived) default and user provided and user-data - dafault (empty dir) and user provided.
 
 unset DOWNLOAD_URL
 unset DIR_INSTALLATION_HOME
