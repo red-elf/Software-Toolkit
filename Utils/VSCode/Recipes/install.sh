@@ -86,7 +86,15 @@ else
     exit 1
 fi
 
-APPEND="export PATH=\${PATH}:$DIR_INSTALLATION_HOME"
+APPEND_PATH="$DIR_INSTALLATION_HOME/VSCode-linux-x64"
+
+if ! test -e "$APPEND_PATH"; then
+
+    echo "ERROR: Path does not exist '$APPEND_PATH'"
+    exit 1
+fi
+
+APPEND="export PATH=\${PATH}:$APPEND_PATH"
 
 # shellcheck disable=SC2002
 if cat "$FILE_RC" | grep "$APPEND" >/dev/null 2>&1; then
