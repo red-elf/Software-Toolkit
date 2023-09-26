@@ -97,7 +97,7 @@ fi
 DIR_DATA="$APPEND_PATH/data"
 DIR_TMP="$DIR_DATA/tmp"
 
-if ! test -e "$DIR_DATA"; then
+if ! test -e "$DIR_TMP"; then
 
     if mkdir -p "$DIR_TMP"; then
 
