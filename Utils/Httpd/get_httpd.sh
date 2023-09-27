@@ -36,7 +36,7 @@ if [ -z "$SUBMODULES_HOME" ]; then
   exit 1
 fi
 
-SCRIPT_GET_DOCKER="$SUBMODULES_HOME/Utils/Sys/Programs/get_docker.sh"
+SCRIPT_GET_DOCKER="$SUBMODULES_HOME/Software-Toolkit/Utils/Sys/Programs/get_docker.sh"
 
 if sh "$SCRIPT_GET_DOCKER" true; then
 
