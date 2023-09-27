@@ -40,7 +40,7 @@ SCRIPT_GET_DOCKER="$SUBMODULES_HOME/Software-Toolkit/Utils/Sys/Programs/get_dock
 
 if sh "$SCRIPT_GET_DOCKER" true; then
 
-    if docker run -dit --name "$NAME" -p "$HTTPD_PORT":80 -v "$PWD":"$DIR_WEB_ROOT" httpd:2.4; then
+    if docker run --restart=always -dit --name "$NAME" -p "$HTTPD_PORT":80 -v "$PWD":"$DIR_WEB_ROOT" httpd:2.4; then
 
         echo "Apache HTTPD has been started"
 
