@@ -110,29 +110,32 @@ if ! test -e "$DIR_TMP"; then
     fi
 fi
 
-APPEND="export PATH=\${PATH}:$APPEND_PATH"
-
-# shellcheck disable=SC2002
-if cat "$FILE_RC" | grep "$APPEND" >/dev/null 2>&1; then
-
-    echo "VSCode path is already added into '$FILE_RC' configuration"    
-
-else
-
-    if echo "" >> "$FILE_RC" && echo "$APPEND" >> "$FILE_RC"; then
-
-        echo "VSCode path is added into '$FILE_RC' configuration"
-
-    else
-
-        echo "WARNING: VSCode path was not added into '$FILE_RC' configuration"
-    fi
-fi
-
 # TODO: extendsions (archived) default and user provided and user-data - dafault (empty dir) and user provided.
+#
+# APPEND="export PATH=\${PATH}:$APPEND_PATH"
+#
+# shellcheck disable=SC2002
+# if cat "$FILE_RC" | grep "$APPEND" >/dev/null 2>&1; then
 
+#     echo "VSCode path is already added into '$FILE_RC' configuration"    
+
+# else
+
+#     if echo "" >> "$FILE_RC" && echo "$APPEND" >> "$FILE_RC"; then
+
+#         echo "VSCode path is added into '$FILE_RC' configuration"
+
+#     else
+
+#         echo "WARNING: VSCode path was not added into '$FILE_RC' configuration"
+#     fi
+# fi
+
+unset DATA_VERSION
 unset DOWNLOAD_URL
 unset DIR_INSTALLATION_HOME
+unset DOWNLOAD_URL_USER_DATA
+unset DOWNLOAD_URL_EXTENSIONS
 
 echo "ERROR: VSCode install script is not yet implemented"
 exit 1

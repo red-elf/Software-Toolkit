@@ -7,7 +7,7 @@ if [ -z "$SUBMODULES_HOME" ]; then
 fi
 
 HERE="$(dirname -- "$0")"
-PARAMS="$HERE/params.sh"
+PARAMS="$HERE/parameters.sh"
 INSTALL_SCRIPT="$SUBMODULES_HOME/Installable/install.sh"
 
 if ! test -e "$PARAMS"; then
@@ -41,7 +41,14 @@ if ! test -e "$INSTALL_SCRIPT"; then
     exit 1
 fi
 
+export DATA_VERSION
 export DOWNLOAD_URL
 export DIR_INSTALLATION_HOME
+export DOWNLOAD_URL_EXTENSIONS
+
+if [ -n "$DOWNLOAD_URL_USER_DATA" ]; then
+
+    export DOWNLOAD_URL_USER_DATA
+fi
 
 sh "$INSTALL_SCRIPT" "$HERE"
