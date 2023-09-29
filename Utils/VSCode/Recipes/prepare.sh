@@ -27,9 +27,9 @@ fi
 DAY_CODE=$(date +%Y.%m.%d)
 DIR_HOME="$(readlink --canonicalize ~)"
 DIR_DOWNLOADS="$DIR_HOME/Downloads"
-FILE_DOWNLOAD="$DIR_DOWNLOADS/VSCode_Installation_$DAY_CODE.tar.gz"
-FILE_DOWNLOAD_EXTENSIONS="$DIR_DOWNLOADS/extensions_$DATA_VERSION.tar.gz"
-FILE_DOWNLOAD_USER_DATA="$DIR_DOWNLOADS/user-data_$DATA_VERSION.tar.gz"
+FILE_DOWNLOAD="$DIR_DOWNLOADS/VSCode_Installation.$DAY_CODE.tar.gz"
+FILE_DOWNLOAD_EXTENSIONS="$DIR_DOWNLOADS/extensions.$DATA_VERSION.tar.gz"
+FILE_DOWNLOAD_USER_DATA="$DIR_DOWNLOADS/user-data.$DATA_VERSION.tar.gz"
 
 if ! test -e "$DIR_DOWNLOADS"; then
 
