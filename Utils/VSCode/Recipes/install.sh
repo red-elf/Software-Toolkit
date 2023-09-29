@@ -169,6 +169,3 @@ unset DOWNLOAD_URL
 unset DIR_INSTALLATION_HOME
 unset DOWNLOAD_URL_USER_DATA
 unset DOWNLOAD_URL_EXTENSIONS
-
-echo "ERROR: VSCode install script is not yet implemented"
-exit 1
