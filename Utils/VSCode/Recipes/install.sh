@@ -164,12 +164,6 @@ else
     fi
 fi
 
-unset DATA_VERSION
-unset DOWNLOAD_URL
-unset DIR_INSTALLATION_HOME
-unset DOWNLOAD_URL_USER_DATA
-unset DOWNLOAD_URL_EXTENSIONS
-
 echo "Please provide your sudo password if asked in order to set the ownership and directory permissions properly for the VSCode"
 
 if sudo chown -R "$USER" "$DIR_INSTALLATION_HOME" && sudo chmod -R 777 "$DIR_INSTALLATION_HOME"; then
@@ -181,3 +175,9 @@ else
     echo "ERROR: Failed to set permissions for the VSCode directories"
     exit 1
 fi
+
+unset DATA_VERSION
+unset DOWNLOAD_URL
+unset DIR_INSTALLATION_HOME
+unset DOWNLOAD_URL_USER_DATA
+unset DOWNLOAD_URL_EXTENSIONS
