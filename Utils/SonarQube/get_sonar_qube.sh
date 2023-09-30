@@ -104,6 +104,7 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
 
     if test -e "$FILE_SYSCTL_CONF"; then
 
+      # shellcheck disable=SC2002
       if cat "$FILE_SYSCTL_CONF" | grep "vm.max_map_count="; then
 
         echo "WARNING: vm.max_map_count is already set on the system level"
@@ -123,6 +124,7 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
         fi
       fi
 
+      # shellcheck disable=SC2002
       if cat "$FILE_SYSCTL_CONF" | grep "fs.file-max="; then
 
         echo "WARNING: fs.file-max is already set on the system level"
@@ -155,7 +157,7 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
 
   echo "Checking the container status for: $DOCKER_CONTAINER"
   
-  CONTAINER_STATUS="$( docker container inspect -f '{{.State.Status}}' $DOCKER_CONTAINER )"
+  CONTAINER_STATUS="$( docker container inspect -f '{{.State.Status}}' "$DOCKER_CONTAINER" )"
 
   if [ "$CONTAINER_STATUS" = "running" ]; then
 
@@ -187,6 +189,7 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
 
       if cp "$FILE_DOCKER_COMPOSE_PROTO_PATH" "$FILE_DOCKER_COMPOSE_PATH"; then
 
+        # shellcheck disable=SC1003
         d='\'
 
         if sed -i "s${d}{{SERVICE.SONARQUBE.NAME}}${d}$DOCKER_CONTAINER${d}" "$FILE_DOCKER_COMPOSE_PATH" && \
@@ -272,6 +275,12 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
 
         #     },
         # }
+        #
+        # sonar-scanner \
+        #   -Dsonar.projectKey=Core \
+        #   -Dsonar.sources=. \
+        #   -Dsonar.host.url=http://general-server.local:9102 \
+        #   -Dsonar.token=TOKEN_TO_SET
 
       else
 
