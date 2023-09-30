@@ -281,6 +281,8 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
         #   -Dsonar.sources=. \
         #   -Dsonar.host.url=http://general-server.local:9102 \
         #   -Dsonar.token=TOKEN_TO_SET
+        #
+        # https://gist.github.com/Chetan07j/85e80d2a17c4d2d75172bf378efe93b9
 
       else
 
