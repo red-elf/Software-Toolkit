@@ -105,6 +105,9 @@ if test -e "$BIN_SCANNER"; then
           # shellcheck disable=SC1090
           . "$FILE_RC" >/dev/null 2>&1
 
+          # TODO: Configure the SonarScanner:
+          # /home/milosvasic/Apps/SonarScanner/sonar-scanner-5.0.1.3006-linux/conf/sonar-scanner.properties
+
       else
 
           echo "WARNING: SonnarScanner path was not added into '$FILE_RC' configuration"
