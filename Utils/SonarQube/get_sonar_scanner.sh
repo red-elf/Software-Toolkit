@@ -1,5 +1,19 @@
 #!/bin/bash
 
+VERSION="5.0.1.3006"
+BASE_URL="https://binaries.sonarsource.com/Distribution/sonar-scanner-cli"
+
+if [ -n "$1" ]; then
+
+  VERSION="$1"
+fi
+
+if [ -n "$2" ]; then
+
+  BASE_URL="$2"
+fi
+
+DOWNLOAD_URL="$BASE_URL/sonar-scanner-cli-$VERSION-linux.zip"
 SCRIPT_DOWNLOAD_FILE="$SUBMODULES_HOME/Software-Toolkit/Utils/download_file.sh"
 
 if test -e "$SCRIPT_DOWNLOAD_FILE"; then
@@ -38,8 +52,6 @@ fi
 FILE_ZSH_RC="$DIR_HOME/.zshrc"
 FILE_BASH_RC="$DIR_HOME/.bashrc"
 
-DOWNLOAD_URL="https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip"
-
 FILE_RC=""
 DAY_CODE=$(date +%Y.%m.%d)
 FILE_ARCHIVE="$DIR_DOWNLOADS/sonar-scanner_$DAY_CODE.zip"
@@ -77,15 +89,27 @@ if test -e "$BIN_SCANNER"; then
 
   echo "SonarScanner binary: $BIN_SCANNER"
 
-  # echo "Installing to opt..."
-  # if [ -d "/var/opt/sonar-scanner-4.7.0.2747-linux" ];then
-  #     sudo rm -rf /var/opt/sonar-scanner-4.7.0.2747-linux
-  # fi
-  # sudo mv sonar-scanner-4.7.0.2747-linux /var/opt
+  APPEND="$BIN_SCANNER"
 
-  # echo "Installation completed successfully."
+  # shellcheck disable=SC2002
+  if cat "$FILE_RC" | grep "$APPEND" >/dev/null 2>&1; then
 
-  # echo "You can use sonar-scanner!"
+      echo "SonnarScanner path is already added into '$FILE_RC' configuration"    
+
+  else
+
+      if echo "" >> "$FILE_RC" && echo "$APPEND" >> "$FILE_RC"; then
+
+          echo "SonnarScanner path is added into '$FILE_RC' configuration"
+
+          # shellcheck disable=SC1090
+          . "$FILE_RC" >/dev/null 2>&1
+
+      else
+
+          echo "WARNING: SonnarScanner path was not added into '$FILE_RC' configuration"
+      fi
+  fi
 
 else
 
