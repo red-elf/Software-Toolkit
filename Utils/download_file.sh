@@ -52,13 +52,36 @@ EXTRACT_INTO() {
     ARCHIVE="$1"
     DESTINATION="$2"
 
-    if tar -xzf "$ARCHIVE" -C "$DESTINATION"; then
+    if file --mime-type "$ARCHIVE" | grep -q zip$; then
+    
+        if unzip -d "$DESTINATION/" "$ARCHIVE"; then
 
-        echo "Extracted '$ARCHIVE' into '$DESTINATION'"
+            echo "Extracted '$ARCHIVE' into '$DESTINATION'"
+
+        else
+
+            echo "ERROR: Could not extract '$ARCHIVE' into '$DESTINATION'"
+            exit 1
+        fi
 
     else
 
-        echo "ERROR: Could not extract '$ARCHIVE' into '$DESTINATION'"
-        exit 1
+        if file --mime-type "$ARCHIVE" | grep -q gz$; then
+
+            if tar -xzf "$ARCHIVE" -C "$DESTINATION"; then
+
+                echo "Extracted '$ARCHIVE' into '$DESTINATION'"
+
+            else
+
+                echo "ERROR: Could not extract '$ARCHIVE' into '$DESTINATION'"
+                exit 1
+            fi
+
+        else
+
+            echo "ERROR: Unsupported archive type for file '$ARCHIVE'"
+            exit 1
+        fi
     fi
 }

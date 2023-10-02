@@ -15,6 +15,25 @@ fi
 
 DIR_HOME="$(readlink --canonicalize ~)"
 DIR_DOWNLOADS="$DIR_HOME/Downloads"
+DIR_APPS="$DIR_HOME/Apps/SonarScanner"
+
+if test -e "$DIR_APPS"; then
+
+  if ! rm -rf "$DIR_APPS"; then
+
+    echo "ERROR: Could not remove '$DIR_APPS'"
+    exit 1
+  fi
+fi
+
+if ! test "$DIR_APPS"; then
+
+  if ! mkdir -p "$DIR_APPS"; then
+
+    echo "ERROR: Could not create directory '$DIR_APPS'"
+    exit 1
+  fi
+fi
 
 FILE_ZSH_RC="$DIR_HOME/.zshrc"
 FILE_BASH_RC="$DIR_HOME/.bashrc"
@@ -49,8 +68,7 @@ if ! test -e "$DIR_DOWNLOADS"; then
 fi
 
 DOWNLOAD_FILE "$DOWNLOAD_URL" "$FILE_ARCHIVE"
-
-# EXTRACT_INTO "$FILE_ARCHIVE" "$DIR_DATA"
+EXTRACT_INTO "$FILE_ARCHIVE" "$DIR_APPS"
 
 # echo "Installing to opt..."
 # if [ -d "/var/opt/sonar-scanner-4.7.0.2747-linux" ];then
