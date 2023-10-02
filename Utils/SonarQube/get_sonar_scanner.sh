@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SCRIPT_DOWNLOAD_FILE="$SUBMODULES_HOME/Utils/download_file.sh"
+SCRIPT_DOWNLOAD_FILE="$SUBMODULES_HOME/Software-Toolkit/Utils/download_file.sh"
 
 if test -e "$SCRIPT_DOWNLOAD_FILE"; then
 
@@ -9,7 +9,7 @@ if test -e "$SCRIPT_DOWNLOAD_FILE"; then
 
 else
 
-    echo "ERROR: Script not found '$DOWNLOAD_FILE'"
+    echo "ERROR: Script not found '$SCRIPT_DOWNLOAD_FILE'"
     exit 1
 fi
 
