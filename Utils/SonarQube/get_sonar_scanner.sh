@@ -70,12 +70,26 @@ fi
 DOWNLOAD_FILE "$DOWNLOAD_URL" "$FILE_ARCHIVE"
 EXTRACT_INTO "$FILE_ARCHIVE" "$DIR_APPS"
 
-# echo "Installing to opt..."
-# if [ -d "/var/opt/sonar-scanner-4.7.0.2747-linux" ];then
-#     sudo rm -rf /var/opt/sonar-scanner-4.7.0.2747-linux
-# fi
-# sudo mv sonar-scanner-4.7.0.2747-linux /var/opt
+DIR_BIN=$(find "$DIR_APPS" -type d -name 'bin' -print -quit)
+BIN_SCANNER="$DIR_BIN/sonar-scanner"
 
-# echo "Installation completed successfully."
+if test -e "$BIN_SCANNER"; then
 
-# echo "You can use sonar-scanner!"
+  echo "SonarScanner binary: $BIN_SCANNER"
+
+  # echo "Installing to opt..."
+  # if [ -d "/var/opt/sonar-scanner-4.7.0.2747-linux" ];then
+  #     sudo rm -rf /var/opt/sonar-scanner-4.7.0.2747-linux
+  # fi
+  # sudo mv sonar-scanner-4.7.0.2747-linux /var/opt
+
+  # echo "Installation completed successfully."
+
+  # echo "You can use sonar-scanner!"
+
+else
+
+  echo "ERROR: SonarScanner binarry no found at '$BIN_SCANNER'"
+  exit 1
+fi
+
