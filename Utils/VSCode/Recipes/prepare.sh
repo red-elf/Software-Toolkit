@@ -6,7 +6,7 @@ if [ -z "$SUBMODULES_HOME" ]; then
   exit 1
 fi
 
-SCRIPT_DOWNLOAD_FILE="$SUBMODULES_HOME/Utils/download_file.sh"
+SCRIPT_DOWNLOAD_FILE="$SUBMODULES_HOME/Software-Toolkit/Utils/download_file.sh"
 
 if test -e "$SCRIPT_DOWNLOAD_FILE"; then
 

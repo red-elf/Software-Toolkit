@@ -100,10 +100,15 @@ if test -e "$BIN_SCANNER"; then
 
       if echo "" >> "$FILE_RC" && echo "$APPEND" >> "$FILE_RC"; then
 
-          echo "SonnarScanner path is added into '$FILE_RC' configuration"
-
           # shellcheck disable=SC1090
           . "$FILE_RC" >/dev/null 2>&1
+
+          echo "SonnarScanner path is added into '$FILE_RC' configuration"
+
+          if ! sonar-scanner --version; then
+
+            echo "WARNING: Could not obtain the SonarScanner version"
+          fi
 
           # TODO: Configure the SonarScanner:
           # /home/milosvasic/Apps/SonarScanner/sonar-scanner-5.0.1.3006-linux/conf/sonar-scanner.properties

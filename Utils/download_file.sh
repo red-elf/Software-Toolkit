@@ -52,7 +52,7 @@ EXTRACT_INTO() {
     ARCHIVE="$1"
     DESTINATION="$2"
 
-    if file --mime-type "$ARCHIVE" | grep -q zip$; then
+    if file --mime-type "$ARCHIVE" | grep "application/zip"; then
     
         if unzip -d "$DESTINATION/" "$ARCHIVE"; then
 
@@ -66,7 +66,7 @@ EXTRACT_INTO() {
 
     else
 
-        if file --mime-type "$ARCHIVE" | grep -q gz$; then
+        if file --mime-type "$ARCHIVE" | grep "application/gzip"; then
 
             if tar -xzf "$ARCHIVE" -C "$DESTINATION"; then
 
