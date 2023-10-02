@@ -89,7 +89,7 @@ if test -e "$BIN_SCANNER"; then
 
   echo "SonarScanner binary: $BIN_SCANNER"
 
-  APPEND="$BIN_SCANNER"
+  APPEND="export PATH=\${PATH}:$$DIR_BIN"
 
   # shellcheck disable=SC2002
   if cat "$FILE_RC" | grep "$APPEND" >/dev/null 2>&1; then
