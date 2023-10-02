@@ -1,5 +1,24 @@
 #!/bin/bash
 
+if [ -z "$SUBMODULES_HOME" ]; then
+
+  echo "ERROR: The SUBMODULES_HOME is not defined"
+  exit 1
+fi
+
+SCRIPT_DOWNLOAD_FILE="$SUBMODULES_HOME/Utils/download_file.sh"
+
+if test -e "$SCRIPT_DOWNLOAD_FILE"; then
+
+    # shellcheck disable=SC1090
+    . "$SCRIPT_DOWNLOAD_FILE"
+
+else
+
+    echo "ERROR: Script not found '$DOWNLOAD_FILE'"
+    exit 1
+fi
+
 if [ -z  "$DATA_VERSION" ]; then
 
     echo "ERROR: DATA_VERSION variable not defined"
@@ -39,41 +58,6 @@ if ! test -e "$DIR_DOWNLOADS"; then
         exit 1
     fi
 fi
-
-DOWNLOAD_FILE() {
-
-    if [ -z "$1" ]; then
-
-        echo "Download URL parameter is mandatory"
-        exit 1
-    fi
-
-    if [ -z "$2" ]; then
-
-        echo "Download destination parameter is mandatory"
-        exit 1
-    fi
-
-    DOWNLOAD_URL="$1"
-    FILE_DOWNLOAD="$2"
-
-    if test -e "$FILE_DOWNLOAD"; then
-
-        echo "File has been already downloaded: '$FILE_DOWNLOAD'"
-        
-    else
-
-        if wget "$DOWNLOAD_URL" -O "$FILE_DOWNLOAD"; then
-
-            echo "File '$FILE_DOWNLOAD' has been downloaded with success"
-
-        else
-
-            echo "ERROR: '$FILE_DOWNLOAD' has failed to downloaded"
-            exit 1
-        fi
-    fi
-}
 
 DOWNLOAD_FILE "$DOWNLOAD_URL" "$FILE_DOWNLOAD"
 DOWNLOAD_FILE "$DOWNLOAD_URL_EXTENSIONS" "$FILE_DOWNLOAD_EXTENSIONS"

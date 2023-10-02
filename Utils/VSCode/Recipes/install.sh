@@ -22,6 +22,31 @@ DAY_CODE=$(date +%Y.%m.%d)
 DIR_HOME="$(readlink --canonicalize ~)"
 DIR_DOWNLOADS="$DIR_HOME/Downloads"
 
+if ! test -e "$DIR_DOWNLOADS"; then
+
+    echo "ERROR: Downloads directory does not exist '$DIR_DOWNLOADS'"
+    exit 1
+fi
+
+if [ -z "$SUBMODULES_HOME" ]; then
+
+  echo "ERROR: The SUBMODULES_HOME is not defined"
+  exit 1
+fi
+
+SCRIPT_DOWNLOAD_FILE="$SUBMODULES_HOME/Utils/download_file.sh"
+
+if test -e "$SCRIPT_DOWNLOAD_FILE"; then
+
+    # shellcheck disable=SC1090
+    . "$SCRIPT_DOWNLOAD_FILE"
+
+else
+
+    echo "ERROR: Script not found '$DOWNLOAD_FILE'"
+    exit 1
+fi
+
 FILE_ZSH_RC="$DIR_HOME/.zshrc"
 FILE_BASH_RC="$DIR_HOME/.bashrc"
 
@@ -84,34 +109,6 @@ if ! test -e "$DIR_INSTALLATION_HOME"; then
         exit 1
     fi
 fi
-
-EXTRACT_INTO() {
-
-    if [ -z "$1" ]; then
-
-        echo "ERROR: Archive parameter is mandatory"
-        exit 1
-    fi
-
-    if [ -z "$2" ]; then
-
-        echo "ERROR: Destination parameter is mandatory"
-        exit 1
-    fi
-
-    ARCHIVE="$1"
-    DESTINATION="$2"
-
-    if tar -xzf "$ARCHIVE" -C "$DESTINATION"; then
-
-        echo "Extracted '$ARCHIVE' into '$DESTINATION'"
-
-    else
-
-        echo "ERROR: Could not extract '$ARCHIVE' into '$DESTINATION'"
-        exit 1
-    fi
-}
 
 DIR_VS_CODE_ROOT="VSCode-linux-x64"
 APPEND_PATH="$DIR_INSTALLATION_HOME/$DIR_VS_CODE_ROOT"
