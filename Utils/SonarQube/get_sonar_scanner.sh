@@ -19,10 +19,11 @@ DIR_DOWNLOADS="$DIR_HOME/Downloads"
 FILE_ZSH_RC="$DIR_HOME/.zshrc"
 FILE_BASH_RC="$DIR_HOME/.bashrc"
 
-DOWNLOAD_URL="https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip"
+DOWNLOAD_URL="https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip"
 
 FILE_RC=""
-FILE_ARCHIVE="$DIR_DOWNLOADS/sonar-scanner.zip"
+DAY_CODE=$(date +%Y.%m.%d)
+FILE_ARCHIVE="$DIR_DOWNLOADS/sonar-scanner_$DAY_CODE.zip"
     
 if test -e "$FILE_ZSH_RC"; then
 
