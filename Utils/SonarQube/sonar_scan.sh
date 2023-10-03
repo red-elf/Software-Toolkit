@@ -1,5 +1,12 @@
 #!/bin/bash
 
+LOCATION=$(pwd)
+
+if [ -n "$1" ]; then
+
+    LOCATION="$1"
+fi
+
 if [ -z "$SUBMODULES_HOME" ]; then
 
   echo "ERROR: SUBMODULES_HOME not available"
@@ -21,15 +28,33 @@ if ! test -e "$SCRIPT_GET_SONAR_SCANNER"; then
     exit 1
 fi
 
+if [ -z "$SONARQUBE_SERVER" ]; then
+
+    echo "ERROR: 'SONAR_QUBE_SERVER' variable not defined (exported)"
+    exit 1
+fi
+
+if [ -z "$SONARQUBE_TOKEN" ]; then
+
+    echo "ERROR: 'SONARQUBE_TOKEN' variable not defined (exported)"
+    exit 1
+fi
+
+if [ -z "$SONARQUBE_PROJECT" ]; then
+
+    echo "ERROR: 'SONARQUBE_PROJECT' variable not defined (exported)"
+    exit 1
+fi
+
 PROGRAM="sonar-scanner"
 
 if sh "$SCRIPT_GET_PROGRAM" "$PROGRAM"; then
 
   if ! "$PROGRAM" \
-          -Dsonar.projectKey=Core \
-          -Dsonar.sources=. \
-          -Dsonar.host.url=http://general-server.local:9102 \
-          -Dsonar.token=TOKEN_TO_SET; then
+          -Dsonar.projectKey="$SONARQUBE_PROJECT" \
+          -Dsonar.sources="$LOCATION" \
+          -Dsonar.host.url="$SONARQUBE_SERVER" \
+          -Dsonar.token="$SONARQUBE_TOKEN"; then
 
     echo "ERROR: Failed to run '$PROGRAM'"
     exit 1
