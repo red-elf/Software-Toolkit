@@ -109,10 +109,7 @@ if test -e "$BIN_SCANNER"; then
 
             echo "WARNING: Could not obtain the SonarScanner version"
           fi
-
-          # TODO: Configure the SonarScanner:
-          # /home/milosvasic/Apps/SonarScanner/sonar-scanner-5.0.1.3006-linux/conf/sonar-scanner.properties
-
+          
       else
 
           echo "WARNING: SonnarScanner path was not added into '$FILE_RC' configuration"
