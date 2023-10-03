@@ -155,6 +155,9 @@ else
 
         echo "VSCode path is added into '$FILE_RC' configuration"
 
+        # shellcheck disable=SC1090
+        . "$FILE_RC" >/dev/null 2>&1
+
     else
 
         echo "WARNING: VSCode path was not added into '$FILE_RC' configuration"
