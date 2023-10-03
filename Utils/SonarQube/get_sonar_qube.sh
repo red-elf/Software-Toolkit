@@ -262,28 +262,6 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
           fi
         fi
 
-        # TODO: SonarLint:
-        # 
-        # {
-        #     "sonarlint.connectedMode.connections.sonarqube": [
-        #         {
-        #             "serverUrl": "http://milosvasic-standard-pc-q35-ich9-2009.local:9102",
-        #             "connectionId": "http-milosvasic-standard-pc-q35-ich9-2009-local-9102"
-        #         }
-        #     ],
-        #     "sonarlint.analyzerProperties": {
-
-        #     },
-        # }
-        #
-        # sonar-scanner \
-        #   -Dsonar.projectKey=Core \
-        #   -Dsonar.sources=. \
-        #   -Dsonar.host.url=http://general-server.local:9102 \
-        #   -Dsonar.token=TOKEN_TO_SET
-        #
-        # https://gist.github.com/Chetan07j/85e80d2a17c4d2d75172bf378efe93b9
-
       else
 
         echo "ERROR: Docker compose failed"
