@@ -260,6 +260,13 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
             echo "ERROR: Could not set the admin password"
             exit 1
           fi
+
+          # TODO:
+          #
+          # - Create a project
+          # - Set the IDE parameters
+          # - Fix dependencies installation wizard paths
+
         fi
 
       else
