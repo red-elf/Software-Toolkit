@@ -55,7 +55,7 @@ if sh "$SCRIPT_GET_PROGRAM" "$PROGRAM"; then
           -Dsonar.sources="$LOCATION" \
           -Dsonar.host.url="$SONARQUBE_SERVER" \
           -Dsonar.token="$SONARQUBE_TOKEN" \
-          -Dsonar.scm.provider=git; then
+          -Dsonar.scm.disabled=True; then
 
     echo "ERROR: Failed to run '$PROGRAM'"
     exit 1
