@@ -54,13 +54,8 @@ if sh "$SCRIPT_GET_PROGRAM" "$PROGRAM"; then
           -Dsonar.projectKey="$SONARQUBE_PROJECT" \
           -Dsonar.sources="$LOCATION" \
           -Dsonar.host.url="$SONARQUBE_SERVER" \
-          -Dsonar.token="$SONARQUBE_TOKEN"; then
-
-    # TODO:
-    #
-    # Missing blame information for 2 files. This may lead to some features not working correctly. 
-    # Please check the analysis logs and refer to the documentation:
-    # https://docs.sonarsource.com/sonarqube/10.1/analyzing-source-code/scm-integration/
+          -Dsonar.token="$SONARQUBE_TOKEN" \
+          -Dsonar.scm.provider=git; then
 
     echo "ERROR: Failed to run '$PROGRAM'"
     exit 1
