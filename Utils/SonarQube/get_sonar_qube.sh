@@ -265,7 +265,6 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
           #
           # - Create a project
           # - Set the IDE parameters
-          # - Fix dependencies installation wizard paths
 
         fi
 
