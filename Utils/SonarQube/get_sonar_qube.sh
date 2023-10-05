@@ -263,6 +263,7 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
 
           # TODO:
           #
+          # - All tokens sahll be obtained from the environment - including JSON settings
           # - Create a project
           # - Set the IDE parameters
 
