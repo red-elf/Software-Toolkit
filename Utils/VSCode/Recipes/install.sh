@@ -166,7 +166,8 @@ fi
 
 echo "Please provide your sudo password if asked in order to set the ownership and directory permissions properly for the VSCode"
 
-if sudo chown -R "$USER" "$DIR_INSTALLATION_HOME" && sudo chmod -R 777 "$DIR_INSTALLATION_HOME"; then
+if sudo chown -R "$USER" "$DIR_INSTALLATION_HOME" && sudo chgrp -R "$USER" "$DIR_INSTALLATION_HOME" && \
+    sudo chmod -R 777 "$DIR_INSTALLATION_HOME"; then
 
     echo "Permissions for the VSCode directories have been set with success"
 
