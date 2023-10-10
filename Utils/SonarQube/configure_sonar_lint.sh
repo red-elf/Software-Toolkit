@@ -26,13 +26,20 @@ if sh "$SCRIPT_GET_PROGRAM" code; then
 
   CODE_PATH=$(which code)
 
-  if ! test -e "$CODE_PATH"; then
+  if test -e "$CODE_PATH"; then
+
+    echo "VSCode path: '$CODE_PATH'"
+
+  else
 
     echo "ERROR: VSCode Path not found '$CODE_PATH'"
     exit 1
   fi
 
-  SETTINGS_JSON="$CODE_PATH/data/user-data/User/settings.json"
+  CODE_DIR=$(dirname "$CODE_PATH")
+  SETTINGS_JSON="$CODE_DIR/data/user-data/User/settings.json"
+
+  echo "Checking: '$SETTINGS_JSON'"
 
   if test -e "$SETTINGS_JSON"; then
 
@@ -40,7 +47,8 @@ if sh "$SCRIPT_GET_PROGRAM" code; then
 
   else
 
-    if touch "$SETTINGS_JSON"; then
+
+    if echo "{}" >> "$SETTINGS_JSON"; then
 
       echo "Settings JSON created: '$SETTINGS_JSON'"
 
