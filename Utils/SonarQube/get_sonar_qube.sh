@@ -263,7 +263,6 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
 
           # TODO:
           #
-          # - Generate settings.json dynamically and combine it with one from the data directory
           # - Create a project and generte tokens
           # - Set the IDE parameters
 
