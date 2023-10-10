@@ -89,10 +89,16 @@ echo "$ADDITION_CONTENT"
 
 if sh "$SCRIPT_GET_JQ" >/dev/null 2>&1; then
 
-    DESTINATION_CONTENT="Tbd."
-
+    DESTINATION_CONTENT=$(echo "$SOURCE_CONTENT$ADDITION_CONTENT" | jq -s 'add')
+    
     echo "Destination JSON content:"
     echo "$DESTINATION_CONTENT"
+
+    if ! echo "$DESTINATION_CONTENT" > "$DESTINATION"; then
+
+        echo "ERROR: Couldn't write into '$DESTINATION'"
+        exit 1
+    fi
 
 else
 

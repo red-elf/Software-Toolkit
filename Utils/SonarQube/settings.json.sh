@@ -11,10 +11,7 @@ cat << EOF
     ],
     "sonarlint.connectedMode.project": {
         "connectionId": "$SONARQUBE_PROJECT",
-        "projectKey": "$SONARQUBE_PROJECT",
-    }
-    "sonarlint.analyzerProperties": {
-
+        "projectKey": "$SONARQUBE_PROJECT"
     }
 }
 EOF
