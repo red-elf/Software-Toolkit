@@ -8,7 +8,7 @@ fi
 
 RECIPE_SETTINGS_JSON="$SUBMODULES_HOME/Software-Toolkit/Utils/SonarQube/settings.json.sh"
 SCRIPT_GET_PROGRAM="$SUBMODULES_HOME/Software-Toolkit/Utils/Sys/Programs/get_program.sh"
-SCRIPT_EXTEND_JSON="$SUBMODULES_HOME/Software-Toolkit/Utils/VSCode/extend_settings_json.sh"
+SCRIPT_EXTEND_JSON="$SUBMODULES_HOME/Software-Toolkit/Utils/Sys/JSON/merge_jsons.sh"
 
 if ! test -e "$SCRIPT_GET_PROGRAM"; then
 
@@ -22,7 +22,7 @@ if ! test -e "$SCRIPT_EXTEND_JSON"; then
   exit 1
 fi
 
-if sh "$SCRIPT_GET_PROGRAM" code; then
+if sh "$SCRIPT_GET_PROGRAM" code >/dev/null 2>&1; then
 
   CODE_PATH=$(which code)
 
@@ -66,15 +66,15 @@ if sh "$SCRIPT_GET_PROGRAM" code; then
 
   if test -e "$RECIPE_SETTINGS_JSON"; then
 
-    echo "Settings.json recipe: '$RECIPE_SETTINGS_JSON'"
+    echo "Settings JSON recipe: '$RECIPE_SETTINGS_JSON'"
 
   else
 
-    echo "ERROR: Recipe not found '$RECIPE_SETTINGS_JSON'"
+    echo "ERROR: Settings JSON recipe not found '$RECIPE_SETTINGS_JSON'"
     exit 1
   fi
 
-  if sh "$SCRIPT_EXTEND_JSON" "$RECIPE_SETTINGS_JSON"; then
+  if sh "$SCRIPT_EXTEND_JSON" "$SETTINGS_JSON" "$RECIPE_SETTINGS_JSON" "$SETTINGS_JSON"; then
 
     echo "Settings JSON has been extended with success"
 
