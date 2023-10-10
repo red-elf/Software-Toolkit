@@ -1,5 +1,19 @@
 #!/bin/bash
 
+if [ -z "$SUBMODULES_HOME" ]; then
+
+  echo "ERROR: SUBMODULES_HOME not available"
+  exit 1
+fi
+
+SCRIPT_GET_JQ="$SUBMODULES_HOME/Software-Toolkit/Utils/Sys/Programs/get_jq.sh"
+
+if ! test -e "$SCRIPT_GET_JQ"; then
+
+    echo "ERROR: Script not found '$SCRIPT_GET_JQ'"
+    exit 1
+fi
+
 if [ -n "$1" ]; then
 
     SOURCE="$1"
@@ -73,8 +87,16 @@ echo "$SOURCE_CONTENT"
 echo "Addition JSON content:"
 echo "$ADDITION_CONTENT"
 
-DESTINATION_CONTENT="Tbd."
+if sh "$SCRIPT_GET_JQ" >/dev/null 2>&1; then
 
-echo "Destination JSON content:"
-echo "$DESTINATION_CONTENT"
+    DESTINATION_CONTENT="Tbd."
+
+    echo "Destination JSON content:"
+    echo "$DESTINATION_CONTENT"
+
+else
+
+    echo "ERROR: JQ not available"
+    exit 1
+fi
 
