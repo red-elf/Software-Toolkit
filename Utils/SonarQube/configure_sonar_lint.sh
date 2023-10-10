@@ -74,13 +74,20 @@ if sh "$SCRIPT_GET_PROGRAM" code >/dev/null 2>&1; then
     exit 1
   fi
 
-  if sh "$SCRIPT_EXTEND_JSON" "$SETTINGS_JSON" "$RECIPE_SETTINGS_JSON" "$SETTINGS_JSON"; then
+  if [ -n "$SONARQUBE_SERVER" ] && [ -n "$SONARQUBE_PROJECT" ] && [ -n "$SONARQUBE_TOKEN" ]; then
+    
+    if sh "$SCRIPT_EXTEND_JSON" "$SETTINGS_JSON" "$RECIPE_SETTINGS_JSON" "$SETTINGS_JSON"; then
 
-    echo "Settings JSON has been extended with success"
+      echo "SonarLint has been configured"
+
+    else
+
+      echo "ERROR: SonarLint has not been configured"
+      exit 1
+    fi
 
   else
 
-    echo "ERROR: Settings JSON failed to extend"
-    exit 1
+    echo "WARNING: No SonarLint will be configured"
   fi
 fi
