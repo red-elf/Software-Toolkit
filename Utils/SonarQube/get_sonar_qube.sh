@@ -263,6 +263,7 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
 
           # TODO:
           #
+          # - Default VSCode settings json recipes
           # - Create a project and generte tokens
           # - Set the IDE parameters
 
