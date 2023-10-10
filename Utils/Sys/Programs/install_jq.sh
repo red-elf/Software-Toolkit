@@ -16,14 +16,11 @@ fi
 
 if sh "$SCRIPT_CHECK_ALT_LINUX"; then
 
-  if sudo apt-get install docker-engine && \
-    sudo apt-get install docker-ce && \
-    sudo usermod "$USER" -aG docker && \
-    sudo systemctl enable --now docker; then
+  if sudo apt-get install jq; then
 
     exit 0
   fi
 fi
 
-echo "ERROR: Docker was not installed"
+echo "ERROR: JQ was not installed"
 exit 1
