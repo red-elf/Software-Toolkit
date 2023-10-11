@@ -89,5 +89,8 @@ if sh "$SCRIPT_GET_PROGRAM" code >/dev/null 2>&1; then
   else
 
     echo "WARNING: No SonarLint will be configured"
+    echo "SONARQUBE_SERVER='$SONARQUBE_SERVER'"
+    echo "SONARQUBE_PROJECT='$SONARQUBE_PROJECT'"
+    echo "SONARQUBE_TOKEN='$SONARQUBE_TOKEN'"
   fi
 fi
