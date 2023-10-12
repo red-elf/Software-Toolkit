@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# TODO: Install usptreams if not installed before pushing all to upstream
+
 DIR_UPSTREAMS="Upstreams"
 
 if [ -n "$1" ]; then
