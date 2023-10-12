@@ -5,8 +5,7 @@ cat << EOF
     "sonarlint.connectedMode.connections.sonarqube": [
         {
             "serverUrl": "$SONARQUBE_SERVER",
-            "connectionId": "$SONARQUBE_PROJECT",
-            "token": "$SONARQUBE_TOKEN"
+            "connectionId": "$SONARQUBE_PROJECT"
         }
     ],
     "sonarlint.connectedMode.project": {
