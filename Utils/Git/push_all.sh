@@ -1,6 +1,9 @@
 #!/bin/bash
 
-# TODO: Install usptreams if not installed before pushing all to upstream
+# TODO:
+#
+# - Install usptreams if not installed before pushing all to upstream
+# - MAke sure that merging strategy is set: 'git config pull.rebase false'
 
 DIR_UPSTREAMS="Upstreams"
 
