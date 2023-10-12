@@ -94,21 +94,30 @@ if sh "$SCRIPT_GET_JQ" >/dev/null 2>&1; then
     echo "Destination JSON content:"
     echo "$DESTINATION_CONTENT"
 
-    if test -e "$DESTINATION"; then
+    EXISTING_CONTENT=$(cat "$DESTINATION")
 
-        SUFIX=$(($(date +%s%N)/1000000))
+    if [ "$EXISTING_CONTENT" = "$DESTINATION_CONTENT" ]; then
 
-        if ! cp "$DESTINATION" "$DESTINATION.$SUFIX.bak"; then
+        echo "WARNING: No changes to be written into '$DESTINATION'"
 
-            echo "ERROR: Could not create a backup of '$DESTINATION'"
+    else
+
+        if test -e "$DESTINATION"; then
+
+            SUFIX=$(($(date +%s%N)/1000000))
+
+            if ! cp "$DESTINATION" "$DESTINATION.$SUFIX.bak"; then
+
+                echo "ERROR: Could not create a backup of '$DESTINATION'"
+                exit 1
+            fi
+        fi
+
+        if ! echo "$DESTINATION_CONTENT" > "$DESTINATION"; then
+
+            echo "ERROR: Couldn't write into '$DESTINATION'"
             exit 1
         fi
-    fi
-
-    if ! echo "$DESTINATION_CONTENT" > "$DESTINATION"; then
-
-        echo "ERROR: Couldn't write into '$DESTINATION'"
-        exit 1
     fi
 
 else
