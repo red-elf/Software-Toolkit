@@ -85,7 +85,7 @@ SCRIPT_GET_DOCKER="$HERE/../Sys/Programs/get_docker.sh"
 SCRIPT_GET_DOCKER_COMPOSE="$HERE/../Sys/Programs/get_docker_compose.sh"
 
 DOCKER_IMAGE="sonarqube"
-DOCKER_TAG="10.1.0-community"
+DOCKER_TAG="10.2.1-community"
 DOCKER_CONTAINER_PREFIX="sonarqube"
 DOCKER_CONTAINER="$DOCKER_CONTAINER_PREFIX.$SONARQUBE_NAME"
 
@@ -263,8 +263,10 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
 
           # TODO:
           #
-          # - Create a project
+          # - Default VSCode settings json recipes
+          # - Create a project and generte tokens
           # - Set the IDE parameters
+          # - Code quality badges
 
         fi
 
