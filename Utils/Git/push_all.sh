@@ -79,8 +79,6 @@ fi
 
 if test -e "$DIR_UPSTREAMS"; then
 
-  echo "Upstreams sources path: '$DIR_UPSTREAMS'"
-
   if ! sh "$SCRIPT_INSTALL_UPSTREAMS" "$DIR_UPSTREAMS"; then
 
     echo "ERROR: Installing upstreams failed from '$DIR_UPSTREAMS'"
