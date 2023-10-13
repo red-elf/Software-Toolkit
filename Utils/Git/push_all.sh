@@ -3,8 +3,6 @@
 # TODO:
 #
 # - Install usptreams if not installed before pushing all to upstream
-# - Upstreams installation to check if already installed, remove all upstream definition duplicates if found
-# - Make sure that merging strategy is set: 'git config pull.rebase false'
 
 DIR_UPSTREAMS="Upstreams"
 
