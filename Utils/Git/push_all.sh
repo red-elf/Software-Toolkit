@@ -1,8 +1,18 @@
 #!/bin/bash
 
-# TODO:
-#
-# - Install usptreams if not installed before pushing all to upstream
+if [ -z "$SUBMODULES_HOME" ]; then
+
+  echo "ERROR: SUBMODULES_HOME not available"
+  exit 1
+fi
+
+SCRIPT_INSTALL_UPSTREAMS="$SUBMODULES_HOME/Upstreamable/install_upstreams.sh"
+
+if ! test -e "$SCRIPT_INSTALL_UPSTREAMS"; then
+
+  echo "ERROR: Script not found '$SCRIPT_INSTALL_UPSTREAMS'"
+  exit 1
+fi
 
 # TODO:
 #
@@ -70,6 +80,12 @@ fi
 if test -e "$DIR_UPSTREAMS"; then
 
   echo "Upstreams sources path: '$DIR_UPSTREAMS'"
+
+  if ! sh "$SCRIPT_INSTALL_UPSTREAMS" "$DIR_UPSTREAMS"; then
+
+    echo "ERROR: Installing upstreams failed from '$DIR_UPSTREAMS'"
+    exit 1
+  fi
 
   UNSET_UPSTREAM_VARIABLES() {
 
