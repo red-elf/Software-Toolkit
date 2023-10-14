@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# TODO: Extend to support the commiting out of the box, for example: push_all "My commit message"
+
 if [ -z "$SUBMODULES_HOME" ]; then
 
   echo "ERROR: SUBMODULES_HOME not available"
