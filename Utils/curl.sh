@@ -29,7 +29,7 @@ RUN_CURL() {
 
   PORT_APPENDIX=":$CURL_UTIL_PORT"
   
-  if [ CURL_UTIL_PORT = "80" ]; then
+  if [ "$CURL_UTIL_PORT" = "80" ]; then
 
     PORT_APPENDIX=""
   fi
