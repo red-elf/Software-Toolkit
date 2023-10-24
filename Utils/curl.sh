@@ -28,5 +28,6 @@ RUN_CURL() {
   fi
 
   TARGET="$CURL_UTIL_PROTOCOL"://"$CURL_UTIL_HOST":"$CURL_UTIL_PORT"/"$CURL_UTIL_ENDPOINT"
-  clear && echo "URL: $TARGET" && curl -v "$TARGET" && echo ""
+  
+  echo "URL to execure: $TARGET" && curl -v "$TARGET" && echo ""
 }
