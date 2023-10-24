@@ -1,6 +1,9 @@
 #!/bin/bash
 
-# TODO: Extend to support the commiting out of the box, for example: push_all "My commit message"
+# TODO: 
+#
+# - Extend to support the commiting out of the box, for example: push_all "My commit message"
+# - Push all to go directoy by directiry backwards until it finds the Upstreams direcotry, then use it and push to upstreams
 
 if [ -z "$SUBMODULES_HOME" ]; then
 
