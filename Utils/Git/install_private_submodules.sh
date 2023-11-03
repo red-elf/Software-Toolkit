@@ -19,8 +19,6 @@ DIR_RECIPES="$2"
 
 echo "Checking and installing private modules from '$DIR_RECIPES' into '$DIR_MODULES_HOME'"
 
-cd "$DIR_RECIPES" && echo "Processing recipes from: '$DIR_RECIPES'"
-
 PROCESS_RECIPE() {
 
     if [ -z "$1" ]; then
@@ -38,12 +36,14 @@ PROCESS_RECIPE() {
     NAME="$1"
     REPO="$2"
 
-    echo "Recipe '$NAME': $REPO"
+    echo "Recipe for '$NAME' from '$REPO'"
 
     # TODO: Implement
 }
 
-for i in *.sh; do
+cd "$DIR_RECIPES" && echo "Processing recipes from: '$DIR_RECIPES'"
+
+for i in *.submodule; do
 
     RECIPE_FILE="$DIR_RECIPES"/"$i"
 
