@@ -45,7 +45,7 @@ PROCESS_RECIPE() {
 
 for i in *.sh; do
 
-    RECIPE_FILE="$(DIR_RECIPES)"/"$i"
+    RECIPE_FILE="$DIR_RECIPES"/"$i"
 
     if test -e "$RECIPE_FILE"; then
 
