@@ -45,10 +45,10 @@ PROCESS_RECIPE() {
 
 for i in *.sh; do
 
-    if test -e "$i"; then
+    RECIPE_FILE="$(DIR_RECIPES)"/"$i"
 
-        RECIPE_FILE="$(DIR_RECIPES)"/"$i"
-        
+    if test -e "$RECIPE_FILE"; then
+
         # shellcheck disable=SC1090
         echo "Processing the recipe file: $RECIPE_FILE" && . "$RECIPE_FILE"
 
@@ -56,7 +56,7 @@ for i in *.sh; do
 
     else
 
-        echo "WARNING: Upstreams not found at '$DIR_UPSTREAMS'"
+        echo "WARNING: Recipe not found '$RECIPE_FILE'"
         exit 0
     fi
 done
