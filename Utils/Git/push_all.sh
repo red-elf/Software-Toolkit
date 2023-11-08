@@ -93,7 +93,9 @@ if test -e "$DIR_UPSTREAMS"; then
     fi
   done
 
-  if git push --tags; then
+  echo "Pushing tags"
+
+  if git push --tags >/dev/null 2>&1; then
 
     echo "All tags have been pushed with success"
 
