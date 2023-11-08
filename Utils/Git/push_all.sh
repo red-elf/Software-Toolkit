@@ -64,7 +64,7 @@ if test -e "$DIR_UPSTREAMS"; then
 
     if echo "Upstream '$NAME': $UPSTREAM" && git push "$NAME"; then
 
-      git config pull.rebase false && git fetch && git pull
+      git config pull.rebase false && git fetch && git pull && echo "'$NAME': OK"
     fi
   }
 
