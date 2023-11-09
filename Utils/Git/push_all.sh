@@ -29,24 +29,40 @@ else
 
   if ! test -e "$DIR_UPSTREAMS"; then
 
+    ORIGIN=$(git config --get remote.origin.url)
     DIR_UPSTREAMS="$HERE"
 
-    echo "Looking for the Upstreams directory from: '$DIR_UPSTREAMS'"
+    echo "Looking for the Upstreams directory from: '$DIR_UPSTREAMS'" && \
+      echo "From origin: '$ORIGIN'"
 
     while ! test -e "$DIR_UPSTREAMS/$UPSTREAMS"
     do
 
-      DIR_UPSTREAMS="$DIR_UPSTREAMS/.."
+      DIR_UPSTREAMS="$DIR_UPSTREAMS/.." && \
+        echo "Going back to: '$DIR_UPSTREAMS'"
 
-      echo "Going back to: '$DIR_UPSTREAMS'"
+      CURRENT_ORIGIN=$(git config --get remote.origin.url)
+
+      if [ "$ORIGIN" == "" ] || ! [ "$ORIGIN" == "$CURRENT_ORIGIN" ]; then
+
+        echo "ERROR: Went out of origin '$ORIGIN' to '$CURRENT_ORIGIN'"
+        exit 1
+      fi
 
     done
 
     if test -e "$DIR_UPSTREAMS/$UPSTREAMS"; then
 
-      DIR_UPSTREAMS="$DIR_UPSTREAMS/$UPSTREAMS"
+      CURRENT_ORIGIN=$(git config --get remote.origin.url)
 
-      echo "Upstreams directory found at: '$DIR_UPSTREAMS'"
+      if [ ! "$ORIGIN" == "" ] && [ "$ORIGIN" == "$CURRENT_ORIGIN" ]; then
+
+        DIR_UPSTREAMS="$DIR_UPSTREAMS/$UPSTREAMS"
+
+        echo "Upstreams directory found at: '$DIR_UPSTREAMS'" && \
+          echo "At origin: '$CURRENT_ORIGIN'"
+
+      fi
     fi
   fi
 fi
