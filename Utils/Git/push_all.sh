@@ -1,8 +1,6 @@
 #!/bin/bash
 
-# TODO: 
-#
-# - Push all to go directoy by directiry backwards until it finds the Upstreams direcotry, then use it and push to upstreams
+HERE=$(pwd)
 
 if [ -z "$SUBMODULES_HOME" ]; then
 
@@ -18,11 +16,42 @@ if ! test -e "$SCRIPT_INSTALL_UPSTREAMS"; then
   exit 1
 fi
 
-DIR_UPSTREAMS="Upstreams"
+UPSTREAMS="Upstreams"
+DIR_UPSTREAMS="$UPSTREAMS"
 
 if [ -n "$1" ]; then
 
   DIR_UPSTREAMS="$1"
+
+  echo "Upstreams directory parametrized: '$DIR_UPSTREAMS'"
+
+else
+
+  if ! test -e "$DIR_UPSTREAMS"; then
+
+    DIR_UPSTREAMS="$HERE"
+
+    echo "Looking for the Upstreams directory from: '$DIR_UPSTREAMS'"
+
+    while ! test -e "$DIR_UPSTREAMS/$UPSTREAMS"
+    do
+
+      DIR_UPSTREAMS="$DIR_UPSTREAMS/.."
+
+      echo "Going back to: '$DIR_UPSTREAMS'"
+
+    done
+
+    if test -e "$DIR_UPSTREAMS/$UPSTREAMS"; then
+
+      DIR_UPSTREAMS="$DIR_UPSTREAMS/$UPSTREAMS"
+
+      echo "Upstreams directory found at: '$DIR_UPSTREAMS'"
+      
+    fi
+
+  fi
+
 fi
 
 if test -e "$DIR_UPSTREAMS"; then
@@ -106,5 +135,5 @@ if test -e "$DIR_UPSTREAMS"; then
 
 else
 
-  echo "WARNING: Upstreams sources path does notexist '$DIR_UPSTREAMS'"
+  echo "WARNING: Upstreams sources path does not exist '$DIR_UPSTREAMS'"
 fi
