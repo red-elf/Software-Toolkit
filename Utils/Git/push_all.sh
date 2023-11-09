@@ -47,11 +47,8 @@ else
       DIR_UPSTREAMS="$DIR_UPSTREAMS/$UPSTREAMS"
 
       echo "Upstreams directory found at: '$DIR_UPSTREAMS'"
-      
     fi
-
   fi
-
 fi
 
 if test -e "$DIR_UPSTREAMS"; then
