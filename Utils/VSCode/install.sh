@@ -6,8 +6,15 @@ if [ -z "$SUBMODULES_HOME" ]; then
   exit 1
 fi
 
-HERE="$(dirname -- "$0")"
-PARAMS="$HERE/parameters.sh"
+INSTALLER="$SUBMODULES_HOME/Software-Toolkit/Utils/VSCode"
+
+if ! test -e "$INSTALLER"; then
+
+    echo "ERROR: VSCode installer path not available '$INSTALLER'"
+    exit 1
+fi
+
+PARAMS="$INSTALLER/parameters.sh"
 INSTALL_SCRIPT="$SUBMODULES_HOME/Installable/install.sh"
 
 if ! test -e "$PARAMS"; then
@@ -51,4 +58,4 @@ if [ -n "$DOWNLOAD_URL_USER_DATA" ]; then
     export DOWNLOAD_URL_USER_DATA
 fi
 
-sh "$INSTALL_SCRIPT" "$HERE"
+sh "$INSTALL_SCRIPT" "$INSTALLER"
