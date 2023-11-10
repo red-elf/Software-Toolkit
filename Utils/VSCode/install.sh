@@ -19,7 +19,7 @@ INSTALL_SCRIPT="$SUBMODULES_HOME/Installable/install.sh"
 
 if ! test -e "$PARAMS"; then
 
-    echo "ERROR: No parameters file available '$PARAMS'"
+    echo "ERROR: No parameters file available '$PARAMS' (1)"
     exit 1
 fi
 
