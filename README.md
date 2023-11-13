@@ -10,6 +10,7 @@ Provides the following functionality to the projects:
 - Multiple Git upstreams support (for example, GitHub and BitBucket at the same time)
 - Project testing iterraction
 - Project opening support with advanced feature (pre-opening recipes, etc.)
+- Desktop icon launching support
 
 ## What is included?
 
@@ -19,6 +20,7 @@ Provides the following functionality to the projects:
 - The [Upstreamable](https://github.com/red-elf/Upstreamable) module
 - The [Testable](https://github.com/red-elf/Testable) module
 - The [Project](https://github.com/red-elf/Project) module
+- The [Iconic](https://github.com/red-elf/Iconic) module
 
 ## How to use?
 
