@@ -42,7 +42,7 @@ if git clone "$REPO" "$DESTINATION"; then
 
         if git submodule update; then
 
-            SCRIPT_INSTALL="$HERE/install.sh"
+            SCRIPT_INSTALL="$HERE/$DESTINATION/install.sh"
 
             if test -e "$SCRIPT_INSTALL"; then
 
