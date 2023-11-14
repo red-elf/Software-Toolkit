@@ -22,12 +22,30 @@ Provides the following functionality to the projects:
 - The [Project](https://github.com/red-elf/Project) module
 - The [Iconic](https://github.com/red-elf/Iconic) module
 
-## How to use?
+## How to install?
 
-Clone or download the release and execute the `initialize.sh` script:
+Execute the following:
 
 ```shell
-initialize.sh ~/Documents/Project_Directory "My project name"
+(test -e ./clone || wget "https://raw.githubusercontent.com/red-elf/Software-Toolkit/main/clone?append="$(($(date +%s%N)/1000000)) -O clone) && \
+    chmod +x ./clone && ./clone git@github.com:red-elf/Software-Toolkit.git ./Toolkit
 ```
 
-The first parameter is the location of your project, and the second is the name to assign.
+or via one of the mirror repositories:
+
+- [GitFlic](https://gitflic.ru/):
+
+```shell
+(test -e ./clone || \
+    wget "https://raw.githubusercontent.com/red-elf/Software-Toolkit/main/clone?append="$(($(date +%s%N)/1000000)) -O clone) && \
+    chmod +x ./clone && ./clone git@gitflic.ru:red-elf/software-toolkit.git ./Toolkit
+```
+
+- [Gitee](https://gitee.com/):
+
+```shell
+(test -e ./clone || wget "https://raw.githubusercontent.com/red-elf/Software-Toolkit/main/clone?append="$(($(date +%s%N)/1000000)) -O clone) && \
+    chmod +x ./clone && ./clone git@gitee.com:Kvetch_Godspeed_b073/Software-Toolkit.git ./Toolkit
+```
+
+*Note:* It is required to execute the script from empty directory where you whish to clone the Software-Toolkit utility.
