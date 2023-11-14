@@ -46,7 +46,7 @@ if [ -z "$REPO_UPSTREAMABLE" ]; then
   REPO_UPSTREAMABLE="git@github.com:red-elf/Upstreamable.git"
 fi
 
-TARGET="$SCRIPT_INSTALL"
+TARGET="$SUBMODULES_HOME"
 
 if cd "$TARGET" && ! git status; then
 
