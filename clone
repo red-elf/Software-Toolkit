@@ -48,7 +48,7 @@ if git clone "$REPO" "$DESTINATION"; then
 
                 if sh "$SCRIPT_INSTALL" && cd "$SUBMODULES_HOME"; then
 
-                    echo "SoftwareToolkit is ready at: $(pwd)" && echo "Structure:" && ls -lF
+                    echo "SoftwareToolkit is ready at: $(pwd)"
                 fi
 
             else
