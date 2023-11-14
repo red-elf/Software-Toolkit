@@ -48,4 +48,4 @@ or via one of the mirror repositories:
     chmod +x ./clone && ./clone git@gitee.com:Kvetch_Godspeed_b073/Software-Toolkit.git ./Toolkit
 ```
 
-*Note:* It is required to execute the script from empty directory where you whish to clone the Software-Toolkit utility.
+*Note:* It is required to execute the script from empty directory where you whish to clone the Software Toolkit utility.
