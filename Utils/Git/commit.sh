@@ -6,7 +6,26 @@ if [ -z "$SUBMODULES_HOME" ]; then
     exit 1
 fi
 
-# TODO: Implement
+SCRIPT_PUSH_ALL="$SUBMODULES_HOME/Software-Toolkit/Utils/Git/push_all.sh"
 
-echo "ERROR: Commit is not yet implemented"
-exit 1
+if ! test -e "$SCRIPT_PUSH_ALL"; then
+
+    echo "ERROR: Push all script not found '$SCRIPT_PUSH_ALL'"
+    exit 1
+fi
+
+SESSION=$(($(date +%s%N)/1000000))
+MESSAGE="Auto-commit $SESSION"
+
+if [ -n "$1" ]; then
+
+    MESSAGE="$1"
+fi
+
+if git add .; then
+
+    if git commit -m "\"$MESSAGE\""; then
+
+        sh "$SCRIPT_PUSH_ALL"
+    fi
+fi
