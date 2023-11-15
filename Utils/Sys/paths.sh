@@ -32,3 +32,23 @@ ADD_TO_PATH() {
         fi
     fi
 }
+
+INIT_DIR() {
+
+    if [ -z "$1" ]; then
+
+        echo "ERROR: Direcotry path parameter is mandatory"
+        exit 1
+    fi
+
+    DIRECTORY_PATH="$1"
+
+    if ! test -e "$DIRECTORY_PATH"; then
+
+        if ! mkdir -p "$DIRECTORY_PATH"; then
+
+            echo "ERROR: Could not create directory '$DIRECTORY_PATH'"
+            exit 1
+        fi
+    fi
+}
