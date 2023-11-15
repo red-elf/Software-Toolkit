@@ -17,23 +17,30 @@ LINK_FILE_TO_DESTINATION() {
   LINK_WHAT="$1"
   LINK_TO="$2"
 
-  if ! test -e "$LINK_WHAT"; then
+  if [ "$LINK_WHAT" == "$LINK_TO" ]; then
 
-    echo "ERROR: Source does not exist '$LINK_WHAT'"
-    exit 1
-  fi
+    echo "SKIPPING: $LINK_WHAT"
 
-  if test -e "$LINK_TO"; then
+  else
 
-    if ! rm -f "$LINK_TO"; then
+    if ! test -e "$LINK_WHAT"; then
 
-      echo "ERROR: Link to was ot cleaned up '$LINK_TO'"
+      echo "ERROR: Source does not exist '$LINK_WHAT'"
       exit 1
     fi
-  fi
 
-  if ln -s "$LINK_WHAT" "$LINK_TO"; then
+    if test -e "$LINK_TO"; then
 
-    echo "Linked: $LINK_WHAT -> $LINK_TO"
+      if ! rm -f "$LINK_TO"; then
+
+        echo "ERROR: Link to was ot cleaned up '$LINK_TO'"
+        exit 1
+      fi
+    fi
+
+    if ln -s "$LINK_WHAT" "$LINK_TO"; then
+
+      echo "Linked: $LINK_WHAT -> $LINK_TO"
+    fi
   fi
 }
