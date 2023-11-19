@@ -1,7 +1,8 @@
 #!/bin/bash
 
-DIR_SOURCE="Assets/Fonts"
+HERE=$(pwd)
 DIR_HOME=$(eval echo ~"$USER")
+DIR_SOURCE="$HERE/Assets/Fonts"
 DIR_DESTINATION="$DIR_HOME/.local/share/fonts"
 
 if [ -n "$1" ]; then
@@ -28,3 +29,20 @@ fi
 
 echo "Installing fonts into: '$DIR_DESTINATION'"
 
+INSTALL_FONT() {
+
+    read -r FONT
+
+    FONT="$DIR_SOURCE/$FONT"
+
+    if ! test -e "$FONT"; then
+
+        echo "ERROR: Font does not exist '$FONT'"
+        exit 1
+    fi
+
+    echo "Font: $FONT"
+}
+
+find "$DIR_SOURCE" -name "*.otf" | INSTALL_FONT
+find "$DIR_SOURCE" -name "*.ttf" | INSTALL_FONT
