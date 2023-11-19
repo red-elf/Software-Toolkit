@@ -33,7 +33,7 @@ INSTALL_FONT() {
 
     read -r FONT
 
-    if ! [ "$FONT" == "" ]; then
+    if ! [ "$FONT" = "" ]; then
 
         FILE_NAME=$(basename -- "$FONT")
 
