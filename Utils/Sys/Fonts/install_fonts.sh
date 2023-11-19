@@ -5,6 +5,25 @@ DIR_HOME=$(eval echo ~"$USER")
 DIR_SOURCE="$HERE/Assets/Fonts"
 DIR_DESTINATION="$DIR_HOME/.local/share/fonts"
 
+if [ -z "$SUBMODULES_HOME" ]; then
+
+    echo "ERROR: The SUBMODULES_HOME is not defined"
+    exit 1
+fi
+
+SCRIPT_STRINGS="$SUBMODULES_HOME/Software-Toolkit/Utils/strings.sh"
+
+if test -e "$SCRIPT_STRINGS"; then
+
+    # shellcheck disable=SC1090
+    . "$SCRIPT_STRINGS"
+
+else
+
+    echo "ERROR: Script not found '$SCRIPT_STRINGS'"
+    exit 1
+fi
+
 if [ -n "$1" ]; then
 
     DIR_SOURCE="$1"
@@ -51,9 +70,21 @@ INSTALL_FONT() {
 
             echo "Installing font: '$FILE_NAME'"
 
-            if cp "$FONT" "$DIR_DESTINATION"; then
+            if check_prefixes "$DIR_HOME" "$DIR_DESTINATION"; then
 
-                echo "Font has been installed: '$FILE_NAME'"
+                if cp "$FONT" "$DIR_DESTINATION"; then
+
+                    echo "Font has been installed: '$FILE_NAME'"
+                fi
+
+            else
+
+                echo "Please rpovide your sudo password for the '$FONT' to be installed to your system"
+
+                if sudo cp "$FONT" "$DIR_DESTINATION"; then
+
+                    echo "Font has been installed: '$FILE_NAME'"
+                fi
             fi
         fi
     fi
