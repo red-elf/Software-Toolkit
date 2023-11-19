@@ -33,15 +33,30 @@ INSTALL_FONT() {
 
     read -r FONT
 
-    FONT="$DIR_SOURCE/$FONT"
+    if ! [ "$FONT" == "" ]; then
 
-    if ! test -e "$FONT"; then
+        FILE_NAME=$(basename -- "$FONT")
 
-        echo "ERROR: Font does not exist '$FONT'"
-        exit 1
+        if ! test -e "$FONT"; then
+
+            echo "ERROR: Font does not exist '$FONT'"
+            exit 1
+        fi
+
+        if test -e "$DIR_DESTINATION/$FILE_NAME"; then
+
+            echo "Font is already installed: '$FILE_NAME'"
+
+        else
+
+            echo "Installing font: '$FILE_NAME'"
+
+            if cp "$FONT" "$DIR_DESTINATION"; then
+
+                echo "Font has been installed: '$FILE_NAME'"
+            fi
+        fi
     fi
-
-    echo "Font: $FONT"
 }
 
 find "$DIR_SOURCE" -name "*.otf" | INSTALL_FONT
