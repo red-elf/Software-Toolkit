@@ -57,36 +57,45 @@ PROCESS_RECIPE() {
 
     DIR_INSTALL_TO="$DIR_MODULES_HOME/$NAME"
 
-    if ! test -e "$DIR_INSTALL_TO"; then
+    DO_CLONE() {
+
+        if git clone --recurse-submodules "$REPO" "$DIR_INSTALL_TO"; then
+
+            echo "Clone completed"
+
+            DIR_PRIVATE="$HERE/_Private"
+
+            if ! test -e "$DIR_PRIVATE"; then
+
+                if ! mkdir -p "$DIR_PRIVATE"; then
+
+                    echo "ERROR: Could not create directory '$DIR_PRIVATE'"
+                    exit 1
+                fi
+            fi
+
+            LINK_FILE_TO_DESTINATION "$DIR_INSTALL_TO" "$DIR_PRIVATE/$NAME"
+
+        else
+
+            echo "ERROR: Clone failed"
+            exit 1
+        fi
+    }
+
+    if test -e "$DIR_INSTALL_TO"; then
+
+        echo "SKIPPING: Directory already exists '$DIR_INSTALL_TO'"
+
+    else
 
         if ! mkdir -p "$DIR_INSTALL_TO"; then
 
             echo "ERROR: Could not create directory '$DIR_INSTALL_TO'"
             exit 1
         fi
-    fi
 
-    if git clone --recurse-submodules "$REPO" "$DIR_INSTALL_TO"; then
-
-        echo "Clone completed"
-
-        DIR_PRIVATE="$HERE/_Private"
-
-        if ! test -e "$DIR_PRIVATE"; then
-
-            if ! mkdir -p "$DIR_PRIVATE"; then
-
-                echo "ERROR: Could not create directory '$DIR_PRIVATE'"
-                exit 1
-            fi
-        fi
-
-        LINK_FILE_TO_DESTINATION "$DIR_INSTALL_TO" "$DIR_PRIVATE/$NAME"
-
-    else
-
-        echo "ERROR: Clone failed"
-        exit 1
+        DO_CLONE
     fi
 }
 
