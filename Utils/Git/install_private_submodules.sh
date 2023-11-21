@@ -38,7 +38,28 @@ PROCESS_RECIPE() {
 
     echo "Recipe for '$NAME' from '$REPO'"
 
-    # TODO: Implement
+    DIR_INSTALL_TO="$DIR_MODULES_HOME/$NAME"
+
+    if ! test -e "$DIR_INSTALL_TO"; then
+
+        if ! mkdir -p "$DIR_INSTALL_TO"; then
+
+            echo "ERROR: Could not create directory '$DIR_INSTALL_TO'"
+            exit 1
+        fi
+    fi
+
+    if git clone --recurse-submodules "$REPO" "$DIR_INSTALL_TO"; then
+
+        echo "Clone completed"
+
+        # TODO: Implement linking
+
+    else
+
+        echo "ERROR: Clone failed"
+        exit 1
+    fi
 }
 
 cd "$DIR_RECIPES" && echo "Processing recipes from: '$DIR_RECIPES'"
