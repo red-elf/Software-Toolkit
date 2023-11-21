@@ -2,6 +2,23 @@
 
 HERE="$(pwd)"
 
+if [ -z "$SUBMODULES_HOME" ]; then
+
+  echo "ERROR: The SUBMODULES_HOME is not defined"
+  exit 1
+fi
+
+SCRIPT_LINK="$SUBMODULES_HOME/Software-Toolkit/Utils/Sys/Filesystem/link.sh"
+
+if ! test -e "$SCRIPT_LINK"; then
+
+  echo "ERROR: Script not found '$SCRIPT_LINK'"
+  exit 1
+fi
+
+# shellcheck disable=SC1090
+. "$SCRIPT_LINK"
+
 if [ -z "$1" ]; then
 
     echo "ERROR: Private modules home directory parameter is mandatory"
