@@ -70,7 +70,18 @@ PROCESS_RECIPE() {
 
         echo "Clone completed"
 
-        # TODO: Implement linking
+        DIR_PRIVATE="$HERE/_Private"
+
+        if ! test -e "$DIR_PRIVATE"; then
+
+            if ! mkdir -p "$DIR_PRIVATE"; then
+
+                echo "ERROR: Could not create directory '$DIR_PRIVATE'"
+                exit 1
+            fi
+        fi
+
+        LINK_FILE_TO_DESTINATION "$DIR_INSTALL_TO" "$DIR_PRIVATE/$FILE_SYNC"
 
     else
 
