@@ -9,6 +9,7 @@ fi
 RECIPE_SETTINGS_JSON="$SUBMODULES_HOME/Software-Toolkit/Utils/SonarQube/settings.json.sh"
 SCRIPT_GET_PROGRAM="$SUBMODULES_HOME/Software-Toolkit/Utils/Sys/Programs/get_program.sh"
 SCRIPT_EXTEND_JSON="$SUBMODULES_HOME/Software-Toolkit/Utils/Sys/JSON/merge_jsons.sh"
+SCRIPT_GET_CODE_PATHS="$SUBMODULES_HOME/Software-Toolkit/Utils/VSCode/get_paths.sh"
 
 if ! test -e "$SCRIPT_GET_PROGRAM"; then
 
@@ -22,22 +23,32 @@ if ! test -e "$SCRIPT_EXTEND_JSON"; then
   exit 1
 fi
 
+if ! test -e "$SCRIPT_GET_CODE_PATHS"; then
+
+  echo "ERROR: Script not found '$SCRIPT_GET_CODE_PATHS'"
+  exit 1
+fi
+
+# shellcheck disable=SC1090
+. "$SCRIPT_GET_CODE_PATHS"
+
 if sh "$SCRIPT_GET_PROGRAM" code >/dev/null 2>&1; then
 
-  CODE_PATH=$(which code)
+  GET_VSCODE_PATHS
 
-  if test -e "$CODE_PATH"; then
+  if [ -z "$CODE_DIR" ]; then
 
-    echo "VSCode path: '$CODE_PATH'"
-
-  else
-
-    echo "ERROR: VSCode Path not found '$CODE_PATH'"
+    echo "ERROR: the 'CODE_DIR' variable is not set"
     exit 1
   fi
 
-  CODE_DIR=$(dirname "$CODE_PATH")
-  SETTINGS_JSON="$CODE_DIR/data/user-data/User/settings.json"
+  if [ -z "$CODE_DATA_DIR" ]; then
+
+    echo "ERROR: the 'CODE_DIR' variable is not set"
+    exit 1
+  fi
+
+  SETTINGS_JSON="$CODE_DATA_DIR/user-data/User/settings.json"
 
   echo "Checking: '$SETTINGS_JSON'"
 
@@ -46,7 +57,6 @@ if sh "$SCRIPT_GET_PROGRAM" code >/dev/null 2>&1; then
     echo "Settings JSON: '$SETTINGS_JSON'"
 
   else
-
 
     if echo "{}" >> "$SETTINGS_JSON"; then
 
