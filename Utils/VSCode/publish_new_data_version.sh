@@ -31,7 +31,42 @@ if [ -z "$CODE_DATA_DIR" ]; then
   exit 1
 fi
 
-echo "VSCode hoem directory: '$CODE_DIR'"
+DIR_EXTENSIONS="$CODE_DATA_DIR/extensions"
+DIR_USER_DATA="$CODE_DATA_DIR/user-data"
+
+if [ -z "$DIR_EXTENSIONS" ]; then
+
+  echo "ERROR: the 'DIR_EXTENSIONS' variable is not set"
+  exit 1
+fi
+
+if [ -z "$DIR_USER_DATA" ]; then
+
+  echo "ERROR: the 'DIR_USER_DATA' variable is not set"
+  exit 1
+fi
+
+if [ -z "$VSCODE_DATA_PUBLISH_DESTINATION" ]; then
+
+  if [ -z "$1" ]; then
+
+    echo "ERROR: VSCode data publish destination parameter is mandatory"
+    exit 1
+  fi
+
+  VSCODE_DATA_PUBLISH_DESTINATION="$1"
+fi
+
+echo "We are going to publish the new VSCode data version into '$VSCODE_DATA_PUBLISH_DESTINATION'"
+
+if ! test -e "$VSCODE_DATA_PUBLISH_DESTINATION"; then
+
+  if ! mkdir -p "$VSCODE_DATA_PUBLISH_DESTINATION"; then
+
+    echo "ERROR: Failed to create destination directory '$VSCODE_DATA_PUBLISH_DESTINATION'"
+    exit 1
+  fi
+fi
 
 # TODO: Implement
 
