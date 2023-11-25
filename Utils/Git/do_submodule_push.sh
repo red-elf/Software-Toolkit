@@ -105,7 +105,7 @@ DO_SUBMODULE() {
         exit 1
     fi
 
-    if check_prefixes "$SUBMODULE_PATH" "$LOCATION"; then
+    if CHECK_PREFIXES "$SUBMODULE_PATH" "$LOCATION"; then
 
         SUBMODULE_FULL_PATH="$SUBMODULE_PATH"
 

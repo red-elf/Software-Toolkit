@@ -123,7 +123,7 @@ do
 
     if [ "$MAIN_BRANCH" = "main" ] || [ "$MAIN_BRANCH" = "master" ]; then
 
-      if check_prefixes "$FILE" "$DIR_SUBMODULES_FULL"; then
+      if CHECK_PREFIXES "$FILE" "$DIR_SUBMODULES_FULL"; then
 
           echo "SKIPPING: '$FILE'"
 

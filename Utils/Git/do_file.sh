@@ -58,17 +58,17 @@ DO_FILE() {
 
         if [ ! "$ITEM" = ""  ]; then
 
-            if check_prefixes "$ITEM" "$SUBMODULE_OPENING"; then
+            if CHECK_PREFIXES "$ITEM" "$SUBMODULE_OPENING"; then
 
                 SUBMODULE=$(echo "$ITEM" | grep -o -P '(?<=").*(?=")')
             fi
 
-            if check_contains "$ITEM" "$SUBMODULE_URL_MARK"; then
+            if CHECK_CONTAINS "$ITEM" "$SUBMODULE_URL_MARK"; then
 
                 REPO=$(echo "$ITEM" | grep -o -P '(?<=url = ).*(?=)')
             fi
 
-            if check_contains "$ITEM" "$SUBMODULE_PATH_MARK"; then
+            if CHECK_CONTAINS "$ITEM" "$SUBMODULE_PATH_MARK"; then
 
                 SUBMODULE_PATH=$(echo "$ITEM" | grep -o -P '(?<=path = ).*(?=)')
             fi
