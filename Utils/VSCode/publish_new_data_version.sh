@@ -6,6 +6,7 @@ if [ -z "$SUBMODULES_HOME" ]; then
   exit 1
 fi
 
+SCRIPT_COMPRESS="$SUBMODULES_HOME/Software-Toolkit/Utils/Sys/Archive/compress.sh"
 SCRIPT_GET_CODE_PATHS="$SUBMODULES_HOME/Software-Toolkit/Utils/VSCode/get_paths.sh"
 
 if ! test -e "$SCRIPT_GET_CODE_PATHS"; then
@@ -14,8 +15,17 @@ if ! test -e "$SCRIPT_GET_CODE_PATHS"; then
   exit 1
 fi
 
+if ! test -e "$SCRIPT_COMPRESS"; then
+
+  echo "ERROR: Script not found '$SCRIPT_COMPRESS'"
+  exit 1
+fi
+
 # shellcheck disable=SC1090
 . "$SCRIPT_GET_CODE_PATHS"
+
+# shellcheck disable=SC1090
+. "$SCRIPT_COMPRESS"
 
 GET_VSCODE_PATHS
 
@@ -31,8 +41,11 @@ if [ -z "$CODE_DATA_DIR" ]; then
   exit 1
 fi
 
-DIR_EXTENSIONS="$CODE_DATA_DIR/extensions"
-DIR_USER_DATA="$CODE_DATA_DIR/user-data"
+DIR_USER_DATA_NAME="user-data"
+DIR_EXTENSIONS_NAME="extensions"
+
+DIR_USER_DATA="$CODE_DATA_DIR/$DIR_USER_DATA_NAME"
+DIR_EXTENSIONS="$CODE_DATA_DIR/$DIR_EXTENSIONS_NAME"
 
 if [ -z "$DIR_EXTENSIONS" ]; then
 
@@ -90,11 +103,14 @@ SESSION=$(($(date +%s%N)/1000000))
 
 if cp "$FILE_DATA_VERSION" "$VSCODE_DATA_PUBLISH_DESTINATION/$SESSION.$FILE_DATA_VERSION_NAME.bak"; then
 
-  if echo "$VERSION" > "$FILE_DATA_VERSION.tmp"; then
+  SUFFIX=".tmp"
+
+  if echo "$VERSION" > "$FILE_DATA_VERSION$SUFFIX"; then
 
     echo "Creating the extensions and user data"
 
-    # TODO: Move tmp file into the permanent one
+    COMPRESS "$DIR_USER_DATA" "$VSCODE_DATA_PUBLISH_DESTINATION/$DIR_USER_DATA_NAME.$VERSION$SUFFIX.tar.gz"
+    COMPRESS "$DIR_EXTENSIONS" "$VSCODE_DATA_PUBLISH_DESTINATION/$DIR_EXTENSIONS_NAME.$VERSION$SUFFIX.tar.gz"
   fi
 
 else
