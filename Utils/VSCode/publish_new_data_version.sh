@@ -103,14 +103,12 @@ SESSION=$(($(date +%s%N)/1000000))
 
 if cp "$FILE_DATA_VERSION" "$VSCODE_DATA_PUBLISH_DESTINATION/$SESSION.$FILE_DATA_VERSION_NAME.bak"; then
 
-  SUFFIX=".tmp"
+  SUFFIX=""
 
   if echo "$VERSION" > "$FILE_DATA_VERSION$SUFFIX"; then
 
     echo "Creating the extensions and user data"
 
-    # TODO: Run in background both compressions
-    #
     COMPRESS "$DIR_USER_DATA" "$VSCODE_DATA_PUBLISH_DESTINATION/$DIR_USER_DATA_NAME.$VERSION$SUFFIX.tar.gz"
     COMPRESS "$DIR_EXTENSIONS" "$VSCODE_DATA_PUBLISH_DESTINATION/$DIR_EXTENSIONS_NAME.$VERSION$SUFFIX.tar.gz"
   fi
