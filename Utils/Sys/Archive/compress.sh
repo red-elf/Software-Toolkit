@@ -23,7 +23,7 @@ COMPRESS() {
 
     echo "Compressing '$WHAT' into '$WHERE'"
 
-    if tar -cjf "$WHERE" -C "$WHAT" .; then
+    if tar -zcvf "$WHERE" -C "$WHAT" .; then
 
         cd "$HERE" && echo "Compressing '$WHAT' into '$WHERE' has completed"
 
