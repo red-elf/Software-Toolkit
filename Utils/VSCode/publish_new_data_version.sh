@@ -68,7 +68,37 @@ if ! test -e "$VSCODE_DATA_PUBLISH_DESTINATION"; then
   fi
 fi
 
-# TODO: Implement
+FILE_DATA_VERSION_NAME="data_version.txt"
+FILE_DATA_VERSION="$VSCODE_DATA_PUBLISH_DESTINATION/$FILE_DATA_VERSION_NAME"
 
-echo "ERROR: Publish new data version is not implemented yet"
-exit 1
+if ! test -e "$VSCODE_DATA_PUBLISH_DESTINATION"; then
+
+  VERSION="1.0.0"
+
+else
+
+  VERSION=$(cat "$FILE_DATA_VERSION")
+  NEXT_VERSION=$(echo "${VERSION}" | awk -F. -v OFS=. '{$NF += 1 ; print}')
+
+  echo "Current version is: $VERSION"
+  echo "Next version is going to be: $NEXT_VERSION"
+
+  VERSION="$NEXT_VERSION"
+fi
+
+SESSION=$(($(date +%s%N)/1000000))
+
+if cp "$FILE_DATA_VERSION" "$VSCODE_DATA_PUBLISH_DESTINATION/$SESSION.$FILE_DATA_VERSION_NAME.bak"; then
+
+  if echo "$VERSION" > "$FILE_DATA_VERSION.tmp"; then
+
+    echo "Creating the extensions and user data"
+
+    # TODO: Move tmp file into the permanent one
+  fi
+
+else
+
+  echo "ERROR: Could not create a backup '$FILE_DATA_VERSION' file"
+  exit 1
+fi
