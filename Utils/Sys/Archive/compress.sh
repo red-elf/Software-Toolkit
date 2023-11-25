@@ -19,11 +19,11 @@ COMPRESS() {
     WHAT="$1"
     WHERE="$2"
 
-    # DIR_WHAT=$(dirname -- "$WHAT")
-
     echo "Compressing '$WHAT' into '$WHERE'"
 
-    if tar -zcvf "$WHERE" -C "$WHAT" .; then
+    DIR_ROOT=$(basename -- "$WHAT")
+
+    if tar -zcvf "$WHERE" -C "$WHAT/.." "$DIR_ROOT"; then
 
         cd "$HERE" && echo "Compressing '$WHAT' into '$WHERE' has completed"
 
