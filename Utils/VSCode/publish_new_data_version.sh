@@ -8,6 +8,7 @@ fi
 
 SCRIPT_COMPRESS="$SUBMODULES_HOME/Software-Toolkit/Utils/Sys/Archive/compress.sh"
 SCRIPT_GET_CODE_PATHS="$SUBMODULES_HOME/Software-Toolkit/Utils/VSCode/get_paths.sh"
+SCRIPT_GET_VERSION_INCREASED="$SUBMODULES_HOME/Software-Toolkit/Utils/get_version_increased.sh"
 
 if ! test -e "$SCRIPT_GET_CODE_PATHS"; then
 
@@ -18,6 +19,12 @@ fi
 if ! test -e "$SCRIPT_COMPRESS"; then
 
   echo "ERROR: Script not found '$SCRIPT_COMPRESS'"
+  exit 1
+fi
+
+if ! test -e "$SCRIPT_GET_VERSION_INCREASED"; then
+
+  echo "ERROR: Script not found '$SCRIPT_GET_VERSION_INCREASED'"
   exit 1
 fi
 
@@ -91,7 +98,7 @@ if ! test -e "$VSCODE_DATA_PUBLISH_DESTINATION"; then
 else
 
   VERSION=$(cat "$FILE_DATA_VERSION")
-  NEXT_VERSION=$(echo "${VERSION}" | awk -F. -v OFS=. '{$NF += 1 ; print}')
+  NEXT_VERSION=$(sh "$SCRIPT_GET_VERSION_INCREASED" "$VERSION")
 
   echo "Current version is: $VERSION"
   echo "Next version is going to be: $NEXT_VERSION"
