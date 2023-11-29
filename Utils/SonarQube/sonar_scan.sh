@@ -48,6 +48,16 @@ fi
 
 PROGRAM="sonar-scanner"
 
+if ! sh "$SCRIPT_GET_PROGRAM" "$PROGRAM"; then
+
+    # shellcheck disable=SC1090
+    if ! . "$SCRIPT_GET_SONAR_SCANNER"; then
+
+        echo "ERROR: Could not get the '$PROGRAM'"
+        exit 1
+    fi
+fi
+
 if sh "$SCRIPT_GET_PROGRAM" "$PROGRAM"; then
 
     if ! "$PROGRAM" \
