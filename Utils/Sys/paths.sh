@@ -1,21 +1,40 @@
 #!/bin/bash
 
+FILE_RC=""
+DIR_HOME=$(eval echo ~"$USER")
+
+export FILE_ZSH_RC="$DIR_HOME/.zshrc"
+export FILE_BASH_RC="$DIR_HOME/.bashrc"
+
+if test -e "$FILE_ZSH_RC"; then
+
+    FILE_RC="$FILE_ZSH_RC"
+
+else
+
+    if test -e "$FILE_BASH_RC"; then
+
+    FILE_RC="$FILE_BASH_RC"
+
+    else
+
+    echo "ERROR: No '$FILE_ZSH_RC' or '$FILE_BASH_RC' found on the system"
+    exit 1
+    fi
+fi
+
+export FILE_RC
+export DIR_HOME
+
 ADD_TO_PATH() {
 
     if [ -z "$1" ]; then
-
-        echo "ERROR: RC file path is mandatory parameter"
-        exit 1
-    fi
-
-    if [ -z "$2" ]; then
 
         echo "ERROR: Directory is mandatory parameter"
         exit 1
     fi
 
-    FILE_RC="$1"
-    DIR_PATH="$2"
+    DIR_PATH="$1"
 
     # shellcheck disable=SC2002
     if ! cat "$FILE_RC" | grep "$DIR_PATH" >/dev/null 2>&1; then

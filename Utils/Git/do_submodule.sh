@@ -83,7 +83,7 @@ DO_SUBMODULE() {
     
     echo "Git submodule: Name='$NAME', Submodule='$SUBMODULE', Repo='$REPO', Path='$SUBMODULE_PATH'"
 
-    if check_prefixes "$SUBMODULE_PATH" "$DIR_SUBMODULES_FULL"; then
+    if CHECK_PREFIXES "$SUBMODULE_PATH" "$DIR_SUBMODULES_FULL"; then
 
         echo "SKIPPING: Git submodule path '$SUBMODULE_PATH'"
 

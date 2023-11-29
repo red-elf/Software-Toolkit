@@ -1,6 +1,6 @@
 #!/bin/bash
 
-check_prefixes () {
+CHECK_PREFIXES () {
     value=$1
     shift
 
@@ -13,7 +13,7 @@ check_prefixes () {
     return 1
 }
 
-check_contains () {
+CHECK_CONTAINS () {
     value=$1
     shift
 

@@ -70,7 +70,7 @@ INSTALL_FONT() {
 
             echo "Installing font: '$FILE_NAME'"
 
-            if check_prefixes "$DIR_HOME" "$DIR_DESTINATION"; then
+            if CHECK_PREFIXES "$DIR_HOME" "$DIR_DESTINATION"; then
 
                 if cp "$FONT" "$DIR_DESTINATION"; then
 
