@@ -50,19 +50,19 @@ PROGRAM="sonar-scanner"
 
 if sh "$SCRIPT_GET_PROGRAM" "$PROGRAM"; then
 
-  if ! "$PROGRAM" \
-          -Dsonar.projectKey="$SONARQUBE_PROJECT" \
-          -Dsonar.sources="$LOCATION" \
-          -Dsonar.host.url="$SONARQUBE_SERVER" \
-          -Dsonar.token="$SONARQUBE_TOKEN" \
-          -Dsonar.scm.disabled=True; then
+    if ! "$PROGRAM" \
+        -Dsonar.projectKey="$SONARQUBE_PROJECT" \
+        -Dsonar.sources="$LOCATION" \
+        -Dsonar.host.url="$SONARQUBE_SERVER" \
+        -Dsonar.token="$SONARQUBE_TOKEN" \
+        -Dsonar.scm.disabled=True; then
 
-    echo "ERROR: Failed to run '$PROGRAM'"
-    exit 1
-fi
+        echo "ERROR: Failed to run '$PROGRAM'"
+        exit 1
+    fi
 
 else
   
-  echo "ERROR: VSCode is not availble to open the project $PROJECT"
+  echo "ERROR: $PROGRAM is not availble to open the project $PROJECT"
   exit 1
 fi
