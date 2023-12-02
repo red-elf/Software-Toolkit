@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# TODO: Support multiple projects!
+# TODO: Support multiple projects, merge to append instead of replacing
 #
 cat << EOF
 {
