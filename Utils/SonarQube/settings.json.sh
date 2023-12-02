@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# TODO: Support multiple projects!
+#
 cat << EOF
 {
     "sonarlint.connectedMode.connections.sonarqube": [
