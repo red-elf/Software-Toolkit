@@ -172,7 +172,7 @@ if sudo chown -R "$USER" "$DIR_INSTALLATION_HOME" && sudo chgrp -R "$USER" "$DIR
     DATA_VERSION_FILE=$(basename -- "$DOWNLOAD_URL_DATA_VERSION")
 
     echo "Permissions for the VSCode directories have been set with success" && \
-        DOWNLOAD_FILE "$DOWNLOAD_URL_DATA_VERSION" "$APPEND_PATH/$DATA_VERSION_FILE"
+        DOWNLOAD_FILE "$DOWNLOAD_URL_DATA_VERSION" "$APPEND_PATH/$DATA_VERSION_FILE" >/dev/null 2>&1
 
 else
 
