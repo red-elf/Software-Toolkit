@@ -43,6 +43,12 @@ if [ -z  "$DOWNLOAD_URL_EXTENSIONS" ]; then
     exit 1
 fi
 
+if [ -z  "$DOWNLOAD_URL_DATA_VERSION" ]; then
+
+    echo "ERROR: DOWNLOAD_URL_DATA_VERSION variable not defined"
+    exit 1
+fi
+
 DAY_CODE=$(date +%Y.%m.%d)
 DIR_HOME="$(readlink --canonicalize ~)"
 DIR_DOWNLOADS="$DIR_HOME/Downloads"

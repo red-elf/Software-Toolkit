@@ -18,5 +18,7 @@ DOWNLOAD_URL="https://code.visualstudio.com/sha/download?build=stable&os=linux-x
 DIR_INSTALLATION_HOME="$DIR_HOME/VSCode"
 
 # shellcheck disable=SC2034
-DOWNLOAD_URL_EXTENSIONS="http://$GENERAL_SERVER:8081/extensions.1.0.0.tar.gz"
+DOWNLOAD_URL_EXTENSIONS="http://$GENERAL_SERVER:8081/extensions.$DATA_VERSION.tar.gz"
 
+# shellcheck disable=SC2034
+DOWNLOAD_URL_DATA_VERSION="http://$GENERAL_SERVER:8081/data_version.txt"
