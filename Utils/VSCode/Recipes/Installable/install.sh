@@ -169,8 +169,10 @@ echo "Please provide your sudo password if asked in order to set the ownership a
 if sudo chown -R "$USER" "$DIR_INSTALLATION_HOME" && sudo chgrp -R "$USER" "$DIR_INSTALLATION_HOME" && \
     sudo chmod -R 777 "$DIR_INSTALLATION_HOME"; then
 
+    DATA_VERSION_FILE=$(basename -- "$DOWNLOAD_URL_DATA_VERSION")
+
     echo "Permissions for the VSCode directories have been set with success" && \
-        DOWNLOAD_FILE "$DOWNLOAD_URL_DATA_VERSION" "$APPEND_PATH"
+        DOWNLOAD_FILE "$DOWNLOAD_URL_DATA_VERSION" "$APPEND_PATH/$DATA_VERSION_FILE"
 
 else
 
