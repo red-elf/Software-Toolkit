@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # TODO: Support multiple projects, merge to append instead of replacing
+# Obtain all registered projects and generate JSON with populated arrays here.
 #
 cat << EOF
 {
