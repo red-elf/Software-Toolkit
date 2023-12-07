@@ -73,14 +73,10 @@ OBTAIN_CONTENT() {
 
     if [ "$EXTENSION" = "json" ]; then
 
-        echo "Obtaining JSON content"
-
         CONTENT=$(cat "$FILE")
     fi
 
     if [ "$EXTENSION" = "sh" ]; then
-
-        echo "Obtaining SHELL content"
 
         CONTENT=$(sh "$FILE")
     fi
