@@ -91,11 +91,11 @@ OBTAIN_CONTENT() {
 
             CONTENT=$(cat "$FILE")
             
-            echo "$CONTENT" && rm -f "$FILE"
+            echo "$CONTENT" && rm -f "$FILE" >/dev/null 2>&1
 
         else
 
-            echo "ERROR: Failed to format JSON '$FILE'" && rm -f "$FILE"
+            echo "ERROR: Failed to format JSON '$FILE'" && rm -f "$FILE" >/dev/null 2>&1
             exit 1
         fi
 
