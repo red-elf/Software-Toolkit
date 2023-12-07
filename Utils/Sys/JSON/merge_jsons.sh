@@ -25,7 +25,7 @@ if [ -n "$1" ]; then
 
     SOURCE="$1"
 
-    echo "Source JSON path: $SOURCE"
+    echo "JSON path :: SOURCE: $SOURCE"
 
 else
 
@@ -37,7 +37,7 @@ if [ -n "$2" ]; then
 
     ADDITION="$2"
 
-    echo "Addition JSON path: $ADDITION"
+    echo "JSON path :: ADDING: $ADDITION"
 
 else
 
@@ -49,7 +49,7 @@ if [ -n "$3" ]; then
 
     DESTINATION="$3"
 
-    echo "Destination path: $DESTINATION"
+    echo "JSON path :: DESTIN: $DESTINATION"
 
 else
 
@@ -66,46 +66,54 @@ OBTAIN_CONTENT() {
     fi
 
     FILE="$1"
-
+    CONTENT=""
     NAME=$(basename -- "$FILE")
+    DIR_PARENT="$(dirname "$FILE")"
     EXTENSION="${NAME##*.}"
 
-    CONTENT=""
-
     if [ "$EXTENSION" = "json" ]; then
+
+        echo "Obtaining JSON content"
 
         CONTENT=$(cat "$FILE")
     fi
 
     if [ "$EXTENSION" = "sh" ]; then
 
+        echo "Obtaining SHELL content"
+
         CONTENT=$(sh "$FILE")
     fi
 
     SESSION=$(($(date +%s%N)/1000000))
-    DIR_PARENT="$(dirname "$FILE")"
-    FILE="$DIR_PARENT/$SESSION.json"
+    NEW_FILE_PATH="$DIR_PARENT/$SESSION.json"
 
-    if echo "$CONTENT" > "$FILE"; then
+    if echo "$CONTENT" > "$NEW_FILE_PATH"; then
 
-        SAVED_FILE=$(sh "$SCRIPT_FORMAT_JSON" "$FILE")
+        if ! test -e "$NEW_FILE_PATH"; then
 
-        echo "Formatted JSON file path: $SAVED_FILE"
+            echo "ERROR: Could not create tmp. file '$NEW_FILE_PATH' (2)"
+            exit 1
+        fi
+
+        SAVED_FILE=$(sh "$SCRIPT_FORMAT_JSON" "$NEW_FILE_PATH")
 
         if test -e "$SAVED_FILE"; then
 
-            rm -f "$FILE" && rm -f "$SAVED_FILE" && \
-                cat "$SAVED_FILE"
+            cat "$SAVED_FILE"
+                
+            rm -f "$SAVED_FILE" >/dev/null 2>&1
+            rm -f "$NEW_FILE_PATH" >/dev/null 2>&1
                 
         else
 
-            rm -f "$FILE" && echo "ERROR: No saved file '$SAVED_FILE'"
+            rm -f "$NEW_FILE_PATH" && echo "ERROR: No saved file '$SAVED_FILE'"
             exit 1
         fi
 
     else
 
-        echo "ERROR: Could not create tmp. file '$FILE'"
+        echo "ERROR: Could not create tmp. file '$NEW_FILE_PATH' (1)"
         exit 1
     fi
 }
@@ -113,24 +121,24 @@ OBTAIN_CONTENT() {
 SOURCE_CONTENT=$(OBTAIN_CONTENT "$SOURCE")
 ADDITION_CONTENT=$(OBTAIN_CONTENT "$ADDITION")
 
-echo "Source JSON content:"
+echo "JSON content :: Source:"
 echo "$SOURCE_CONTENT"
 
-echo "Addition JSON content:"
+echo "JSON content :: Adding:"
 echo "$ADDITION_CONTENT"
 
 if sh "$SCRIPT_GET_JQ" >/dev/null 2>&1; then
 
     DESTINATION_CONTENT=$(echo "$SOURCE_CONTENT$ADDITION_CONTENT" | jq -s 'add')
     
-    echo "Destination JSON content:"
+    echo "JSON content :: Merged:"
     echo "$DESTINATION_CONTENT"
 
     EXISTING_CONTENT=$(cat "$DESTINATION")
 
     if [ "$EXISTING_CONTENT" = "$DESTINATION_CONTENT" ]; then
 
-        echo "WARNING: No changes to be written into '$DESTINATION'"
+        echo "No changes to be written into '$DESTINATION'"
 
     else
 
@@ -145,9 +153,13 @@ if sh "$SCRIPT_GET_JQ" >/dev/null 2>&1; then
             fi
         fi
 
-        if ! echo "$DESTINATION_CONTENT" > "$DESTINATION"; then
+        if echo "$DESTINATION_CONTENT" > "$DESTINATION"; then
 
-            echo "ERROR: Couldn't write into '$DESTINATION'"
+            echo "Merged JSON has been written into '$DESTINATION'"
+
+        else
+
+            echo "ERROR: No merged JSON has been written into '$DESTINATION'"
             exit 1
         fi
     fi
