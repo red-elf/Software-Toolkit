@@ -50,7 +50,7 @@ if sh "$SCRIPT_GET_PROGRAM" code >/dev/null 2>&1; then
 
   SETTING_DIR="$CODE_DATA_DIR/user-data/User"
   SETTINGS_JSON="$SETTING_DIR/settings.json"
-  SETTINGS_SONAR_CONFIGS_DIR="$SETTING_DIR/SonarConfigs"
+  SETTINGS_SONAR_CONFIGS_DIR="$SETTING_DIR/sonarConfigs"
 
   echo "Checking: '$SETTINGS_JSON'"
 
@@ -97,8 +97,7 @@ if sh "$SCRIPT_GET_PROGRAM" code >/dev/null 2>&1; then
       fi
     fi
 
-    SONAR_CONFIG_CONTENT="
-#!/bin/bash
+    SONAR_CONFIG_CONTENT="#!/bin/bash
 
 SERVER=\"$SONARQUBE_SERVER\"
 PROJECT=\"$SONARQUBE_PROJECT\"
