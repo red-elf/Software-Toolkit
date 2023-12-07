@@ -54,7 +54,7 @@ fi
 
 if echo "$CONTENT" > "$FORMATTED_PATH"; then
 
-    echo "$FORMATTED"
+    echo "$FORMATTED_PATH"
 
 else
 
