@@ -67,7 +67,7 @@ OBTAIN_CONTENT() {
 
     FILE="$1"
 
-    if SCRIPT_FORMAT_JSON "$FILE"; then
+    if SCRIPT_FORMAT_JSON "$FILE" >/dev/null 2>&1; then
 
         NAME=$(basename -- "$FILE")
         EXTENSION="${NAME##*.}"
