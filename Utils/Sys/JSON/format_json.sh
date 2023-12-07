@@ -35,20 +35,31 @@ fi
 SESSION=$(($(date +%s%N)/1000000))
 UNFORMATTED="$SOURCE.unformatted.$SESSION.bak"
 
-cp "$SOURCE" "$UNFORMATTED"
+if cp "$SOURCE" "$UNFORMATTED"; then
 
-# FIXME: 
-#
+    CONTENT=$(cat "$UNFORMATTED")
 
-# if cp "$SOURCE" "$UNFORMATTED"; then
+    if [ "$CONTENT" = "" ]; then
 
-#     if ! cat <<< jq '.' "$UNFORMATTED" > "$SOURCE"; then
+        echo "ERROR: No content (1)"
+        exit 1
+    fi
 
-#         echo "ERROR: Could not format JSON from '$SOURCE'"
-#         exit 1
-#     fi
+    CONTENT=$(jq <<< echo "$CONTENT")
 
-# else
+    if [ "$CONTENT" = "" ]; then
 
-#     exit 1
-# fi
+        echo "ERROR: No content (2)"
+        exit 1
+    fi
+    
+    if ! echo "$CONTENT" > "$SOURCE"; then
+
+        echo "ERROR: Could not save formatted JSON content to '$SOURCE'"
+        exit 1
+    fi
+
+else
+
+    exit 1
+fi
