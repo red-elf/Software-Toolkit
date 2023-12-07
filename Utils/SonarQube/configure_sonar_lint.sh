@@ -86,7 +86,7 @@ if sh "$SCRIPT_GET_PROGRAM" code >/dev/null 2>&1; then
     exit 1
   fi
 
-  if [ -n "$SONARQUBE_SERVER" ] && [ -n "$SONARQUBE_PROJECT" ]; then
+  if [ -n "$SONARQUBE_SERVER" ] && [ -n "$SONARQUBE_PROJECT" ] && [ -n "$SONARQUBE_GROUP" ]; then
 
     if ! test -e "$SETTINGS_SONAR_CONFIGS_DIR"; then
 
@@ -99,10 +99,11 @@ if sh "$SCRIPT_GET_PROGRAM" code >/dev/null 2>&1; then
 
     SONAR_CONFIG_CONTENT="#!/bin/bash
 
+GROUP=\"$SONARQUBE_GROUP\"
 SERVER=\"$SONARQUBE_SERVER\"
 PROJECT=\"$SONARQUBE_PROJECT\"
 "
-    SONAR_CONFIG_FILE="$SETTINGS_SONAR_CONFIGS_DIR/$SONARQUBE_PROJECT.sonarConfig.sh"
+    SONAR_CONFIG_FILE="$SETTINGS_SONAR_CONFIGS_DIR/$SONARQUBE_GROUP.sonarConfig.sh"
 
     if ! echo "$SONAR_CONFIG_CONTENT" > "$SONAR_CONFIG_FILE"; then
 
