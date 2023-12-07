@@ -49,7 +49,11 @@ if [ "$CONTENT" = "" ]; then
     exit 1
 fi
 
-if ! echo "$CONTENT" > "$FORMATTED"; then
+if echo "$CONTENT" > "$FORMATTED"; then
+
+    echo "$FORMATTED"
+
+else
 
     echo "ERROR: Could not save formatted JSON content to '$SOURCE'"
     exit 1
