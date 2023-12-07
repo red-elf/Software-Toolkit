@@ -95,7 +95,9 @@ OBTAIN_CONTENT() {
 
         else
 
-            echo "ERROR: Failed to format JSON '$FILE'" && rm -f "$FILE" >/dev/null 2>&1
+            echo "ERROR: Failed to format JSON '$FILE'" && \
+                echo "JSON content: " && cat "$FILE" && rm -f "$FILE" >/dev/null 2>&1
+            
             exit 1
         fi
 
