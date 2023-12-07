@@ -113,7 +113,8 @@ SERVER=\"$SONARQUBE_SERVER\"
     
     # FIXME:
     #
-    # if sh "$SCRIPT_EXTEND_JSON" "$SETTINGS_JSON" "$RECIPE_SETTINGS_JSON" "$SETTINGS_JSON"; then
+    
+    # if . "$SCRIPT_EXTEND_JSON" "$SETTINGS_JSON" "$RECIPE_SETTINGS_JSON" "$SETTINGS_JSON"; then
 
     #   echo "SonarLint has been configured"
 
