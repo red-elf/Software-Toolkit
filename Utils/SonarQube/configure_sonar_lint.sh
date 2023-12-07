@@ -48,7 +48,9 @@ if sh "$SCRIPT_GET_PROGRAM" code >/dev/null 2>&1; then
     exit 1
   fi
 
-  SETTINGS_JSON="$CODE_DATA_DIR/user-data/User/settings.json"
+  SETTING_DIR="$CODE_DATA_DIR/user-data/User"
+  SETTINGS_JSON="$SETTING_DIR/settings.json"
+  SETTINGS_SONAR_CONFIGS_DIR="$SETTING_DIR/SonarConfigs"
 
   echo "Checking: '$SETTINGS_JSON'"
 
@@ -86,7 +88,16 @@ if sh "$SCRIPT_GET_PROGRAM" code >/dev/null 2>&1; then
 
   if [ -n "$SONARQUBE_SERVER" ] && [ -n "$SONARQUBE_PROJECT" ]; then
 
-    # TODO: Write out the sonar.lint.conf
+    if ! test -e "$SETTINGS_SONAR_CONFIGS_DIR"; then
+
+      if ! mkdir -p "$SETTINGS_SONAR_CONFIGS_DIR"; then
+
+        echo "ERROR: Could not create directory '$SETTINGS_SONAR_CONFIGS_DIR'"
+        exit 1
+      fi
+    fi
+
+    # TODO: Write the config file into the SETTINGS_SONAR_CONFIGS_DIR
     
     if sh "$SCRIPT_EXTEND_JSON" "$SETTINGS_JSON" "$RECIPE_SETTINGS_JSON" "$SETTINGS_JSON"; then
 
