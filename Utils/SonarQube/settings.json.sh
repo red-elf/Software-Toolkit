@@ -62,7 +62,7 @@ if sh "$SCRIPT_GET_PROGRAM" code >/dev/null 2>&1; then
 # }"
 
         CONTENT_CONNECTIONS="\"sonarlint.connectedMode.connections.sonarqube\": ["
-        CONTENT_PROJECTS="{"
+        CONTENT_PROJECTS="\"sonarlint.connectedMode.project\": {"
 
         for FILE_CONFIG in "$SETTINGS_SONAR_CONFIGS_DIR"/*.sh; do
 
@@ -74,7 +74,7 @@ if sh "$SCRIPT_GET_PROGRAM" code >/dev/null 2>&1; then
 
         CONTENT_PROJECTS="$CONTENT_PROJECTS}"
         CONTENT_CONNECTIONS="$CONTENT_CONNECTIONS]"
-        CONTENT_JSON="$CONTENT_JSON$CONTENT_CONNECTIONS$CONTENT_PROJECTS}"
+        CONTENT_JSON="$CONTENT_JSON$CONTENT_CONNECTIONS,$CONTENT_PROJECTS}"
 
         echo "$CONTENT_JSON"
     fi
