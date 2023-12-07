@@ -1,7 +1,5 @@
 #!/bin/bash
 
-HERE=$(pwd)
-
 if [ -z "$SUBMODULES_HOME" ]; then
 
   echo "ERROR: SUBMODULES_HOME not available"
@@ -85,24 +83,23 @@ OBTAIN_CONTENT() {
     fi
 
     SESSION=$(($(date +%s%N)/1000000))
-    FILE="$HERE/$SESSION.json"
+    DIR_PARENT="$(dirname "$FILE")"
+    FILE="$DIR_PARENT/$SESSION.json"
 
     if echo "$CONTENT" > "$FILE"; then
 
         SAVED_FILE=$(sh "$SCRIPT_FORMAT_JSON" "$FILE")
 
-        # shellcheck disable=SC1090
+        echo "Formatted JSON file path: $SAVED_FILE"
+
         if test -e "$SAVED_FILE"; then
 
-            cat "$SAVED_FILE" && \
-                rm -f "$FILE" >/dev/null 2>&1 && \
-                rm -f "$SAVED_FILE" >/dev/null 2>&1
-
+            rm -f "$FILE" && rm -f "$SAVED_FILE" && \
+                cat "$SAVED_FILE"
+                
         else
 
-            echo "ERROR: No saved file '$SAVED_FILE'" && \
-                rm -f "$FILE" >/dev/null 2>&1
-            
+            rm -f "$FILE" && echo "ERROR: No saved file '$SAVED_FILE'"
             exit 1
         fi
 
