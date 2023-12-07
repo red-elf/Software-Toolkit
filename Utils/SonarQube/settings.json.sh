@@ -61,7 +61,13 @@ if sh "$SCRIPT_GET_PROGRAM" code >/dev/null 2>&1; then
 #     }
 # }"
 
-        
+        for FILE_CONFIG in "$SETTINGS_SONAR_CONFIGS_DIR"/*.sh; do
+
+            # shellcheck disable=SC1090
+            . "$FILE_CONFIG"
+
+            # TODO: Write
+        done
 
         CONTENT_JSON="$CONTENT_JSON}"
     fi
