@@ -98,6 +98,15 @@ if sh "$SCRIPT_GET_PROGRAM" code >/dev/null 2>&1; then
     fi
 
     # TODO: Write the config file into the SETTINGS_SONAR_CONFIGS_DIR
+    #
+    SONAR_CONFIG_CONTENT="Todo"
+    SONAR_CONFIG_FILE="$SETTINGS_SONAR_CONFIGS_DIR/Todo.sonar.config"
+
+    if ! echo "$SONAR_CONFIG_CONTENT" > "$SONAR_CONFIG_FILE"; then
+
+      echo "ERROR: Could not write the Sonar Confing file '$SONAR_CONFIG_FILE'"
+      exit 1
+    fi
     
     if sh "$SCRIPT_EXTEND_JSON" "$SETTINGS_JSON" "$RECIPE_SETTINGS_JSON" "$SETTINGS_JSON"; then
 
