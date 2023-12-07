@@ -33,7 +33,10 @@ else
 fi
 
 CONTENT=$(cat "$SOURCE")
-FORMATTED="Formatted.$SOURCE"
+DIR_PARENT="$(dirname "$SOURCE")"
+FILE_NAME=$(basename -- "$SOURCE")
+FORMATTED="Formatted.$FILE_NAME"
+FORMATTED_PATH="$DIR_PARENT/$FORMATTED"
 
 if [ "$CONTENT" = "" ]; then
 
@@ -43,7 +46,7 @@ fi
 
 echo "Processing content:" && echo "$CONTENT"
 
-CONTENT=$(jq <<< echo "$CONTENT")
+CONTENT=$(echo "$CONTENT" | jq)
 
 if [ "$CONTENT" = "" ]; then
 
@@ -53,7 +56,7 @@ fi
 
 echo "Content processed:" && echo "$CONTENT"
 
-if echo "$CONTENT" > "$FORMATTED"; then
+if echo "$CONTENT" > "$FORMATTED_PATH"; then
 
     echo "$FORMATTED"
 
