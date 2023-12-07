@@ -85,6 +85,11 @@ OBTAIN_CONTENT() {
         fi
 
         echo "$CONTENT"
+
+    else
+
+        echo "ERROR: Failed to format JSON '$FILE'"
+        exit 1
     fi
 }
 
