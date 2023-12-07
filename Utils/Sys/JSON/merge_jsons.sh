@@ -94,7 +94,8 @@ OBTAIN_CONTENT() {
 
             CONTENT=$(cat "$SAVED_FILE")
             
-            echo "$CONTENT" && rm -f "$FILE" >/dev/null 2>&1
+            echo "$CONTENT" && rm -f "$FILE" >/dev/null 2>&1 && \
+                rm -f "$SAVED_FILE" >/dev/null 2>&1
 
         else
 
