@@ -20,6 +20,12 @@ if [ -n "$1" ]; then
 
     echo "Source JSON path: $SOURCE"
 
+    if ! test -e "$SOURCE"; then
+
+        echo "ERROR: Source JSON file does not exits '$SOURCE'"
+        exit 1
+    fi
+
 else
 
     echo "ERROR: The source JSON path is mandatory"
