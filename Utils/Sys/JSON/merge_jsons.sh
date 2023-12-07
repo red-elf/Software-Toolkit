@@ -67,28 +67,41 @@ OBTAIN_CONTENT() {
 
     FILE="$1"
 
-    if SCRIPT_FORMAT_JSON "$FILE" >/dev/null 2>&1; then
+    NAME=$(basename -- "$FILE")
+    EXTENSION="${NAME##*.}"
 
-        NAME=$(basename -- "$FILE")
-        EXTENSION="${NAME##*.}"
+    CONTENT=""
 
-        CONTENT=""
+    if [ "$EXTENSION" = "json" ]; then
 
-        if [ "$EXTENSION" = "json" ]; then
+        CONTENT=$(cat "$FILE")
+    fi
+
+    if [ "$EXTENSION" = "sh" ]; then
+
+        CONTENT=$(sh "$FILE")
+    fi
+
+    SESSION=$(($(date +%s%N)/1000000))
+    FILE="/tmp/$SESSION.json"
+
+    if echo "$CONTENT" > "$FILE"; then
+
+        if SCRIPT_FORMAT_JSON "$FILE" >/dev/null 2>&1; then
 
             CONTENT=$(cat "$FILE")
+            
+            echo "$CONTENT" && rm -f "$FILE"
+
+        else
+
+            echo "ERROR: Failed to format JSON '$FILE'" && rm -f "$FILE"
+            exit 1
         fi
-
-        if [ "$EXTENSION" = "sh" ]; then
-
-            CONTENT=$(sh "$FILE")
-        fi
-
-        echo "$CONTENT"
 
     else
 
-        echo "ERROR: Failed to format JSON '$FILE'"
+        echo "ERROR: Could not create tmp. file '$FILE'"
         exit 1
     fi
 }
