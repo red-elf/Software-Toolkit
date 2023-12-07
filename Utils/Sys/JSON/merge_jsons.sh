@@ -7,10 +7,17 @@ if [ -z "$SUBMODULES_HOME" ]; then
 fi
 
 SCRIPT_GET_JQ="$SUBMODULES_HOME/Software-Toolkit/Utils/Sys/Programs/get_jq.sh"
+SCRIPT_FORMAT_JSON="$SUBMODULES_HOME/Software-Toolkit/Utils/Sys/JSON/format_json.sh"
 
 if ! test -e "$SCRIPT_GET_JQ"; then
 
     echo "ERROR: Script not found '$SCRIPT_GET_JQ'"
+    exit 1
+fi
+
+if ! test -e "$SCRIPT_FORMAT_JSON"; then
+
+    echo "ERROR: Script not found '$SCRIPT_FORMAT_JSON'"
     exit 1
 fi
 
@@ -60,22 +67,25 @@ OBTAIN_CONTENT() {
 
     FILE="$1"
 
-    NAME=$(basename -- "$FILE")
-    EXTENSION="${NAME##*.}"
+    if SCRIPT_FORMAT_JSON "$FILE"; then
 
-    CONTENT=""
+        NAME=$(basename -- "$FILE")
+        EXTENSION="${NAME##*.}"
 
-    if [ "$EXTENSION" = "json" ]; then
+        CONTENT=""
 
-        CONTENT=$(cat "$FILE")
+        if [ "$EXTENSION" = "json" ]; then
+
+            CONTENT=$(cat "$FILE")
+        fi
+
+        if [ "$EXTENSION" = "sh" ]; then
+
+            CONTENT=$(sh "$FILE")
+        fi
+
+        echo "$CONTENT"
     fi
-
-    if [ "$EXTENSION" = "sh" ]; then
-
-        CONTENT=$(sh "$FILE")
-    fi
-
-    echo "$CONTENT"
 }
 
 SOURCE_CONTENT=$(OBTAIN_CONTENT "$SOURCE")
