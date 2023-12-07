@@ -35,15 +35,20 @@ fi
 SESSION=$(($(date +%s%N)/1000000))
 UNFORMATTED="$SOURCE.unformatted.$SESSION.bak"
 
-if cp "$SOURCE" "$UNFORMATTED"; then
+cp "$SOURCE" "$UNFORMATTED"
 
-    if ! cat <<< jq '.' "$UNFORMATTED" > "$SOURCE"; then
+# FIXME: 
+#
 
-        echo "ERROR: Could not format JSON from '$SOURCE'"
-        exit 1
-    fi
+# if cp "$SOURCE" "$UNFORMATTED"; then
 
-else
+#     if ! cat <<< jq '.' "$UNFORMATTED" > "$SOURCE"; then
 
-    exit 1
-fi
+#         echo "ERROR: Could not format JSON from '$SOURCE'"
+#         exit 1
+#     fi
+
+# else
+
+#     exit 1
+# fi
