@@ -41,6 +41,8 @@ if [ "$CONTENT" = "" ]; then
     exit 1
 fi
 
+echo "Processing content:" && echo "$CONTENT"
+
 CONTENT=$(jq <<< echo "$CONTENT")
 
 if [ "$CONTENT" = "" ]; then
@@ -48,6 +50,8 @@ if [ "$CONTENT" = "" ]; then
     echo "ERROR: No content (2)"
     exit 1
 fi
+
+echo "Content processed:" && echo "$CONTENT"
 
 if echo "$CONTENT" > "$FORMATTED"; then
 
