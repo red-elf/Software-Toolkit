@@ -18,8 +18,6 @@ if [ -n "$1" ]; then
 
     SOURCE="$1"
 
-    echo "Source JSON path: $SOURCE"
-
     if ! test -e "$SOURCE"; then
 
         echo "ERROR: Source JSON file does not exits '$SOURCE'"
