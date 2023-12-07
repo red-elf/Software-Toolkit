@@ -61,6 +61,9 @@ if sh "$SCRIPT_GET_PROGRAM" code >/dev/null 2>&1; then
 #     }
 # }"
 
+        CONTENT_CONNECTIONS="\"sonarlint.connectedMode.connections.sonarqube\": ["
+        CONTENT_PROJECTS="{"
+
         for FILE_CONFIG in "$SETTINGS_SONAR_CONFIGS_DIR"/*.sh; do
 
             # shellcheck disable=SC1090
@@ -69,6 +72,8 @@ if sh "$SCRIPT_GET_PROGRAM" code >/dev/null 2>&1; then
             # TODO: Write
         done
 
-        CONTENT_JSON="$CONTENT_JSON}"
+        CONTENT_PROJECTS="$CONTENT_PROJECTS}"
+        CONTENT_CONNECTIONS="$CONTENT_CONNECTIONS]"
+        CONTENT_JSON="$CONTENT_JSON$CONTENT_CONNECTIONS$CONTENT_PROJECTS}"
     fi
 fi
