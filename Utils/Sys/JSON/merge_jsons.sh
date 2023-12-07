@@ -87,7 +87,8 @@ OBTAIN_CONTENT() {
 
     if echo "$CONTENT" > "$FILE"; then
 
-        if SCRIPT_FORMAT_JSON "$FILE" >/dev/null 2>&1; then
+        # shellcheck disable=SC1090
+        if . "$SCRIPT_FORMAT_JSON" "$FILE" >/dev/null 2>&1; then
 
             CONTENT=$(cat "$FILE")
             
