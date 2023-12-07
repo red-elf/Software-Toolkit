@@ -1,5 +1,7 @@
 #!/bin/bash
 
+HERE=$(pwd)
+
 if [ -z "$SUBMODULES_HOME" ]; then
 
   echo "ERROR: SUBMODULES_HOME not available"
@@ -83,7 +85,7 @@ OBTAIN_CONTENT() {
     fi
 
     SESSION=$(($(date +%s%N)/1000000))
-    FILE="/tmp/$SESSION.json"
+    FILE="$HERE/$SESSION.json"
 
     if echo "$CONTENT" > "$FILE"; then
 
@@ -92,14 +94,15 @@ OBTAIN_CONTENT() {
         # shellcheck disable=SC1090
         if test -e "$SAVED_FILE"; then
 
-            CONTENT=$(cat "$SAVED_FILE")
-            
-            echo "$CONTENT" && rm -f "$FILE" >/dev/null 2>&1 && \
+            cat "$SAVED_FILE" && \
+                rm -f "$FILE" >/dev/null 2>&1 && \
                 rm -f "$SAVED_FILE" >/dev/null 2>&1
 
         else
 
-            echo "ERROR: No saved file '$SAVED_FILE'" && rm -f "$FILE" >/dev/null 2>&1
+            echo "ERROR: No saved file '$SAVED_FILE'" && \
+                rm -f "$FILE" >/dev/null 2>&1
+            
             exit 1
         fi
 
