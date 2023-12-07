@@ -97,9 +97,12 @@ if sh "$SCRIPT_GET_PROGRAM" code >/dev/null 2>&1; then
       fi
     fi
 
-    # TODO: Write the config file into the SETTINGS_SONAR_CONFIGS_DIR
-    #
-    SONAR_CONFIG_CONTENT="Todo"
+    SONAR_CONFIG_CONTENT="
+#!/bin/bash
+
+SERVER=\"$SONARQUBE_SERVER\"
+PROJECT=\"$SONARQUBE_PROJECT\"
+"
     SONAR_CONFIG_FILE="$SETTINGS_SONAR_CONFIGS_DIR/$SONARQUBE_PROJECT.sonar.config"
 
     if ! echo "$SONAR_CONFIG_CONTENT" > "$SONAR_CONFIG_FILE"; then
