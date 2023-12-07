@@ -32,34 +32,25 @@ else
     exit 1
 fi
 
-SESSION=$(($(date +%s%N)/1000000))
-UNFORMATTED="$SOURCE.unformatted.$SESSION.bak"
+CONTENT=$(cat "$SOURCE")
+FORMATTED="Formatted.$SOURCE"
 
-if cp "$SOURCE" "$UNFORMATTED"; then
+if [ "$CONTENT" = "" ]; then
 
-    CONTENT=$(cat "$UNFORMATTED")
+    echo "ERROR: No content (1)"
+    exit 1
+fi
 
-    if [ "$CONTENT" = "" ]; then
+CONTENT=$(jq <<< echo "$CONTENT")
 
-        echo "ERROR: No content (1)"
-        exit 1
-    fi
+if [ "$CONTENT" = "" ]; then
 
-    CONTENT=$(jq <<< echo "$CONTENT")
+    echo "ERROR: No content (2)"
+    exit 1
+fi
 
-    if [ "$CONTENT" = "" ]; then
+if ! echo "$CONTENT" > "$FORMATTED"; then
 
-        echo "ERROR: No content (2)"
-        exit 1
-    fi
-    
-    if ! echo "$CONTENT" > "$SOURCE"; then
-
-        echo "ERROR: Could not save formatted JSON content to '$SOURCE'"
-        exit 1
-    fi
-
-else
-
+    echo "ERROR: Could not save formatted JSON content to '$SOURCE'"
     exit 1
 fi
