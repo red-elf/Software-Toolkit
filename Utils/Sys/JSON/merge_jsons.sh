@@ -87,10 +87,12 @@ OBTAIN_CONTENT() {
 
     if echo "$CONTENT" > "$FILE"; then
 
-        # shellcheck disable=SC1090
-        if . "$SCRIPT_FORMAT_JSON" "$FILE" >/dev/null 2>&1; then
+        SAVED_FILE=$(sh "$SCRIPT_FORMAT_JSON" "$FILE")
 
-            CONTENT=$(cat "$FILE")
+        # shellcheck disable=SC1090
+        if test -e "$SAVED_FILE"; then
+
+            CONTENT=$(cat "$SAVED_FILE")
             
             echo "$CONTENT" && rm -f "$FILE" >/dev/null 2>&1
 
