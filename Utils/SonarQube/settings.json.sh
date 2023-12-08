@@ -26,7 +26,7 @@ fi
 
 if sh "$SCRIPT_GET_PROGRAM" code >/dev/null 2>&1; then
 
-    GET_VSCODE_PATHS
+    GET_VSCODE_PATHS >/dev/null 2>&1
 
     if [ -z "$CODE_DIR" ]; then
 
