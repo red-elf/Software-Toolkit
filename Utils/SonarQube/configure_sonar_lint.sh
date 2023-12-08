@@ -105,25 +105,46 @@ SERVER=\"$SONARQUBE_SERVER\"
 "
     SONAR_CONFIG_FILE="$SETTINGS_SONAR_CONFIGS_DIR/$SONARQUBE_PROJECT.sonarConfig.sh"
 
-    if ! echo "$SONAR_CONFIG_CONTENT" > "$SONAR_CONFIG_FILE"; then
+    if echo "$SONAR_CONFIG_CONTENT" > "$SONAR_CONFIG_FILE"; then
+
+      echo "The Sonar Confing file has been written: '$SONAR_CONFIG_FILE'"
+
+    else
 
       echo "ERROR: Could not write the Sonar Confing file '$SONAR_CONFIG_FILE'"
       exit 1
     fi
+
+    CONTENT=$(sh "$RECIPE_SETTINGS_JSON")
+    SONAR_CONFIG_JSON="$SETTINGS_SONAR_CONFIGS_DIR/$SONARQUBE_PROJECT.sonarConfig.json"
+
+    if [ "$CONTENT" = "" ]; then
+
+      echo "ERROR: No settings JSON content obtained from '$RECIPE_SETTINGS_JSON'"
+
+    else
+
+      if echo "$CONTENT" > "$SONAR_CONFIG_JSON"; then
+
+        echo "The Sonar Confing JSON has been written: '$SONAR_CONFIG_JSON'"
+
+        if sh "$SCRIPT_EXTEND_JSON" "$SETTINGS_JSON" "$SONAR_CONFIG_JSON" "$SETTINGS_JSON"; then
+
+          echo "SonarLint has been configured"
+
+        else
+
+          echo "ERROR: SonarLint has not been configured"
+          exit 1
+        fi
+
+      else
+
+        echo "ERROR: Could not write the Sonar Confing JSON '$SONAR_CONFIG_JSON'"
+        exit 1
+      fi
+    fi
     
-    # FIXME:
-    #
-    
-    # if sh "$SCRIPT_EXTEND_JSON" "$SETTINGS_JSON" "$RECIPE_SETTINGS_JSON" "$SETTINGS_JSON"; then
-
-    #   echo "SonarLint has been configured"
-
-    # else
-
-    #   echo "ERROR: SonarLint has not been configured"
-    #   exit 1
-    # fi
-
   else
 
     echo "WARNING: No SonarLint will be configured"
