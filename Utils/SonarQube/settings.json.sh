@@ -61,6 +61,7 @@ if sh "$SCRIPT_GET_PROGRAM" code >/dev/null 2>&1; then
 #     }
 # }"
 
+        CONFIG_ADDED=false
         CONTENT_CONNECTIONS="\"sonarlint.connectedMode.connections.sonarqube\": ["
         CONTENT_PROJECTS="\"sonarlint.connectedMode.project\": {"
 
@@ -69,7 +70,23 @@ if sh "$SCRIPT_GET_PROGRAM" code >/dev/null 2>&1; then
             # shellcheck disable=SC1090
             . "$FILE_CONFIG"
 
-            # TODO: Write
+            if [ -n "$SERVER" ] && [ -n "$PROJECT" ] && [ -n "$GROUP" ]; then
+
+              CONFIG_JSON="{
+  \"serverUrl\": \"$SERVER\",
+  \"connectionId\": \"$GROUP\"
+}"
+
+              if [ "$CONFIG_ADDED" = true ]; then
+
+                CONFIG_JSON=", $CONFIG_JSON"
+              fi
+            
+              CONTENT_CONNECTIONS="$CONTENT_CONNECTIONS$CONFIG_JSON"
+
+              CONFIG_ADDED=true
+            fi
+
         done
 
         CONTENT_PROJECTS="$CONTENT_PROJECTS}"
