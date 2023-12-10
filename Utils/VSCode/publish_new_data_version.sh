@@ -54,16 +54,25 @@ DIR_EXTENSIONS_NAME="extensions"
 DIR_USER_DATA="$CODE_DATA_DIR/$DIR_USER_DATA_NAME"
 DIR_EXTENSIONS="$CODE_DATA_DIR/$DIR_EXTENSIONS_NAME"
 
-if [ -z "$DIR_EXTENSIONS" ]; then
+FILE_USER_SETTINGS="$DIR_USER_DATA/User/settings.json"
+FILE_USER_SETTINGS_BAK="$FILE_USER_SETTINGS.pub.bak"
 
-  echo "ERROR: the 'DIR_EXTENSIONS' variable is not set"
-  exit 1
+if test -e "$FILE_USER_SETTINGS_BAK"; then
+
+  if ! rm -f "$FILE_USER_SETTINGS_BAK"; then
+
+    echo "ERROR: Could not remove '$FILE_USER_SETTINGS_BAK'"
+    exit 1
+  fi
 fi
 
-if [ -z "$DIR_USER_DATA" ]; then
+if test -e "$FILE_USER_SETTINGS"; then
 
-  echo "ERROR: the 'DIR_USER_DATA' variable is not set"
-  exit 1
+  if ! mv "$FILE_USER_SETTINGS" "$FILE_USER_SETTINGS_BAK"; then
+
+    echo "ERROR: Could not move '$FILE_USER_SETTINGS' int '$FILE_USER_SETTINGS_BAK'"
+    exit 1
+  fi
 fi
 
 if [ -z "$VSCODE_DATA_PUBLISH_DESTINATION" ]; then
