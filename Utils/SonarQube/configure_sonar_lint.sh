@@ -8,8 +8,8 @@ if [ -z "$SUBMODULES_HOME" ]; then
   exit 1
 fi
 
-RECIPE_SETTINGS_JSON="$SUBMODULES_HOME/Software-Toolkit/Utils/SonarQube/settings.json.sh"
-RECIPE_IDE_SETTINGS_JSON="$SUBMODULES_HOME/Software-Toolkit/Utils/SonarQube/settings.IDE.json.sh"
+RECIPE_SETTINGS_JSON="$SUBMODULES_HOME/Software-Toolkit/Utils/SonarQube/Recipes/settings.json.sh"
+RECIPE_IDE_SETTINGS_JSON="$SUBMODULES_HOME/Software-Toolkit/Utils/SonarQube//Recipes/settings.IDE.json.sh"
 
 SCRIPT_GET_CODE_PATHS="$SUBMODULES_HOME/Software-Toolkit/Utils/VSCode/get_paths.sh"
 SCRIPT_EXTEND_JSON="$SUBMODULES_HOME/Software-Toolkit/Utils/Sys/JSON/merge_jsons.sh"
