@@ -1,5 +1,7 @@
 #!/bin/bash
 
+HERE="$(pwd)"
+
 if [ -z "$SUBMODULES_HOME" ]; then
 
   echo "ERROR: SUBMODULES_HOME not available"
@@ -7,9 +9,11 @@ if [ -z "$SUBMODULES_HOME" ]; then
 fi
 
 RECIPE_SETTINGS_JSON="$SUBMODULES_HOME/Software-Toolkit/Utils/SonarQube/settings.json.sh"
-SCRIPT_GET_PROGRAM="$SUBMODULES_HOME/Software-Toolkit/Utils/Sys/Programs/get_program.sh"
-SCRIPT_EXTEND_JSON="$SUBMODULES_HOME/Software-Toolkit/Utils/Sys/JSON/merge_jsons.sh"
+RECIPE_IDE_SETTINGS_JSON="$SUBMODULES_HOME/Software-Toolkit/Utils/SonarQube/settings.IDE.json.sh"
+
 SCRIPT_GET_CODE_PATHS="$SUBMODULES_HOME/Software-Toolkit/Utils/VSCode/get_paths.sh"
+SCRIPT_EXTEND_JSON="$SUBMODULES_HOME/Software-Toolkit/Utils/Sys/JSON/merge_jsons.sh"
+SCRIPT_GET_PROGRAM="$SUBMODULES_HOME/Software-Toolkit/Utils/Sys/Programs/get_program.sh"
 
 if ! test -e "$SCRIPT_GET_PROGRAM"; then
 
@@ -50,6 +54,7 @@ if sh "$SCRIPT_GET_PROGRAM" code >/dev/null 2>&1; then
 
   SETTING_DIR="$CODE_DATA_DIR/user-data/User"
   SETTINGS_JSON="$SETTING_DIR/settings.json"
+  SETTINGS_JSON_IDE="$HERE/.vscode"
   SETTINGS_SONAR_CONFIGS_DIR="$SETTING_DIR/sonarConfigs"
 
   echo "Checking: '$SETTINGS_JSON'"
@@ -60,7 +65,7 @@ if sh "$SCRIPT_GET_PROGRAM" code >/dev/null 2>&1; then
 
   else
 
-    if echo "{}" >> "$SETTINGS_JSON"; then
+    if echo "{}" > "$SETTINGS_JSON"; then
 
       echo "Settings JSON created: '$SETTINGS_JSON'"
 
@@ -71,9 +76,33 @@ if sh "$SCRIPT_GET_PROGRAM" code >/dev/null 2>&1; then
     fi
   fi
 
+  echo "Checking: '$SETTINGS_JSON_IDE'"
+
+  if test -e "$SETTINGS_JSON_IDE"; then
+
+    echo "IDE settings JSON: '$SETTINGS_JSON_IDE'"
+
+  else
+
+    if echo "{}" > "$SETTINGS_JSON_IDE"; then
+
+      echo "IDE settings JSON created: '$SETTINGS_JSON_IDE'"
+
+    else
+
+      echo "ERROR: Could not create '$SETTINGS_JSON_IDE'"
+      exit 1
+    fi
+  fi
+
   if [ -n "$1" ]; then
 
     RECIPE_SETTINGS_JSON="$1"
+  fi
+
+  if [ -n "$2" ]; then
+
+    RECIPE_IDE_SETTINGS_JSON="$2"
   fi
 
   if test -e "$RECIPE_SETTINGS_JSON"; then
@@ -130,11 +159,34 @@ SERVER=\"$SONARQUBE_SERVER\"
 
         if sh "$SCRIPT_EXTEND_JSON" "$SETTINGS_JSON" "$SONAR_CONFIG_JSON" "$SETTINGS_JSON"; then
 
-          echo "SonarLint has been configured"
+          echo "SonarLint connections have been configured"
 
         else
 
-          echo "ERROR: SonarLint has not been configured"
+          echo "ERROR: SonarLint connections have not been configured"
+          exit 1
+        fi
+
+        # TODO: Finsih this
+        #
+        CONTENT=$(sh "$RECIPE_IDE_SETTINGS_JSON")
+        SONAR_CONFIG_JSON_IDE="$SETTINGS_SONAR_CONFIGS_DIR/$SONARQUBE_PROJECT.sonarConfig.IDE.json"
+
+        if echo "$CONTENT" > "$SONAR_CONFIG_JSON_IDE"; then
+
+          if sh "$SCRIPT_EXTEND_JSON" "$SETTINGS_JSON_IDE" "$SONAR_CONFIG_JSON_IDE" "$SETTINGS_JSON_IDE"; then
+
+            echo "IDE has been configured for the SonarLint"
+
+          else
+
+            echo "ERROR: IDE not has been configured for the SonarLint"
+            exit 1
+          fi
+
+        else
+
+          echo "ERROR: Could not write the Sonar Confing IDE JSON '$SONAR_CONFIG_JSON_IDE'"
           exit 1
         fi
 
@@ -148,6 +200,7 @@ SERVER=\"$SONARQUBE_SERVER\"
   else
 
     echo "WARNING: No SonarLint will be configured"
+    echo "SONARQUBE_GROUP='$SONARQUBE_GROUP'"
     echo "SONARQUBE_SERVER='$SONARQUBE_SERVER'"
     echo "SONARQUBE_PROJECT='$SONARQUBE_PROJECT'"
   fi
