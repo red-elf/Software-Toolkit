@@ -49,12 +49,6 @@ if sh "$SCRIPT_GET_PROGRAM" code >/dev/null 2>&1; then
 
 # TODO:
 #
-#     \"sonarlint.connectedMode.connections.sonarqube\": [
-#         {
-#             \"serverUrl\": \"$SONARQUBE_SERVER\",
-#             \"connectionId\": \"$SONARQUBE_PROJECT\"
-#         }
-#     ],
 #     \"sonarlint.connectedMode.project\": {
 #         \"connectionId\": \"$SONARQUBE_PROJECT\",
 #         \"projectKey\": \"$SONARQUBE_PROJECT\"
