@@ -261,7 +261,9 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
             exit 1
           fi
 
-          # - Code quality badges
+          # TODO: Code quality badges
+          #
+          # http://general-server.local:9102/api/project_badges/measure?project=HelixTrack_Core.1.0.0&metric=alert_status&token=sqb_349b1a2ac1ee21e016f235b4c175b06bcbe7782a
 
         fi
 
