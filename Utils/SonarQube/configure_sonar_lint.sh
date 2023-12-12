@@ -167,8 +167,6 @@ SERVER=\"$SONARQUBE_SERVER\"
           exit 1
         fi
 
-        # TODO: Finsih this
-        #
         CONTENT=$(sh "$RECIPE_IDE_SETTINGS_JSON")
         SONAR_CONFIG_JSON_IDE="$SETTINGS_SONAR_CONFIGS_DIR/$SONARQUBE_PROJECT.sonarConfig.IDE.json"
 
