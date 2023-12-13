@@ -69,7 +69,7 @@ ADD_VARIABLE() {
 
     else
 
-        if echo "" >> "$FILE_RC" && echo "$LINE_TO_ADD" >> "$FILE_RC"; then
+        if echo "$LINE_TO_ADD" >> "$FILE_RC"; then
 
             echo "Variable '$VARIABLE_NAME' is added into '$FILE_RC' configuration: '$VARIABLE_VALUE'"
             
