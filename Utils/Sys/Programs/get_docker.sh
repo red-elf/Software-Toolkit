@@ -29,7 +29,7 @@ if ! test -e "$SCRIPT_INSTALL_DOCKER"; then
   exit 1;
 fi
 
-if ! sh "$SCRIPT_GET_PROGRAM" docker; then
+if ! bash "$SCRIPT_GET_PROGRAM" docker; then
 
   if [ -z "$1" ]; then
 
@@ -42,6 +42,6 @@ if ! sh "$SCRIPT_GET_PROGRAM" docker; then
 
   if $INSTALL; then
 
-    echo "We are about to install Docker" && sh "$SCRIPT_INSTALL_DOCKER"
+    echo "We are about to install Docker" && bash "$SCRIPT_INSTALL_DOCKER"
   fi
 fi

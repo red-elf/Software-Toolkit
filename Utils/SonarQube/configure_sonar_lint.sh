@@ -36,7 +36,7 @@ fi
 # shellcheck disable=SC1090
 . "$SCRIPT_GET_CODE_PATHS"
 
-if sh "$SCRIPT_GET_PROGRAM" code >/dev/null 2>&1; then
+if bash "$SCRIPT_GET_PROGRAM" code >/dev/null 2>&1; then
 
   GET_VSCODE_PATHS
 
@@ -144,7 +144,7 @@ SERVER=\"$SONARQUBE_SERVER\"
       exit 1
     fi
 
-    CONTENT=$(sh "$RECIPE_SETTINGS_JSON")
+    CONTENT=$(bash "$RECIPE_SETTINGS_JSON")
     SONAR_CONFIG_JSON="$SETTINGS_SONAR_CONFIGS_DIR/$SONARQUBE_PROJECT.sonarConfig.json"
 
     if [ "$CONTENT" = "" ]; then
@@ -157,7 +157,7 @@ SERVER=\"$SONARQUBE_SERVER\"
 
         echo "The Sonar Confing JSON has been written: '$SONAR_CONFIG_JSON'"
 
-        if sh "$SCRIPT_EXTEND_JSON" "$SETTINGS_JSON" "$SONAR_CONFIG_JSON" "$SETTINGS_JSON"; then
+        if bash "$SCRIPT_EXTEND_JSON" "$SETTINGS_JSON" "$SONAR_CONFIG_JSON" "$SETTINGS_JSON"; then
 
           echo "SonarLint connections have been configured"
 
@@ -167,12 +167,12 @@ SERVER=\"$SONARQUBE_SERVER\"
           exit 1
         fi
 
-        CONTENT=$(sh "$RECIPE_IDE_SETTINGS_JSON")
+        CONTENT=$(bash "$RECIPE_IDE_SETTINGS_JSON")
         SONAR_CONFIG_JSON_IDE="$SETTINGS_SONAR_CONFIGS_DIR/$SONARQUBE_PROJECT.sonarConfig.IDE.json"
 
         if echo "$CONTENT" > "$SONAR_CONFIG_JSON_IDE"; then
 
-          if sh "$SCRIPT_EXTEND_JSON" "$SETTINGS_JSON_IDE" "$SONAR_CONFIG_JSON_IDE" "$SETTINGS_JSON_IDE"; then
+          if bash "$SCRIPT_EXTEND_JSON" "$SETTINGS_JSON_IDE" "$SONAR_CONFIG_JSON_IDE" "$SETTINGS_JSON_IDE"; then
 
             echo "IDE has been configured for the SonarLint"
 

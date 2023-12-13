@@ -78,7 +78,7 @@ OBTAIN_CONTENT() {
 
     if [ "$EXTENSION" = "sh" ]; then
 
-        CONTENT=$(sh "$FILE")
+        CONTENT=$(bash "$FILE")
     fi
 
     SESSION=$(($(date +%s%N)/1000000))
@@ -92,7 +92,7 @@ OBTAIN_CONTENT() {
             exit 1
         fi
 
-        SAVED_FILE=$(sh "$SCRIPT_FORMAT_JSON" "$NEW_FILE_PATH")
+        SAVED_FILE=$(bash "$SCRIPT_FORMAT_JSON" "$NEW_FILE_PATH")
 
         if test -e "$SAVED_FILE"; then
 
@@ -123,7 +123,7 @@ echo "$SOURCE_CONTENT"
 echo "JSON content :: Adding:"
 echo "$ADDITION_CONTENT"
 
-if sh "$SCRIPT_GET_JQ" >/dev/null 2>&1; then
+if bash "$SCRIPT_GET_JQ" >/dev/null 2>&1; then
 
     DESTINATION_CONTENT=$(echo "$SOURCE_CONTENT$ADDITION_CONTENT" | jq -s 'add')
     

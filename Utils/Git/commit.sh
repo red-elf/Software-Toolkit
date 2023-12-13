@@ -26,6 +26,6 @@ if git add .; then
 
     if git commit -m "$MESSAGE"; then
 
-        sh "$SCRIPT_PUSH_ALL"
+        bash "$SCRIPT_PUSH_ALL"
     fi
 fi

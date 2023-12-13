@@ -180,7 +180,7 @@ EOL
 
                                 if test -e "$SCRIPT_INSTALL_UPSTREAMS"; then
 
-                                    sh "$SCRIPT_INSTALL_UPSTREAMS" "$DIR_UPSTREAMS"
+                                    bash "$SCRIPT_INSTALL_UPSTREAMS" "$DIR_UPSTREAMS"
 
                                 else
 

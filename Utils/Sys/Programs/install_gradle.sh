@@ -23,7 +23,7 @@ if ! test -e "$SCRIPT_CHECK_ALT_LINUX"; then
   exit 1
 fi
 
-if sh "$SCRIPT_CHECK_ALT_LINUX"; then
+if bash "$SCRIPT_CHECK_ALT_LINUX"; then
 
   if ! test -e "$DIR_DOWNLOADS"; then
 

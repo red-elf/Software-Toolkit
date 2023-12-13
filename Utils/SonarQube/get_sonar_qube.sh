@@ -124,7 +124,7 @@ echo "Docker image: $DOCKER_IMAGE"
 echo "Docker tag: $DOCKER_TAG"
 echo "Docker container: $DOCKER_CONTAINER"
 
-if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
+if bash "$SCRIPT_GET_DOCKER" true && bash "$SCRIPT_GET_DOCKER_COMPOSE" true; then
 
   FILE_MAX="131072"
   MAX_MAP_COUNT="524288"
@@ -311,7 +311,7 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
 
           else
 
-            if sh "$SCRIPT_GET_JQ" >/dev/null 2>&1; then
+            if bash "$SCRIPT_GET_JQ" >/dev/null 2>&1; then
 
               SONARQUBE_TOKEN=$(echo "$GENERATED_TOKEN_JSON" | jq -r '.token')
 

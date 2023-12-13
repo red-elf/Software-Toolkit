@@ -38,7 +38,7 @@ fi
 
 SCRIPT_GET_DOCKER="$SUBMODULES_HOME/Software-Toolkit/Utils/Sys/Programs/get_docker.sh"
 
-if sh "$SCRIPT_GET_DOCKER" true; then
+if bash "$SCRIPT_GET_DOCKER" true; then
 
     echo "Name: $NAME"
     echo "Port: $HTTPD_PORT"

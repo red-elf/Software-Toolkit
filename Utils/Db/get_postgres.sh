@@ -56,7 +56,7 @@ DOCKER_CONTAINER="postgres.$DB"
 echo "Docker image: $DOCKER_IMAGE"
 echo "Docker container: $DOCKER_CONTAINER"
 
-if sh "$SCRIPT_GET_DOCKER" true; then
+if bash "$SCRIPT_GET_DOCKER" true; then
 
   CONTAINER_STATUS="$( docker container inspect -f '{{.State.Status}}' $DOCKER_CONTAINER )"
 

@@ -118,7 +118,7 @@ DO_SUBMODULE() {
 
     if test -e "$SCRIPT_PUSH_ALL"; then
 
-        if ! sh "$SCRIPT_PUSH_ALL" "$UPSTREAMS"; then
+        if ! bash "$SCRIPT_PUSH_ALL" "$UPSTREAMS"; then
 
             echo "ERROR: Push all failure"
             exit 1  
@@ -207,7 +207,7 @@ DO_SUBMODULE() {
             exit 1
         fi
 
-        sh "$SCRIPT_INSTALL_UPSTREAMS" "$UPSTREAMS" >/dev/null 2>&1
+        bash "$SCRIPT_INSTALL_UPSTREAMS" "$UPSTREAMS" >/dev/null 2>&1
 
         git submodule init && git submodule update
         
@@ -247,7 +247,7 @@ DO_SUBMODULE() {
 
             echo "We are about to push all the changes to remote upstreams"
 
-            if sh "$SCRIPT_PUSH_ALL" "$UPSTREAMS"; then
+            if bash "$SCRIPT_PUSH_ALL" "$UPSTREAMS"; then
 
                 echo "Push all at '$SUBMODULE_FULL_PATH'"
 

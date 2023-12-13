@@ -29,7 +29,7 @@ if ! test -e "$SCRIPT_INSTALL_JQ"; then
   exit 1;
 fi
 
-if ! sh "$SCRIPT_GET_PROGRAM" jq; then
+if ! bash "$SCRIPT_GET_PROGRAM" jq; then
 
   if [ -z "$1" ]; then
 
@@ -42,6 +42,6 @@ if ! sh "$SCRIPT_GET_PROGRAM" jq; then
 
   if $INSTALL; then
 
-    echo "We are about to install JQ" && sh "$SCRIPT_INSTALL_JQ"
+    echo "We are about to install JQ" && bash "$SCRIPT_INSTALL_JQ"
   fi
 fi

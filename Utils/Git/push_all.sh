@@ -69,7 +69,7 @@ fi
 
 if test -e "$DIR_UPSTREAMS"; then
 
-  if ! sh "$SCRIPT_INSTALL_UPSTREAMS" "$DIR_UPSTREAMS"; then
+  if ! bash "$SCRIPT_INSTALL_UPSTREAMS" "$DIR_UPSTREAMS"; then
 
     echo "ERROR: Installing upstreams failed from '$DIR_UPSTREAMS'"
     exit 1

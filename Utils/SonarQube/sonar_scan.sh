@@ -48,7 +48,7 @@ fi
 
 PROGRAM="sonar-scanner"
 
-if ! sh "$SCRIPT_GET_PROGRAM" "$PROGRAM"; then
+if ! bash "$SCRIPT_GET_PROGRAM" "$PROGRAM"; then
 
     # shellcheck disable=SC1090
     if ! . "$SCRIPT_GET_SONAR_SCANNER"; then
@@ -58,7 +58,7 @@ if ! sh "$SCRIPT_GET_PROGRAM" "$PROGRAM"; then
     fi
 fi
 
-if sh "$SCRIPT_GET_PROGRAM" "$PROGRAM"; then
+if bash "$SCRIPT_GET_PROGRAM" "$PROGRAM"; then
 
     if ! "$PROGRAM" \
         -Dsonar.projectKey="$SONARQUBE_PROJECT" \

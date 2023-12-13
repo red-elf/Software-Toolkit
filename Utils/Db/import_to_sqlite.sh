@@ -23,10 +23,11 @@ else
   exit 1
 fi
 
-if sh "$SCRIPT_GET_SQLITE" "$DB"; then
+if bash "$SCRIPT_GET_SQLITE" "$DB"; then
 
   if test -e "$SQL_FILE"; then
 
+    # shellcheck disable=SC2002
     if cat "$SQL_FILE" | sqlite3 "$DB"; then
 
       echo "'$SQL_FILE' imported into '$DB' database"

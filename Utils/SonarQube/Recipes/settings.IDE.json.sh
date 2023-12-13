@@ -24,7 +24,7 @@ fi
 # shellcheck disable=SC1090
 . "$SCRIPT_GET_CODE_PATHS"
 
-if sh "$SCRIPT_GET_PROGRAM" code >/dev/null 2>&1; then
+if bash "$SCRIPT_GET_PROGRAM" code >/dev/null 2>&1; then
 
     GET_VSCODE_PATHS >/dev/null 2>&1
 

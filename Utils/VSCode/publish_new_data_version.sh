@@ -107,7 +107,7 @@ if ! test -e "$VSCODE_DATA_PUBLISH_DESTINATION"; then
 else
 
   VERSION=$(cat "$FILE_DATA_VERSION")
-  NEXT_VERSION=$(sh "$SCRIPT_GET_VERSION_INCREASED" "$VERSION")
+  NEXT_VERSION=$(bash "$SCRIPT_GET_VERSION_INCREASED" "$VERSION")
 
   echo "Current version is: $VERSION"
   echo "Next version is going to be: $NEXT_VERSION"

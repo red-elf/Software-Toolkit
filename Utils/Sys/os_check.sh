@@ -13,7 +13,7 @@ if test -e "$DIR_RECIPES"; then
             
             echo "OS check recipe: '$RECIPE'"
 
-            if sh "$RECIPE"; then
+            if bash "$RECIPE"; then
 
                 exit 0
             fi
