@@ -85,7 +85,7 @@ SCRIPT_GET_DOCKER="$HERE/../Sys/Programs/get_docker.sh"
 SCRIPT_GET_DOCKER_COMPOSE="$HERE/../Sys/Programs/get_docker_compose.sh"
 
 DOCKER_IMAGE="sonarqube"
-DOCKER_TAG="10.2.1-community"
+DOCKER_TAG="10.3.0-community"
 DOCKER_CONTAINER_PREFIX="sonarqube"
 DOCKER_CONTAINER="$DOCKER_CONTAINER_PREFIX.$SONARQUBE_NAME"
 
