@@ -313,7 +313,7 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
 
             if sh "$SCRIPT_GET_JQ" >/dev/null 2>&1; then
 
-              SONARQUBE_TOKEN=$(jq -r '.token' <<< "$GENERATED_TOKEN_JSON")
+              SONARQUBE_TOKEN=$(echo "$GENERATED_TOKEN_JSON" | jq -r '.token')
 
               export SONARQUBE_TOKEN
 
