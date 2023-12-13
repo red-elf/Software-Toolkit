@@ -267,11 +267,17 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
 
           TOKEN_NAME=$(($(date +%s%N)/1000000))
           GENERATE_TOKEN_URL="http://$SONARQUBE_HOST:$SONARQUBE_PORT/api/user_tokens/generate?login=admin&password=$ADMIN_PASSWORD&name=$TOKEN_NAME"
-          GENERATED_TOKEN_JSON=$(curl -u admin:"$ADMIN_PASSWORD" "$GENERATE_TOKEN_URL")
+          GENERATED_TOKEN_JSON=$(curl -X POST -u admin:"$ADMIN_PASSWORD" "$GENERATE_TOKEN_URL")
 
-          if [ "$GENERATED_TOKEN_JSON" = "" ]; then
+          if [ "$GENERATED_TOKEN_JSON" = "" ] || echo "$GENERATED_TOKEN_JSON" | grep "errors\":" >/dev/null 2>&1; then
           
               echo "ERROR: No token has been generated"
+              
+              if [ ! "$GENERATED_TOKEN_JSON" = "" ]; then
+
+                echo "$GENERATED_TOKEN_JSON"
+              fi
+              
               exit 1
 
           else
