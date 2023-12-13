@@ -274,13 +274,12 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
 
           else
 
-            # TODO: EXtract token from the generated token JSON
+            # TODO: Extract token from the generated token JSON
 
             echo "Token has been generated: $GENERATED_TOKEN_JSON"
 
-            # TODO: Generate tokens
+            # TODO: Add token variable into the .rc file
             #
-            # - Once sonar qube has been set, setup tokens and permissions
           fi
         fi
 
