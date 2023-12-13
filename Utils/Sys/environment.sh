@@ -19,8 +19,18 @@ fi
 
 LOAD_RC() {
 
+    if [ -z "$FILE_RC" ]; then
+
+        echo "ERROR: '$FILE_RC' variable is not defined"
+        exit 1
+    fi
+
     # shellcheck disable=SC1090
-    source "$FILE_RC" >/dev/null 2>&1 || . "$FILE_RC" >/dev/null 2>&1
+    if ! source "$FILE_RC" || . "$FILE_RC"; then
+
+        echo "ERROR: Could not load the .rs file '$FILE_RC'"
+        exit 1
+    fi
 }
 
 ADD_VARIABLE() {
