@@ -63,5 +63,8 @@ ADD_VARIABLE() {
             echo "ERROR: Variable '$VARIABLE_NAME' is not added into '$FILE_RC' configuration"
             exit 1
         fi
+
+        # shellcheck disable=SC1090
+        . "$FILE_RC"
     fi
 }
