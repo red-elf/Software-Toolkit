@@ -65,6 +65,6 @@ ADD_VARIABLE() {
         fi
 
         # shellcheck disable=SC1090
-        . "$FILE_RC"
+        source "$FILE_RC" >/dev/null 2>&1 || . "$FILE_RC" >/dev/null 2>&1
     fi
 }
