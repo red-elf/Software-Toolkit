@@ -48,7 +48,7 @@ ADD_VARIABLE() {
             # shellcheck disable=SC1090
             . "$FILE_RC"
 
-            echo "ERROR: Variable '$VARIABLE_NAME' is already present in '$FILE_RC' configuration with different value from '$VARIABLE_VALUE'"
+            echo "ERROR: Entry '$VARIABLE_NAME' is already present in '$FILE_RC' configuration with different value from '$VARIABLE_VALUE'"
             exit 1
         fi
 
