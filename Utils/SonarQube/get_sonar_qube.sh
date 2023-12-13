@@ -83,8 +83,37 @@ if ! touch "$FILE_DOCKER_COMPOSE_PATH"; then
   exit 1
 fi
 
-SCRIPT_GET_DOCKER="$HERE/../Sys/Programs/get_docker.sh"
-SCRIPT_GET_DOCKER_COMPOSE="$HERE/../Sys/Programs/get_docker_compose.sh"
+SCRIPT_ENV="$SUBMODULES_HOME/Software-Toolkit/Utils/Sys/environment.sh"
+SCRIPT_GET_JQ="$SUBMODULES_HOME/Software-Toolkit/Utils/Sys/Programs/get_jq.sh"
+SCRIPT_GET_DOCKER="$SUBMODULES_HOME/Software-Toolkit/Utils/Sys/Programs/get_docker.sh"
+SCRIPT_GET_DOCKER_COMPOSE="$SUBMODULES_HOME/Software-Toolkit/Utils/Sys/Programs/get_docker_compose.sh"
+
+if ! test -e "$SCRIPT_ENV"; then
+
+    echo "ERROR: Script not found '$SCRIPT_ENV'"
+    exit 1
+fi
+
+if ! test -e "$SCRIPT_GET_JQ"; then
+
+    echo "ERROR: Script not found '$SCRIPT_GET_JQ'"
+    exit 1
+fi
+
+if ! test -e "$SCRIPT_GET_DOCKER"; then
+
+    echo "ERROR: Script not found '$SCRIPT_GET_DOCKER'"
+    exit 1
+fi
+
+if ! test -e "$SCRIPT_GET_DOCKER_COMPOSE"; then
+
+    echo "ERROR: Script not found '$SCRIPT_GET_DOCKER_COMPOSE'"
+    exit 1
+fi
+
+# shellcheck disable=SC1090
+. "$SCRIPT_ENV"
 
 DOCKER_IMAGE="sonarqube"
 DOCKER_TAG="10.3.0-community"
@@ -282,12 +311,21 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
 
           else
 
-            # TODO: Extract token from the generated token JSON
+            if sh "$SCRIPT_GET_JQ" >/dev/null 2>&1; then
 
-            echo "Token has been generated: $GENERATED_TOKEN_JSON"
+              SONARQUBE_TOKEN=$(jq -r '.token' <<< "$GENERATED_TOKEN_JSON")
 
-            # TODO: Add token variable into the .rc file
-            #
+              export SONARQUBE_TOKEN
+
+              echo "Token has been generated: $SONARQUBE_TOKEN"
+
+              ADD_VARIABLE "SONARQUBE_TOKEN" "$SONARQUBE_TOKEN"
+
+            else
+
+                echo "ERROR: JQ not available"
+                exit 1
+            fi
           fi
         fi
 
