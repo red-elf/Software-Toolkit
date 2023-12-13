@@ -28,7 +28,7 @@ LOAD_RC() {
     # shellcheck disable=SC1090
     if ! source "$FILE_RC" || . "$FILE_RC"; then
 
-        echo "ERROR: Could not load the .rs file '$FILE_RC'"
+        echo "ERROR: Could not load the RC file '$FILE_RC'"
         exit 1
     fi
 }
