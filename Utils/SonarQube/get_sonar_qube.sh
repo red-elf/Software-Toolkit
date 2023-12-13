@@ -315,11 +315,11 @@ if bash "$SCRIPT_GET_DOCKER" true && bash "$SCRIPT_GET_DOCKER_COMPOSE" true; the
 
               SONARQUBE_TOKEN=$(echo "$GENERATED_TOKEN_JSON" | jq -r '.token')
 
-              export SONARQUBE_TOKEN
-
               echo "Token has been generated: $SONARQUBE_TOKEN"
 
               ADD_VARIABLE "SONARQUBE_TOKEN" "$SONARQUBE_TOKEN"
+
+              export SONARQUBE_TOKEN
 
             else
 

@@ -13,8 +13,15 @@ if [ -z "$SUBMODULES_HOME" ]; then
   exit 1
 fi
 
+SCRIPT_ENV="$SUBMODULES_HOME/Software-Toolkit/Utils/Sys/environment.sh"
 SCRIPT_GET_PROGRAM="$SUBMODULES_HOME/Software-Toolkit/Utils/Sys/Programs/get_program.sh"
 SCRIPT_GET_SONAR_SCANNER="$SUBMODULES_HOME/Software-Toolkit/Utils/SonarQube/get_sonar_scanner.sh"
+
+if ! test -e "$SCRIPT_ENV"; then
+
+    echo "ERROR: Script not found '$SCRIPT_ENV'"
+    exit 1
+fi
 
 if ! test -e "$SCRIPT_GET_PROGRAM"; then
 
@@ -27,6 +34,11 @@ if ! test -e "$SCRIPT_GET_SONAR_SCANNER"; then
     echo "ERROR: Script not found '$SCRIPT_GET_SONAR_SCANNER'"
     exit 1
 fi
+
+# shellcheck disable=SC1090
+. "$SCRIPT_ENV"
+
+LOAD_RC
 
 if [ -z "$SONARQUBE_SERVER" ]; then
 
