@@ -26,7 +26,11 @@ LOAD_RC() {
     fi
 
     # shellcheck disable=SC1090
-    if ! source "$FILE_RC" || . "$FILE_RC"; then
+    if source "$FILE_RC" || . "$FILE_RC"; then
+
+        echo "The RC file loaded '$FILE_RC'"
+
+    else
 
         echo "ERROR: Could not load the RC file '$FILE_RC'"
         exit 1
