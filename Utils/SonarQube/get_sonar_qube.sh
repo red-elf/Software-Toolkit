@@ -246,7 +246,7 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
 
               if [ $ELAPSED = 60 ]; then
 
-                echo "ERROR: Timeout"s
+                echo "ERROR: Timeout"
                 exit 1
               fi
           done
@@ -264,7 +264,7 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
           # TODO: Generate tokens
           #
           # - Once sonar qube has been set, setup tokens and permissions
-          
+
         fi
 
       else
