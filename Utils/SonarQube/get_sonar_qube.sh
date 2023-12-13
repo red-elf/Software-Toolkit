@@ -261,10 +261,27 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
             exit 1
           fi
 
-          # TODO: Generate tokens
-          #
-          # - Once sonar qube has been set, setup tokens and permissions
+          # TODO: Add the browse permissiomns
 
+          TOKEN_NAME=$(($(date +%s%N)/1000000))
+          GENERATE_TOKEN_URL="http://127.0.0.1:$SONARQUBE_PORT/api/user_tokens/generate?login=admin&password=$ADMIN_PASSWORD&name=$TOKEN_NAME"
+          GENERATED_TOKEN_JSON=$(curl -u admin:"$ADMIN_PASSWORD" "$GENERATE_TOKEN_URL")
+
+          if [ "$GENERATED_TOKEN_JSON" = "" ]; then
+          
+              echo "ERROR: No token has been generated"
+              exit 1
+
+          else
+
+            # TODO: EXtract token from the generated token JSON
+
+            echo "Token has been generated: $GENERATED_TOKEN_JSON"
+
+            # TODO: Generate tokens
+            #
+            # - Once sonar qube has been set, setup tokens and permissions
+          fi
         fi
 
       else
