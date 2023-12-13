@@ -1,5 +1,7 @@
 #!/bin/bash
 
+SONARQUBE_HOST="127.0.0.1"
+
 if [ -n "$1" ]; then
   
   SONARQUBE_NAME="$1"
@@ -250,8 +252,8 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
                 exit 1
               fi
           done
-  
-          if curl -u admin:admin "http://127.0.0.1:$SONARQUBE_PORT/api/users/change_password?login=admin&previousPassword=admin&password=$ADMIN_PASSWORD"; then
+
+          if curl -u admin:admin "http://$SONARQUBE_HOST:$SONARQUBE_PORT/api/users/change_password?login=admin&previousPassword=admin&password=$ADMIN_PASSWORD"; then
 
             echo "The default admin password has been updated"
 
@@ -264,7 +266,7 @@ if sh "$SCRIPT_GET_DOCKER" true && sh "$SCRIPT_GET_DOCKER_COMPOSE" true; then
           # TODO: Add the browse permissiomns
 
           TOKEN_NAME=$(($(date +%s%N)/1000000))
-          GENERATE_TOKEN_URL="http://127.0.0.1:$SONARQUBE_PORT/api/user_tokens/generate?login=admin&password=$ADMIN_PASSWORD&name=$TOKEN_NAME"
+          GENERATE_TOKEN_URL="http://$SONARQUBE_HOST:$SONARQUBE_PORT/api/user_tokens/generate?login=admin&password=$ADMIN_PASSWORD&name=$TOKEN_NAME"
           GENERATED_TOKEN_JSON=$(curl -u admin:"$ADMIN_PASSWORD" "$GENERATE_TOKEN_URL")
 
           if [ "$GENERATED_TOKEN_JSON" = "" ]; then
