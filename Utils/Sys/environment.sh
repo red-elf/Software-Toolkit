@@ -17,6 +17,12 @@ fi
 # shellcheck disable=SC1090
 . "$SCRIPT_PATHS"
 
+LOAD_RC() {
+
+    # shellcheck disable=SC1090
+    source "$FILE_RC" >/dev/null 2>&1 || . "$FILE_RC" >/dev/null 2>&1
+}
+
 ADD_VARIABLE() {
 
     if [ -z "$1" ]; then
@@ -45,8 +51,7 @@ ADD_VARIABLE() {
 
         else
 
-            # shellcheck disable=SC1090
-            . "$FILE_RC"
+            LOAD_RC
 
             echo "ERROR: Entry '$VARIABLE_NAME' is already present in '$FILE_RC' configuration with different value from '$VARIABLE_VALUE'"
             exit 1
@@ -63,8 +68,7 @@ ADD_VARIABLE() {
             echo "ERROR: Variable '$VARIABLE_NAME' is not added into '$FILE_RC' configuration"
             exit 1
         fi
-
-        # shellcheck disable=SC1090
-        source "$FILE_RC" >/dev/null 2>&1 || . "$FILE_RC" >/dev/null 2>&1
     fi
+
+    LOAD_RC
 }
