@@ -40,32 +40,13 @@ fi
 
 LOAD_RC
 
-# FIXME:
-#
-echo "DEBUG: >>> SONARQUBE_SERVER: '$SONARQUBE_SERVER'"
-
 if [ -z "$SONARQUBE_SERVER" ]; then
 
     echo "ERROR: 'SONAR_QUBE_SERVER' variable not defined (exported)"
     exit 1
 fi
 
-# FIXME:
-#
-echo "DEBUG: >>> SONARQUBE_TOKEN: '$SONARQUBE_TOKEN'"
-
 if [ -z "$SONARQUBE_TOKEN" ]; then
-
-    # FIXME:
-    #
-    # Token has been generated: squ_...
-    # Variable 'SONARQUBE_TOKEN' is added into '/home/milosvasic/.bashrc' configuration: 'squ_...'
-    # The RC file loaded '/home/milosvasic/.bashrc'
-    # Variable 'SONARQUBE_SERVER' is added into '/home/milosvasic/.bashrc' configuration: 'http://localhost:9102'
-    # The RC file loaded '/home/milosvasic/.bashrc'
-    # Starting the scan
-    # The RC file loaded '/home/milosvasic/.bashrc'
-    # ERROR: 'SONARQUBE_TOKEN' variable not defined (exported)
 
     echo "ERROR: 'SONARQUBE_TOKEN' variable not defined (exported)"
     exit 1
