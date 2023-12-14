@@ -55,19 +55,9 @@ ADD_LINE() {
     LINE_TO_ADD="$1"
 
     # shellcheck disable=SC2002
-    if cat "$FILE_RC" | grep "$VARIABLE_NAME=" >/dev/null 2>&1; then
+    if cat "$FILE_RC" | grep "$LINE_TO_ADD" >/dev/null 2>&1; then
 
-        if cat "$FILE_RC" | grep "$LINE_TO_ADD" >/dev/null 2>&1; then
-
-            echo "WARNING: Variable '$VARIABLE_NAME' is already present in '$FILE_RC' configuration"
-
-        else
-
-            LOAD_RC
-
-            echo "ERROR: Entry '$VARIABLE_NAME' is already present in '$FILE_RC' configuration with different value from '$VARIABLE_VALUE'"
-            exit 1
-        fi
+        echo "WARNING: Line '$LINE_TO_ADD' is already present in the '$FILE_RC'"
 
     else
 
@@ -80,9 +70,9 @@ ADD_LINE() {
             echo "ERROR: Variable '$VARIABLE_NAME' is not added into '$FILE_RC' configuration"
             exit 1
         fi
-    fi
 
-    LOAD_RC
+        LOAD_RC
+    fi
 }
 
 ADD_VARIABLE() {
