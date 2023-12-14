@@ -17,6 +17,11 @@ fi
 # shellcheck disable=SC1090
 . "$SCRIPT_PATHS"
 
+# TODO: Workaround around Ubuntu's RC code snippet that breaks complete RC file loading / execution
+#
+# - Create separate file which we are going to 'source'
+# - Call that file from the bottom of the RC file
+#
 LOAD_RC() {
 
     if [ -z "$FILE_RC" ]; then
