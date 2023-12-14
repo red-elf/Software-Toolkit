@@ -99,6 +99,5 @@ ADD_VARIABLE() {
 
     ADD_LINE "$VARIABLE_NAME=\"$VARIABLE_VALUE\""
     ADD_LINE "export $VARIABLE_NAME"
-    ADD_LINE "echo \"Variable exported: '$VARIABLE_NAME' => '$VARIABLE_VALUE'\""
     ADD_LINE_BREAK
 }
