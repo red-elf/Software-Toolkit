@@ -44,24 +44,15 @@ LOAD_RC() {
     fi
 }
 
-ADD_VARIABLE() {
+ADD_LINE() {
 
     if [ -z "$1" ]; then
 
-        echo "ERROR: Variable name is mandatory parameter"
+        echo "ERROR: VariableLine to ad is mandatory parameter"
         exit 1
     fi
 
-    if [ -z "$2" ]; then
-
-        echo "ERROR: Variable value is mandatory parameter"
-        exit 1
-    fi
-
-    VARIABLE_NAME="$1"
-    VARIABLE_VALUE="$2"
-    
-    LINE_TO_ADD="export $VARIABLE_NAME=\"$VARIABLE_VALUE\""
+    LINE_TO_ADD="$1"
 
     # shellcheck disable=SC2002
     if cat "$FILE_RC" | grep "$VARIABLE_NAME=" >/dev/null 2>&1; then
@@ -92,4 +83,27 @@ ADD_VARIABLE() {
     fi
 
     LOAD_RC
+}
+
+ADD_VARIABLE() {
+
+    if [ -z "$1" ]; then
+
+        echo "ERROR: Variable name is mandatory parameter"
+        exit 1
+    fi
+
+    if [ -z "$2" ]; then
+
+        echo "ERROR: Variable value is mandatory parameter"
+        exit 1
+    fi
+
+    VARIABLE_NAME="$1"
+    VARIABLE_VALUE="$2"
+
+    LINE_TO_ADD="export $VARIABLE_NAME=\"$VARIABLE_VALUE\""
+
+    ADD_LINE "$VARIABLE_NAME=\"$VARIABLE_VALUE\""
+    ADD_LINE "export $VARIABLE_NAME"
 }
