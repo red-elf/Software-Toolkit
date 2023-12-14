@@ -319,8 +319,6 @@ if bash "$SCRIPT_GET_DOCKER" true && bash "$SCRIPT_GET_DOCKER_COMPOSE" true; the
 
               ADD_VARIABLE "SONARQUBE_TOKEN" "$SONARQUBE_TOKEN"
 
-              export SONARQUBE_TOKEN
-
             else
 
                 echo "ERROR: JQ not available"
