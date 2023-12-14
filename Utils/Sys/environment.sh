@@ -75,6 +75,11 @@ ADD_LINE() {
     fi
 }
 
+ADD_LINE_BREAK() {
+
+    echo "" >> "$FILE_RC"
+}
+
 ADD_VARIABLE() {
 
     if [ -z "$1" ]; then
@@ -95,5 +100,5 @@ ADD_VARIABLE() {
     ADD_LINE "$VARIABLE_NAME=\"$VARIABLE_VALUE\""
     ADD_LINE "export $VARIABLE_NAME"
     ADD_LINE "echo \"Variable exported: '$VARIABLE_NAME' => '$VARIABLE_VALUE'\""
-    ADD_LINE ""
+    ADD_LINE_BREAK
 }
