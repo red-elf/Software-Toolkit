@@ -294,9 +294,10 @@ if bash "$SCRIPT_GET_DOCKER" true && bash "$SCRIPT_GET_DOCKER_COMPOSE" true; the
 
           # TODO: Add the browse permissiomns
 
+          ADMIN_USER="admin"
           TOKEN_NAME=$(($(date +%s%N)/1000000))
-          GENERATE_TOKEN_URL="http://$SONARQUBE_HOST:$SONARQUBE_PORT/api/user_tokens/generate?login=admin&password=$ADMIN_PASSWORD&name=$TOKEN_NAME"
-          GENERATED_TOKEN_JSON=$(curl -X POST -u admin:"$ADMIN_PASSWORD" "$GENERATE_TOKEN_URL")
+          GENERATE_TOKEN_URL="http://$SONARQUBE_HOST:$SONARQUBE_PORT/api/user_tokens/generate?login=$ADMIN_USER&password=$ADMIN_PASSWORD&name=$TOKEN_NAME"
+          GENERATED_TOKEN_JSON=$(curl -X POST -u "$ADMIN_USER":"$ADMIN_PASSWORD" "$GENERATE_TOKEN_URL")
 
           if [ "$GENERATED_TOKEN_JSON" = "" ] || echo "$GENERATED_TOKEN_JSON" | grep "errors\":" >/dev/null 2>&1; then
           
@@ -318,6 +319,8 @@ if bash "$SCRIPT_GET_DOCKER" true && bash "$SCRIPT_GET_DOCKER_COMPOSE" true; the
               echo "Token has been generated: $SONARQUBE_TOKEN"
 
               ADD_VARIABLE "SONARQUBE_TOKEN" "$SONARQUBE_TOKEN"
+              ADD_VARIABLE "SONARQUBE_ADMIN_USER" "$ADMIN_USER"
+              ADD_VARIABLE "SONARQUBE_ADMIN_PASSWORD" "$ADMIN_PASSWORD"
 
             else
 
