@@ -34,7 +34,15 @@ if ! test -e \"$SCRIPT_PATHS\"; then
     exit 1
 fi
 
-source \"$SCRIPT_PATHS\"
+# shellcheck disable=SC1090
+if ! source \"$SCRIPT_PATHS\"; then
+
+    if ! . \"$SCRIPT_PATHS\"; then
+
+        echo \"ERROR: Could not load '$SCRIPT_PATHS'\"
+        exit 1
+    fi
+fi
 "
 
     # shellcheck disable=SC2002
