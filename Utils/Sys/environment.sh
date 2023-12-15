@@ -63,7 +63,20 @@ ADD_LINE() {
 
 ADD_LINE_BREAK() {
 
-    echo "" >> "$FILE_RC"
+    DEST_RC="$FILE_PTOOLKIT_RC"
+
+    if [ -n "$1" ]; then
+
+        DEST_RC="$1"
+    fi
+
+    if ! test -e "$DEST_RC"; then
+
+        echo "ERROR: No '$DEST_RC' found on the system"
+        exit 1
+    fi
+
+    echo "" >> "$DEST_RC"
 }
 
 ADD_VARIABLE() {
