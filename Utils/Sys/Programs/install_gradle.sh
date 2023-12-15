@@ -80,6 +80,7 @@ if bash "$SCRIPT_CHECK_ALT_LINUX"; then
 
     EXPORT_DIRECTIVE="export PATH=\${PATH}:$DIR_INSTALLATION/gradle-$GRADLE_VERSION/bin"
 
+    # shellcheck disable=SC2002
     if cat "$FILE_RC" | grep "$EXPORT_DIRECTIVE"; then
 
       echo "Gradle is already added into the system path"

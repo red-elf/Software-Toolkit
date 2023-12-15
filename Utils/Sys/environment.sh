@@ -17,36 +17,10 @@ fi
 # shellcheck disable=SC1090
 . "$SCRIPT_PATHS"
 
-# TODO: Workaround around Ubuntu's RC code snippet that breaks complete RC file loading / execution
-#
-# - Create separate file which we are going to 'source'
-# - Call that file from the bottom of the RC file
-#
-LOAD_RC() {
+LOAD_RCS() {
 
-    if [ -z "$FILE_RC" ]; then
-
-        echo "ERROR: '$FILE_RC' variable is not defined"
-        exit 1
-    fi
-
-    # shellcheck disable=SC1090
-    if source "$FILE_RC"; then
-
-        echo "The RC file loaded '$FILE_RC' by 'source'"
-
-    else
-
-        if . "$FILE_RC"; then
-
-            echo "The RC file loaded '$FILE_RC' by '.'"
-
-        else
-
-            echo "ERROR: Could not load the RC file '$FILE_RC'"
-            exit 1
-        fi
-    fi
+    LOAD_RC "$FILE_RC"
+    LOAD_RC "$FILE_PTOOLKIT_RC"
 }
 
 ADD_LINE() {
@@ -66,17 +40,24 @@ ADD_LINE() {
 
     else
 
-        if echo "$LINE_TO_ADD" >> "$FILE_RC"; then
+        if cat "$PTOOLKIT_RC" | grep "$LINE_TO_ADD" >/dev/null 2>&1; then
 
-            echo "Variable '$VARIABLE_NAME' is added into '$FILE_RC' configuration: '$VARIABLE_VALUE'"
-            
+            echo "WARNING: Line '$LINE_TO_ADD' is already present in the '$PTOOLKIT_RC'"
+
         else
 
-            echo "ERROR: Variable '$VARIABLE_NAME' is not added into '$FILE_RC' configuration"
-            exit 1
-        fi
+            if echo "$LINE_TO_ADD" >> "$PTOOLKIT_RC"; then
 
-        LOAD_RC
+                echo "Variable '$VARIABLE_NAME' is added into '$PTOOLKIT_RC' configuration: '$VARIABLE_VALUE'"
+                
+            else
+
+                echo "ERROR: Variable '$VARIABLE_NAME' is not added into '$PTOOLKIT_RC' configuration"
+                exit 1
+            fi
+
+            LOAD_RC "$PTOOLKIT_RC"
+        fi
     fi
 }
 

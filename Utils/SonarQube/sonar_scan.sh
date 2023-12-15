@@ -38,7 +38,7 @@ fi
 # shellcheck disable=SC1090
 . "$SCRIPT_ENV"
 
-LOAD_RC
+LOAD_RCS
 
 if [ -z "$SONARQUBE_SERVER" ]; then
 

@@ -5,6 +5,16 @@ DIR_HOME=$(eval echo ~"$USER")
 
 export FILE_ZSH_RC="$DIR_HOME/.zshrc"
 export FILE_BASH_RC="$DIR_HOME/.bashrc"
+export FILE_PTOOLKIT_RC="$DIR_HOME/.ptoolkitrc"
+
+if ! test -e "$FILE_PTOOLKIT_RC"; then
+
+    if ! touch "$FILE_PTOOLKIT_RC"; then
+
+        echo "ERROR: Could not create '$FILE_PTOOLKIT_RC'"
+        exit 1
+    fi
+fi
 
 if test -e "$FILE_ZSH_RC"; then
 
@@ -14,7 +24,7 @@ else
 
     if test -e "$FILE_BASH_RC"; then
 
-    FILE_RC="$FILE_BASH_RC"
+        FILE_RC="$FILE_BASH_RC"
 
     else
 
@@ -23,8 +33,33 @@ else
     fi
 fi
 
+if test -e "$FILE_PTOOLKIT_RC"; then
+
+    LINE_TO_ADD="source $FILE_PTOOLKIT_RC"
+
+    # shellcheck disable=SC2002
+    if cat "$FILE_RC" | grep "$LINE_TO_ADD" >/dev/null 2>&1; then
+
+        echo "'$LINE_TO_ADD' is already configured in '$FILE_RC'"
+
+    else
+
+        if ! echo "$LINE_TO_ADD" >> "$FILE_RC"; then
+
+            echo "ERROR: Could not add '$LINE_TO_ADD' into '$FILE_RC'"
+            exit 1
+        fi
+    fi
+
+else
+
+    echo "ERROR: No '$FILE_PTOOLKIT_RC' found on the system"
+    exit 1
+fi
+
 export FILE_RC
 export DIR_HOME
+export FILE_PTOOLKIT_RC
 
 ADD_TO_PATH() {
 
@@ -70,4 +105,128 @@ INIT_DIR() {
             exit 1
         fi
     fi
+}
+
+LOAD() {
+
+    if [ -z "$1" ]; then
+
+        echo "ERROR: Script to load is mandatory parameter"
+        exit 1
+    fi
+
+    TO_LOAD="$1"
+
+    if ! test -e "$TO_LOAD"; then
+
+        echo "ERROR: Script not found '$TO_LOAD'"
+        exist 1
+    fi
+
+    # shellcheck disable=SC1090
+    if ! source "$TO_LOAD"; then
+
+        if ! . "$TO_LOAD"; then
+
+            echo "ERROR: Could not load '$TO_LOAD'"
+            exit 1
+        fi
+    fi
+}
+
+LOAD_RC() {
+
+    if [ -n "$1" ]; then
+
+        FILE_RC="$1"
+    fi
+
+    if [ -z "$FILE_RC" ]; then
+
+        echo "ERROR: '$FILE_RC' variable is not defined"
+        exit 1
+    fi
+
+    LOAD "$FILE_RC"   
+}
+
+TRANSFORM_INTO_PATH() {
+
+    # Dependency example:
+    #
+    # Software-Toolkit/Utils/Sys/paths
+    #
+
+    if [ -z "$1" ]; then
+
+        echo "ERROR: Dependency is mandatory parameter"
+        exit 1
+    fi
+
+    if [ "$1" = "" ]; then
+
+        echo "ERROR: Dependency is empty"
+        exit 1
+    fi
+
+    if [ -z "${1%%/*}" ] && pathchk -pP "$1" >/dev/null 2>&1; then
+
+        DEPENDENCY_TO_TRANSFORM="$1"
+
+    else
+
+        DEPENDENCY_TO_TRANSFORM="$SUBMODULES_HOME/$1"
+    fi
+
+    if ! test -e "$DEPENDENCY_TO_TRANSFORM"; then
+
+        DEPENDENCY_TO_TRANSFORM="$DEPENDENCIES_TO_TRANSFORM.sh"
+    fi
+
+    if ! test -e "$DEPENDENCY_TO_TRANSFORM"; then
+
+        echo "ERROR: Dependency not found '$DEPENDENCY_TO_TRANSFORM'"
+        exit 1
+    fi
+
+    echo "$DEPENDENCY_TO_TRANSFORM"
+}
+
+IMPORT() {
+
+    if [ -z "$1" ]; then
+
+        echo "ERROR: Dependency to import is mandatory parameter"
+        exit 1
+    fi
+
+    TO_IMPORT="$1"
+    TO_IMPORT=$(TRANSFORM_INTO_PATH "$TO_IMPORT")
+
+    if ! test -e "$TO_IMPORT"; then
+
+        echo "ERROR: Dependency not found '$TO_IMPORT'"
+        exit 1
+    fi
+
+    echo "$TO_IMPORT"
+}
+
+USE() {
+
+    if [ -z "$1" ]; then
+
+        echo "ERROR: Dependency to use is mandatory parameter"
+        exit 1
+    fi
+
+    TO_USE=$(IMPORT "$1")
+
+    if [ -z "$TO_USE" ] || ! test -e "$TO_USE"; then
+
+        echo "ERROR: Could not use dependency '$1'"
+        exit 1
+    fi
+
+    LOAD "$TO_USE"
 }
