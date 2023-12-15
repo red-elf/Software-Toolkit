@@ -16,6 +16,43 @@ if ! test -e "$FILE_PTOOLKIT_RC"; then
     fi
 fi
 
+if test -e "$FILE_PTOOLKIT_RC"; then
+
+    CONTENT_TO_ADD="#!/bin/bash
+
+if [ -z \"$SUBMODULES_HOME\" ]; then
+
+  echo \"ERROR: SUBMODULES_HOME not available\"
+  exit 1
+fi
+
+SCRIPT_PATHS=\"$SUBMODULES_HOME/Software-Toolkit/Utils/Sys/environment.sh\"
+
+if ! test -e \"$SCRIPT_PATHS\"; then
+
+    echo \"ERROR: Script not found '$SCRIPT_PATHS'\"
+    exit 1
+fi
+
+source \"$SCRIPT_PATHS\"
+"
+
+    # shellcheck disable=SC2002
+    if ! cat "$FILE_PTOOLKIT_RC" | grep "$CONTENT_TO_ADD" >/dev/null 2>&1; then
+
+        if ! echo "$CONTENT_TO_ADD" > "$FILE_PTOOLKIT_RC"; then
+
+            echo "ERROR: Could not add '$CONTENT_TO_ADD' into '$FILE_PTOOLKIT_RC'"
+            exit 1
+        fi
+    fi
+
+else
+
+    echo "ERROR: No '$FILE_PTOOLKIT_RC' found on the system"
+    exit 1
+fi
+
 if test -e "$FILE_ZSH_RC"; then
 
     FILE_RC="$FILE_ZSH_RC"
@@ -33,28 +70,20 @@ else
     fi
 fi
 
-if test -e "$FILE_PTOOLKIT_RC"; then
+LINE_TO_ADD="source $FILE_PTOOLKIT_RC"
 
-    LINE_TO_ADD="source $FILE_PTOOLKIT_RC"
+# shellcheck disable=SC2002
+if cat "$FILE_RC" | grep "$LINE_TO_ADD" >/dev/null 2>&1; then
 
-    # shellcheck disable=SC2002
-    if cat "$FILE_RC" | grep "$LINE_TO_ADD" >/dev/null 2>&1; then
-
-        echo "'$LINE_TO_ADD' is already configured in '$FILE_RC'"
-
-    else
-
-        if ! echo "$LINE_TO_ADD" >> "$FILE_RC"; then
-
-            echo "ERROR: Could not add '$LINE_TO_ADD' into '$FILE_RC'"
-            exit 1
-        fi
-    fi
+    echo "'$LINE_TO_ADD' is already configured in '$FILE_RC'"
 
 else
 
-    echo "ERROR: No '$FILE_PTOOLKIT_RC' found on the system"
-    exit 1
+    if ! echo "$LINE_TO_ADD" >> "$FILE_RC"; then
+
+        echo "ERROR: Could not add '$LINE_TO_ADD' into '$FILE_RC'"
+        exit 1
+    fi
 fi
 
 export FILE_RC
