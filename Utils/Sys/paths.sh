@@ -20,26 +20,26 @@ if test -e "$FILE_PTOOLKIT_RC"; then
 
     CONTENT_TO_ADD="#!/bin/bash
 
-if [ -z \"$SUBMODULES_HOME\" ]; then
+if [ -z \"\$SUBMODULES_HOME\" ]; then
 
-  echo \"ERROR: SUBMODULES_HOME not available\"
+  echo \"ERROR: 'SUBMODULES_HOME' not available\"
   exit 1
 fi
 
-SCRIPT_PATHS=\"$SUBMODULES_HOME/Software-Toolkit/Utils/Sys/environment.sh\"
+SCRIPT_PATHS=\"\$SUBMODULES_HOME/Software-Toolkit/Utils/Sys/environment.sh\"
 
-if ! test -e \"$SCRIPT_PATHS\"; then
+if ! test -e \"\$SCRIPT_PATHS\"; then
 
-    echo \"ERROR: Script not found '$SCRIPT_PATHS'\"
+    echo \"ERROR: Script not found '\$SCRIPT_PATHS'\"
     exit 1
 fi
 
 # shellcheck disable=SC1090
-if ! source \"$SCRIPT_PATHS\"; then
+if ! source \"\$SCRIPT_PATHS\"; then
 
-    if ! . \"$SCRIPT_PATHS\"; then
+    if ! . \"\$SCRIPT_PATHS\"; then
 
-        echo \"ERROR: Could not load '$SCRIPT_PATHS'\"
+        echo \"ERROR: Could not load '\$SCRIPT_PATHS'\"
         exit 1
     fi
 fi
