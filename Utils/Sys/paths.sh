@@ -175,6 +175,12 @@ TRANSFORM_INTO_PATH() {
 
     else
 
+        if [ -z "$SUBMODULES_HOME" ]; then
+
+            echo "ERROR: 'SUBMODULES_HOME' not available"
+            exit 1
+        fi
+
         DEPENDENCY_TO_TRANSFORM="$SUBMODULES_HOME/$1"
     fi
 
