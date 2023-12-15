@@ -81,11 +81,7 @@ fi
 LINE_TO_ADD="source $FILE_PTOOLKIT_RC"
 
 # shellcheck disable=SC2002
-if cat "$FILE_RC" | grep "$LINE_TO_ADD" >/dev/null 2>&1; then
-
-    echo "'$LINE_TO_ADD' is already configured in '$FILE_RC'"
-
-else
+if ! cat "$FILE_RC" | grep "$LINE_TO_ADD" >/dev/null 2>&1; then
 
     if ! echo "$LINE_TO_ADD" >> "$FILE_RC"; then
 
