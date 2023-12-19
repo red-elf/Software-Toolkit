@@ -46,11 +46,7 @@ ADD_LINE() {
 
         else
 
-            if echo "$LINE_TO_ADD" >> "$PTOOLKIT_RC"; then
-
-                echo "Variable '$VARIABLE_NAME' is added into '$PTOOLKIT_RC' configuration: '$VARIABLE_VALUE'"
-                
-            else
+            if ! echo "$LINE_TO_ADD" >> "$PTOOLKIT_RC"; then
 
                 echo "ERROR: Variable '$VARIABLE_NAME' is not added into '$PTOOLKIT_RC' configuration"
                 exit 1
