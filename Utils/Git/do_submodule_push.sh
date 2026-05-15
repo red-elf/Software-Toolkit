@@ -263,7 +263,13 @@ DO_SUBMODULE() {
         fi
     }
 
-    UPSTREAMS="$SUBMODULE_FULL_PATH/Upstreams"
+    # Helix Constitution §11.4.29: prefer lowercase 'upstreams/', fall back
+    # to legacy 'Upstreams/'. Both treated as equally-valid recipe containers.
+    if test -e "$SUBMODULE_FULL_PATH/upstreams"; then
+        UPSTREAMS="$SUBMODULE_FULL_PATH/upstreams"
+    else
+        UPSTREAMS="$SUBMODULE_FULL_PATH/Upstreams"
+    fi
 
     if git status | grep "Your branch is ahead of " | grep "by " | grep "commits." >/dev/null 2>&1; then
 

@@ -16,7 +16,16 @@ if ! test -e "$SCRIPT_INSTALL_UPSTREAMS"; then
   exit 1
 fi
 
-UPSTREAMS="Upstreams"
+UPSTREAMS_LC="upstreams"
+UPSTREAMS_UC="Upstreams"
+# Detect the canonical recipes directory in the current working tree.
+# Prefers lowercase 'upstreams/' per Helix Constitution §11.4.29; falls
+# back to legacy 'Upstreams/'. If both exist, lowercase wins.
+if test -e "$UPSTREAMS_LC"; then
+  UPSTREAMS="$UPSTREAMS_LC"
+else
+  UPSTREAMS="$UPSTREAMS_UC"
+fi
 DIR_UPSTREAMS="$UPSTREAMS"
 
 if [ -n "$1" ]; then
@@ -35,7 +44,7 @@ else
     echo "Looking for the Upstreams directory from: '$DIR_UPSTREAMS'" && \
       echo "From origin: '$ORIGIN'"
 
-    while ! test -e "$DIR_UPSTREAMS/$UPSTREAMS"
+    while ! test -e "$DIR_UPSTREAMS/$UPSTREAMS_LC" && ! test -e "$DIR_UPSTREAMS/$UPSTREAMS_UC"
     do
 
       DIR_UPSTREAMS="$DIR_UPSTREAMS/.." && \
@@ -50,6 +59,13 @@ else
       fi
 
     done
+
+    # Resolve which case wins at this level — lowercase preferred per §11.4.29.
+    if test -e "$DIR_UPSTREAMS/$UPSTREAMS_LC"; then
+      UPSTREAMS="$UPSTREAMS_LC"
+    elif test -e "$DIR_UPSTREAMS/$UPSTREAMS_UC"; then
+      UPSTREAMS="$UPSTREAMS_UC"
+    fi
 
     if test -e "$DIR_UPSTREAMS/$UPSTREAMS"; then
 

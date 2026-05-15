@@ -169,7 +169,13 @@ EOL
 
                             echo "Git submodule repository '$REPO' has been initialized into '$DIR_DESTINATION'"
 
-                            DIR_UPSTREAMS="$DIR_DESTINATION/Upstreams"
+                            # Helix Constitution §11.4.29: prefer lowercase
+                            # 'upstreams/', fall back to legacy 'Upstreams/'.
+                            if test -e "$DIR_DESTINATION/upstreams"; then
+                                DIR_UPSTREAMS="$DIR_DESTINATION/upstreams"
+                            else
+                                DIR_UPSTREAMS="$DIR_DESTINATION/Upstreams"
+                            fi
 
                             if test -e "$DIR_UPSTREAMS"; then
 
